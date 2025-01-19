@@ -6,7 +6,7 @@ import Footer from "@/components/footer";
 import ModelProvider from "@/provider/model-provider";
 import ToastProvider from "@/provider/toast-provider";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { Analytics } from "@vercel/analytics/react"
 const geistSans = Geist({ subsets: ["latin"] });
 const geistMono = Geist_Mono({ subsets: ["latin"] });
 const anton = Anton({ weight: "400", subsets: ["latin"] });
@@ -37,6 +37,7 @@ export default function RootLayout({
           <ToastProvider />
           <Navbar />
           {children}
+          <Analytics />
           <Footer />
         </body>
       </html>
