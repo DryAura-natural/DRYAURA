@@ -1,8 +1,29 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+// Define an interface for the userData
+interface BillingInfo {
+  streetAddress: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
 const DeliveryAddress = () => {
-  // Retrieve data from localStorage and parse it
-  const userData = JSON.parse(localStorage.getItem("billingInfo") || "{}");
-  if(userData === null){
-    return null;
+  const [userData, setUserData] = useState<BillingInfo | null>(null);
+
+  useEffect(() => {
+    // Safely access localStorage only on the client side
+    const data = localStorage.getItem("billingInfo");
+    if (data) {
+      setUserData(JSON.parse(data));
+    }
+  }, []);
+
+  if (!userData) {
+    return null; // Render nothing if user data is not available
   }
 
   return (
