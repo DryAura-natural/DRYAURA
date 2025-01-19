@@ -62,3 +62,38 @@ export default stateList;
     }
   ]
 
+  export const  Gallery_images =   [
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 1"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 2"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 3"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 4"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 5"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 6"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 6"
+    },
+    {
+      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "alt": "Dry Fruit Image 6"
+    }
+  ]
+  

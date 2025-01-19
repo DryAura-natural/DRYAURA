@@ -30,6 +30,11 @@ const Info: React.FC<InfoProps> = ({ data }) => {
             style={{ backgroundColor: data?.color?.value }}
           />
         </div>
+
+        <div className="flex items-center gap-x-4">
+         {data.description}
+
+        </div>
       </div>
       <div className="mt-10 flex items-center gap-x-3">
         <Button className="flex items-center gap-x-2">Add to Cart

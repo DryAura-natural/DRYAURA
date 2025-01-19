@@ -111,8 +111,10 @@ const Summary = () => {
       };
 
       if (window.Razorpay) {
-        const rzp1 = new window.Razorpay(options);
-        rzp1.open();
+        if (typeof window !== "undefined" && window.Razorpay) {
+          const rzp1 = new window.Razorpay(options);
+          rzp1.open();
+        }
       } else {
         console.error("Razorpay script not loaded");
       }

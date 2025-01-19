@@ -3,11 +3,12 @@ export interface Billboard {
   label: string;
   imageUrl: string;
 }
+
 export interface VideoBillboard {
   id: string;
   label: string;
   subLabel?: string;
-  imageUrl?: string;
+ VideoUrl?: string;
   textColor?: string;
   subTextColor?: string;
 }
@@ -21,6 +22,7 @@ export interface Product {
   id: string;
   category: Category;
   name: string;
+  description:string;
   price: string;
   isFeatured: boolean;
   size: Size;

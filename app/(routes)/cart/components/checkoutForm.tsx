@@ -68,7 +68,7 @@ const Summary = () => {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/createOrder");
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/createOrder`);
       const data = response.data;
 
       const options = {

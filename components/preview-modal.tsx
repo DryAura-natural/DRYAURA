@@ -1,7 +1,7 @@
 "use client";
 import usePreviewModal from "@/hooks/use-preview-model";
 import Modal from "./ui/model";
-import Gallery from "./gallery";
+import Gallery from "./gallerys";
 import Info from "./info";
 
 const PreviewModel = () => {

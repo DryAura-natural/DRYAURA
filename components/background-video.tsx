@@ -2,10 +2,7 @@
 import { useState, useEffect } from "react";
 import { VideoBillboard as BillboardType } from "@/types";
 
-interface BillboardProps {
-  data: BillboardType;
-  
-}
+
 
 const labels = [
     "Savor the Purity, Embrace the Health.",
@@ -18,7 +15,7 @@ const labels = [
     "Premium Dry Fruits, Naturally Superior."
 ];
 
-const VideoBillboard: React.FC<BillboardProps> = ({ data,  }) => {
+const VideoBillboard = () => {
   const [currentLabel, setCurrentLabel] = useState(0);
   const [showTyping, setShowTyping] = useState(false);
 
@@ -62,7 +59,7 @@ const VideoBillboard: React.FC<BillboardProps> = ({ data,  }) => {
         {/* Content overlay */}
         <div className="h-full w-full flex flex-col justify-center items-center text-center gap-y-4 relative z-10 transition duration-150 ease-in-out">
           <h1
-            className={`font-bold text-xl sm:text-5xl lg:text-6xl font-semibold sm:max-w-xl max-w-xs lg:max-w-full ${"text-[#ede5ddd4]"} backdrop-blur-sm  p-2 rounded-sm font-sans uppercase inset-10 cursor-none ${
+            className={`font-bold text-white text-xl  md:text-2xl sm:text-5xl lg:text-6xl font-semibold sm:max-w-xl max-w-xs lg:max-w-full ${"text-[#ede5ddd4]"} backdrop-blur-sm  p-2 rounded-sm font-sans uppercase inset-10 cursor-none ${
               showTyping ? "animate-typing" : ""
             }`}
             style={{
