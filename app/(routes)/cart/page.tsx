@@ -1,4 +1,4 @@
-export const dynamic = "force-dynamic";
+"use client"
 import CartItem from "@/components/cart-item";
 import { Container } from "@/components/ui/container";
 import useCart from "@/hooks/use-cart";
