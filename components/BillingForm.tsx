@@ -57,7 +57,7 @@ const CustomerForm = () => {
 
     try {
       // Send data to the backend API route
-      const response = await fetch("http://localhost:3001/api/customer", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/customer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
