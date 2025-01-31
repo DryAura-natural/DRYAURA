@@ -1,11 +1,9 @@
-// components/BillingForm.tsx
-
 "use client";
 
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { billingSchema, BillingInfo } from "@/utils/validation";
+import { customerSchema, BillingInfo } from "@/utils/validation";
 import Input from "@/components/ui/Input";
 import { useUser } from "@clerk/nextjs";
 import Button from "@/components/ui/Button";
@@ -14,7 +12,7 @@ import toast from "react-hot-toast";
 
 const statesList = stateList;
 
-const BillingForm = () => {
+const CustomerForm = () => {
   const { user, isLoaded } = useUser();
   const {
     register,
@@ -22,38 +20,65 @@ const BillingForm = () => {
     formState: { errors },
     setValue,
   } = useForm<BillingInfo>({
-    resolver: zodResolver(billingSchema),
+    resolver: zodResolver(customerSchema),
   });
 
+  // Pre-fill form fields with Clerk user data
   useEffect(() => {
     if (isLoaded && user) {
-      if (user.fullName) setValue("name", user.fullName);
-      if (user.emailAddresses.length > 0)
-        setValue("email", user.emailAddresses[0].emailAddress);
-      if (user.phoneNumbers.length > 0)
-        setValue("contact", user.phoneNumbers[0].phoneNumber);
+      setValue("name", user.fullName || "");
+      setValue("email", user.emailAddresses?.[0]?.emailAddress || "");
+      setValue("contact", user.phoneNumbers?.[0]?.phoneNumber || "");
     }
   }, [isLoaded, user, setValue]);
 
-  const onSubmits = (data: BillingInfo) => {
-    console.log("Billing Information:", data);
+  // Handle form submission
+  const onSubmits = async (data: BillingInfo) => {
+    console.log("User Data:", data);
+
+    if (!user) {
+      toast.error("User not authenticated");
+      return;
+    }
+
+    // Structure the data properly
+    const userData = {
+      userId: user.id, // Clerk user ID
+      firstName: user.firstName,
+      lastName:user.lastName, // Ensure lastName is not missing
+      email: data.email,
+      phone: data.contact,
+      streetAddress: data.streetAddress,
+      city: data.city,
+      state: data.state,
+      postalCode: data.postalCode,
+      country: "India", // Ensure country is not missing
+    };
 
     try {
-      localStorage.setItem("billingInfo", JSON.stringify(data));
-      console.log("Form data successfully stored in localStorage");
-      toast.success("submit successfully")
-    } catch (error) {
-      console.error("Error saving data to localStorage:", error);
-    }
-    window.location.reload();
-  };
+      // Send data to the backend API route
+      const response = await fetch("http://localhost:3001/api/customer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userData),
+      });
 
-  // Log form errors for debugging
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.log("Form Errors:", errors);
+      if (!response.ok) {
+        throw new Error("Failed to submit user data");
+      }
+
+      const result = await response.json();
+      console.log("Server Response:", result);
+
+      // Save data in localStorage (optional)
+      localStorage.setItem("userData", JSON.stringify(userData));
+
+      toast.success("User data submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting user data:", error);
+      toast.error("Failed to submit. Please try again.");
     }
-  }, [errors]);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmits)} className="space-y-6">
@@ -133,4 +158,4 @@ const BillingForm = () => {
   );
 };
 
-export default BillingForm;
+export default CustomerForm;

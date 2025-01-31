@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 // Define an interface for the userData
-interface BillingInfo {
+export interface BillingInfo {
   streetAddress: string;
   city: string;
   state: string;

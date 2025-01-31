@@ -31,7 +31,7 @@ export const Navbar = async () => {
                     <PackageSearch color="green" /> Orders
                   </span>
                 </Link>
-                <span className="font-semibold">Hello, {user?.firstName}</span> {/* Assuming `user.name` is available */}
+                <span className="font-semibold">Hello, {user?.fullName}</span> {/* Assuming `user.name` is available */}
                 <UserButton />
               </SignedIn>
               <SignedOut>

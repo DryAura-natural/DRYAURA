@@ -9,7 +9,14 @@ import { useRouter } from "next/navigation";
 import OrderSummary from "./orderSummary";
 import DeliveryAddress from "./deliveryAddress";
 import useCart from "@/hooks/use-cart";
+import CustomerForm from "@/components/BillingForm";
 
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 const Summary = () => {
   const [isBillingFormVisible, setIsBillingFormVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -30,11 +37,11 @@ const Summary = () => {
   }, 0);
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = `${process.env.NEXT_PUBLIC_RAZORPAY_SCRIPT_SRC}`;
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
     script.onload = () => console.log("Razorpay script loaded");
     document.body.appendChild(script);
-
+  
     return () => {
       document.body.removeChild(script);
     };
@@ -45,30 +52,34 @@ const Summary = () => {
       toast.error("Loading user authentication state...");
       return;
     }
-
+  
     if (!user) {
       toast.error("You need to sign in before making a payment.");
       router.push("/sign-in");
       return;
     }
-
+  
     setIsProcessing(true);
-
+  
     try {
+      console.log("Creating order with amount:", totalPrice); // Log the amount
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // Add any other necessary headers, e.g., Authorization if needed
         },
-        body: JSON.stringify({ amount: totalPrice }), // Sending amount to backend
+        body: JSON.stringify({ amount: totalPrice }),
       });
-
+  
       if (!response.ok) {
+        const errorResponse = await response.json();
+        console.error("Failed to create order:", errorResponse); // Log the error response
         throw new Error("Failed to create order");
       }
-
+  
       const data = await response.json();
+      console.log("Order created:", data); // Log the created order
+  
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: totalPrice * 100,
@@ -77,7 +88,7 @@ const Summary = () => {
         description: "Test Transaction",
         order_id: data.orderId,
         handler: async function (response: any) {
-          //verification payment
+          console.log("Payment response:", response); // Log the payment response
           const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/verifyOrder`, {
             method: "POST",
             body: JSON.stringify({
@@ -87,15 +98,15 @@ const Summary = () => {
             }),
           });
           const data = await res.json();
+          console.log("Verification response:", data); // Log the verification response
           if (data.isOk) {
             router.push("/");
-            toast.success("payment Successfil");
+            toast.success("Payment Successful");
             removeAll();
           } else {
             router.push("/cart");
-            toast.error("payment failed");
+            toast.error("Payment failed");
           }
-          // Sending amou
         },
         prefill: {
           name: user.fullName || "Guest User",
@@ -105,19 +116,14 @@ const Summary = () => {
         theme: {
           color: "#846754",
         },
-        model: {
-          customer_id: user.id,
-        },
       };
-
-      if (window.Razorpay) {
-        if (typeof window !== "undefined" && window.Razorpay) {
-          const rzp1 = new window.Razorpay(options);
-          rzp1.open();
-        }
+      if (typeof window !== "undefined" && window.Razorpay) {
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
       } else {
         console.error("Razorpay script not loaded");
       }
+  
     } catch (error) {
       console.error("Payment failed", error);
       toast.error("Payment initialization failed.");
@@ -125,7 +131,6 @@ const Summary = () => {
       setIsProcessing(false);
     }
   };
-
   return (
     <div className="rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8 h-full">
       <OrderSummary />
@@ -144,7 +149,7 @@ const Summary = () => {
         </h5>
 
         {isBillingFormVisible ? (
-          <BillingForm />
+          <CustomerForm />
         ) : (
           <div className="text-gray-500">
             <p>
