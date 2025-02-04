@@ -12,6 +12,7 @@ const geistMono = Geist_Mono({ subsets: ["latin"] });
 const anton = Anton({ weight: "400", subsets: ["latin"] });
 const urbanist = Urbanist({ subsets: ["latin"] });
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SiteHeader } from "@/components/header";
 export const metadata: Metadata = {
   title: "Dry Aura - Premium Dry Fruits & Immunity Boosters",
   description:
@@ -35,7 +36,8 @@ export default function RootLayout({
         <body className={`${geistSans.className} antialiased`}>
           <ModelProvider />
           <ToastProvider />
-          <Navbar />
+          
+          <SiteHeader/>
           {children}
           <Analytics />
           <SpeedInsights />

@@ -60,7 +60,7 @@ const Footer = () => {
                 alt="DryAura Logo"
               />
             </div>
-            <div className="max-w-xl font-thin text-center tracking-wider">
+            <div className="max-w-2xl font-thin text-center tracking-wider text-xl mt-5">
               <p>
                 "At DRYAURA, we source only the best dry fruits, handpicked for
                 their freshness and superior quality. Experience the perfect
@@ -104,7 +104,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="bg-[#0f0f0f] text-white ">
+      <div className="bg-[#170b0b] text-white ">
         <div className="max-w-screen mx-auto px-6 py-5 ">
           <div className="flex flex-col md:flex-row justify-between items-center gap-y-2">
           

@@ -82,7 +82,7 @@ const Summary = () => {
   
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: totalPrice * 100,
+        amount: (totalPrice * 100).toString(), 
         currency: "INR",
         name: "DRYAURA",
         description: "Test Transaction",

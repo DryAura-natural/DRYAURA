@@ -34,7 +34,7 @@ const CustomerForm = () => {
 
   // Handle form submission
   const onSubmits = async (data: BillingInfo) => {
-    console.log("User Data:", data);
+
 
     if (!user) {
       toast.error("User not authenticated");
@@ -67,11 +67,11 @@ const CustomerForm = () => {
         throw new Error("Failed to submit user data");
       }
 
-      const result = await response.json();
-      console.log("Server Response:", result);
+      // const result = await response.json();
+      // console.log("Server Response:", result);
 
-      // Save data in localStorage (optional)
-      localStorage.setItem("userData", JSON.stringify(userData));
+      // // Save data in localStorage (optional)
+      // localStorage.setItem("userData", JSON.stringify(userData));
 
       toast.success("User data submitted successfully!");
     } catch (error) {

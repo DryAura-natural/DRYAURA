@@ -9,7 +9,8 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: [
-      "res.cloudinary.com"
+      "res.cloudinary.com",
+      "www.shreemithai.com"
     ]
   },
   async rewrites() {

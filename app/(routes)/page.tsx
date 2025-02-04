@@ -5,6 +5,7 @@ import VideoBillboard from "@/components/background-video";
 import BannerCrusel from "@/components/banner_crusel";
 import OfferBanner from "@/components/bannerOffer";
 import DryFruitStats from "@/components/dryfruit_stats";
+import { HeroSection } from "@/components/hero-section";
 import DryfruitPhoto from "@/components/Photos";
 import ProductList from "@/components/product-list";
 import { Container } from "@/components/ui/container";
@@ -18,8 +19,9 @@ const HomePage = async () => {
   return (
     <div className="font border-l">
       <Container>
-        <div className="space-y-10 pb-10">
-            <VideoBillboard/>
+        <div className="space-y-10  ">
+            {/* <VideoBillboard/> */}
+            <HeroSection/>
           <div className="max-h-full py-10">
             <OfferBanner/>
           </div>

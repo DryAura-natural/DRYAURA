@@ -12,7 +12,7 @@ const Input: React.FC<InputProps> = ({ label, error, ...props }) => {
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <input
         {...props}
-        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-1.5 ${
+        className={`mt-1 block w-full rounded rounded-r-none border-gray-300 shadow-sm focus-visible:ring-0 focus-visible:ring-offset-0 p-2 sm:text-sm p-1.5 ${
           error ? "border-red-500" : ""
         }`}
       />

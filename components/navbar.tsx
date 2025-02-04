@@ -14,11 +14,11 @@ export const Navbar = async () => {
   const user = await getCurrentUser(); // Ensure this is awaited
 
   return (
-    <div className="border-b">
+    <div className="absolute border bg-transparent z-10  backdrop-blur-sm ">
       <Container>
-        <div className="relative px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
+        <div className="px-4 sm:px-6 lg:px-8 flex h-16 items-center justify-between">
           <Link href="/" className="ml-4 flex lg:ml-0 gap-x-2">
-            <p className="font-bold text-xl">DRYAURA</p>
+            <p className="font-black text-xl text-white">DRYAURA</p>
           </Link>
           <MainNav data={categories} />
           

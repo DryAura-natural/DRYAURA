@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { VideoBillboard as BillboardType } from "@/types";
+// import { VideoBillboard as BillboardType } from "@/types";
 
 
 
@@ -37,8 +37,8 @@ const VideoBillboard = () => {
   }, []);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 rounded-xl overflow-hidden">
-      <div className="rounded-xl relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover">
+    <div className="top-0 overflow-hidden relative ">
+      <div className="relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover">
         {/* Conditionally render background video or image */}
        (
           <video
@@ -54,7 +54,7 @@ const VideoBillboard = () => {
        
 
         {/* Optional Overlay */}
-        <div className="absolute  bg-black lg:bg-opacity-10 md:bg-opacity-50"></div>
+        <div className="absolute  bg-black lg:bg-opacity-80 md:bg-opacity-80"></div>
 
         {/* Content overlay */}
         <div className="h-full w-full flex flex-col justify-center items-center text-center gap-y-4 relative z-10 transition duration-150 ease-in-out">

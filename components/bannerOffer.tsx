@@ -13,9 +13,9 @@ const OfferBanner = () => {
           Why Trust Our Quality?
         </div>
         <div className="flex justify-center items-center space-x-4">
-          <Minus size={40} color="#CDB398" />
-          <Gem size={30} color="#CDB398" />
-          <Minus size={40} color="#CDB398" />
+          <Minus size={40} color="#2D1515" />
+          <Gem size={30} color="#2D1515" />
+          <Minus size={40} color="#2D1515" />
         </div>
         <div className="max-w-2xl text-center text-xl font-light px-4 sm:px-6">
           Premium Dry Fruits, Pure and Natural, Packed with Care, Freshness
