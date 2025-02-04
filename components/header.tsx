@@ -72,7 +72,7 @@ export function SiteHeader() {
             <div className="flex items-center space-x-2">
               <span className="font-semibold text-white flex gap-x-2 border p-1.5 rounded-full">
                 <UserCog size={20} />
-                {user?.fullName}
+                Welcome, {user?.fullName || user?.firstName} 
               </span>
               {/* <SignInButton>
                     <Button className="hover:text-orange-300">Sign Out</Button>
