@@ -47,14 +47,14 @@ const Footer = () => {
       <div className="w-full text-gray-100 max-h-full">
         <div
           style={{
-            backgroundImage: `url("https://res.cloudinary.com/djlopmpiz/image/upload/v1737269415/Leonardo_Phoenix_09_Natures_Palette_Unveiled_A_Delectable_Arra_1_sl489w.jpg")`,
+            backgroundImage: `url("https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9cc150025f5a63c5c/view?project=67a96cd2001e32766970&mode=admin)`,
           }}
           className="relative bg-cover bg-center bg-no-repeat md:aspect-[2.4/1]"
         >
           <div className="h-full w-full flex flex-col justify-center items-center text-center  bg-black bg-opacity-80 py-10 sm:py-5">
             <div className=" mb-2 ">
               <Image
-                src="https://res.cloudinary.com/djlopmpiz/image/upload/v1737279031/Where_Nature_Meets_Luxury_DryAura_Naturals._2_k9y9fh.png"
+                src="https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9d16d0027ce92d6a9/view?project=67a96cd2001e32766970&mode=admin"
                 width={150}
                 height={100}
                 alt="DryAura Logo"

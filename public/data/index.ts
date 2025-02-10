@@ -64,36 +64,55 @@ export default stateList;
 
   export const  Gallery_images =   [
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 1"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 2"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 3"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 4"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 5"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 6"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 6"
     },
     {
-      "src": "https://res.cloudinary.com/djlopmpiz/image/upload/v1737129659/s2igj3iqyab956jfntm9.jpg",
+      "src": "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d467000bf67bde55/view?project=677bf12a000e83aee344&mode=admin",
       "alt": "Dry Fruit Image 6"
     }
   ]
   
+
+  // data/blogs.js
+export const blogs = [
+  {
+    id: 1,
+    title: "Introduction to Next.js",
+    description: "Learn the basics of Next.js and how to build server-rendered React applications.",
+    content: "Next.js is a powerful React framework that enables functionality such as server-side rendering and generating static websites.",
+    image: "/images/nextjs.jpg",
+  },
+  {
+    id: 2,
+    title: "Styling in Next.js",
+    description: "Explore different ways to style your Next.js applications.",
+    content: "Next.js supports various styling methods including CSS Modules, styled-jsx, and global CSS.",
+    image: "/images/styling.jpg",
+  },
+  // Add more blogs as needed
+];  

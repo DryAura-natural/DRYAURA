@@ -7,49 +7,49 @@ import { Button } from "./ui/Button"
 
 const slides = [
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Best Quality",
     subtitle: "Cashew Nuts",
     description: "Sourced from the finest farms at unbeatable prices.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Premium Grade",
     subtitle: "Almonds",
     description: "Handpicked and packed fresh from California for maximum flavor.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Organic",
     subtitle: "Pistachios",
     description: "Pure and natural, straight from organic farms to your table.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Deliciously Fresh",
     subtitle: "Walnuts",
     description: "Packed with Omega-3 and essential nutrients for your health.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Rich in Fiber",
     subtitle: "Dried Apricots",
     description: "Sustainably sourced and packed for natural sweetness and energy.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Gourmet Selection",
     subtitle: "Macadamia Nuts",
     description: "Handcrafted and roasted to perfection for a rich, buttery flavor.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Sustainably Sourced",
     subtitle: "Hazelnuts",
     description: "High in antioxidants and packed with natural goodness.",
   },
   {
-    image: "https://www.shreemithai.com/cdn/shop/files/royal-dry-fruit-tin-250g-579246.jpg?v=1728738147",
+    image: "https://cloud.appwrite.io/v1/storage/buckets/67a8d237003af1ec0197/files/67a8d6930035e6060bfe/view?project=677bf12a000e83aee344&mode=admin",
     title: "Health Boosting",
     subtitle: "Pecans",
     description: "Rich in vitamins and minerals for a nutritious snack.",

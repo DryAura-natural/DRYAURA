@@ -35,7 +35,6 @@ export function SiteHeader() {
 
   return (
     <header className="w-full bg-[#3D1D1D]">
-   
       {/* Top Bar */}
       <div className="container mx-auto px-4 py-2 text-white text-sm hidden md:flex justify-between ">
         <div className="flex items-center space-x-4 ">
@@ -72,11 +71,9 @@ export function SiteHeader() {
             <div className="flex items-center space-x-2">
               <span className="font-semibold text-white flex gap-x-2 border p-1.5 rounded-full">
                 <UserCog size={20} />
-                Welcome, {user?.fullName || user?.firstName} 
+                {user?.fullName}
               </span>
-              {/* <SignInButton>
-                    <Button className="hover:text-orange-300">Sign Out</Button>
-                  </SignInButton> */}
+             
             </div>
           </SignedIn>
           <SignedOut>
@@ -92,13 +89,48 @@ export function SiteHeader() {
         </div>
       </div>
 
+ {/* mobile view */}
+ <div className="flex justify-around items-center md:hidden ">
+          <div className="flex justify-center space-x-4 bg-[#3D1D1D] pt-2  ">
+            {[Facebook, Linkedin, Youtube, Twitter].map((Icon, index) => (
+              <Link
+                key={index}
+                href="#"
+                className="text-white hover:text-orange-300"
+              >
+                <Icon className="w-5 h-5" />
+              </Link>
+            ))}
+            </div>
+            <div>
+              <Link
+                href="#"
+                className="hover:text-orange-300 flex items-center space-x-2 "
+              >
+                <CarFront className="w-4 h-4 text-white" />
+                <span className="text-white">Track Order</span>
+              </Link>
+            </div>
+            <SignedOut>
+            {/* Show Sign In and Sign Up links */}
+            <Link href="/sign-in" className="hover:text-orange-300">
+              Log In
+            </Link>
+            <span>|</span>
+            <Link href="/sign-up" className="hover:text-orange-300">
+              Sign Up
+            </Link>
+          </SignedOut>
+          </div>
+       
+
       {/* Main Header */}
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between py-1  ">
         {/* Logo & Mobile Menu Button */}
         <div className="flex justify-between w-full md:w-auto items-center">
           <Link href="/">
             <Image
-              src="https://res.cloudinary.com/djlopmpiz/image/upload/c_crop,w_1004,h_565,ar_16:9/v1737277094/Where_Nature_Meets_Luxury_DryAura_Naturals._1_euyuri.png"
+              src="https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9d0130039f0ca3918/view?project=67a96cd2001e32766970&mode=admin"
               width={150}
               height={150}
               alt="DRYAURA_LOGO"
@@ -118,7 +150,7 @@ export function SiteHeader() {
         </div>
 
         {/* Search Bar */}
-        <div className="w-full px-5 w-full ">
+        <div className="w-full px-5 w-full  hidden md:block">
           <div className="flex w-full justify-center flex-1">
             <div className="flex-1">
               <Input
@@ -134,44 +166,14 @@ export function SiteHeader() {
           </div>
         </div>
 
-           {/* mobile view */}
-      <div className="flex justify-center">
-      <div className="flex md:hidden justify-center space-x-4 bg-[#3D1D1D] py-2">
-        {[Facebook, Linkedin, Youtube, Twitter].map((Icon, index) => (
-          <Link
-            key={index}
-            href="#"
-            className="text-white hover:text-orange-300"
-          >
-            <Icon className="w-5 h-5" />
-          </Link>
-        ))}
-        <div>
-        <Link
-          href="#"
-          className="hover:text-orange-300 flex items-center space-x-2"
-        >
-          <CarFront className="w-4 h-4 text-white" />
-          <span className="text-white">Track Order</span>
-        </Link>
-        </div>
-        
-      </div>
-      </div>
+       
      
-
         {/* Account & Cart (Desktop) */}
         <div className="hidden md:flex items-center gap-x-2">
           <span className="flex items-center gap-x-2 text-white font-bold">
-            Account <UserButton />
+             <UserButton/>
           </span>
-          <Button
-            variant="outline"
-            className="text-black border-black hover:bg-orange-500 hover:text-white"
-          >
-            {<NavbarAction />}
-            Cart
-          </Button>
+          <NavbarAction />
         </div>
       </div>
 
@@ -181,14 +183,14 @@ export function SiteHeader() {
           isMobileMenuOpen ? "block" : "hidden"
         } md:block`}
       >
-            
-          {/* Mobile Account & Cart */}
-          <div className="flex  items-center gap-y-4 md:hidden px-5 pt-2 justify-end ">
-            <span className="flex items-center gap-x-2 text-white ">
-               <UserButton />My Account
-            </span>
-          </div>
-        <div className="container mx-auto px-4">
+        {/* Mobile Account & Cart */}
+        <div className="flex  items-center gap-y-4 md:hidden px-5 pt-2 justify-end ">
+          <span className="flex items-center gap-x-2 text-white ">
+            <UserButton />
+            My Account
+          </span>
+        </div>
+        <div className=" container mx-auto px-4">
           <ul className="flex flex-col md:flex-row justify-center md:justify-start space-y-4 md:space-y-0 md:space-x-6 py-4 text-white">
             {[
               "HOME",
@@ -209,7 +211,19 @@ export function SiteHeader() {
               </li>
             ))}
           </ul>
-
+          <div className="flex w-full justify-center flex-1 md:hidden">
+            <div className="flex-1">
+              <Input
+                label=""
+                type="search"
+                placeholder="Search..."
+                className=" rounded-r-none w-full border focus-visible:ring-0 focus-visible:ring-offset-0" // Input should take full width inside flex container
+              />
+            </div>
+            <Button className="w-auto rounded-l-none bg-orange-500 hover:bg-orange-600 px-4 py-5  mt-1  lg:py-2 ">
+              <Search /> Search
+            </Button>
+          </div>
         </div>
       </nav>
 
