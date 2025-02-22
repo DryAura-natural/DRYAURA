@@ -1,21 +1,41 @@
 "use client";
 import { MouseEventHandler, useState } from "react";
 import { Product } from "@/types";
-import { ShoppingCart, WalletCards, Plus, Minus } from "lucide-react";
+import {
+  ShoppingCart,
+  WalletCards,
+  Plus,
+  Minus,
+  ChevronDownIcon,
+} from "lucide-react";
 import Currency from "./ui/currency";
 import { Button } from "./ui/Button";
 import toast from "react-hot-toast";
 import useCart from "@/hooks/use-cart";
 import { useRouter } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import GreeneryBanner from "./ui/greenerybanner";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 interface InfoProps {
   data: Product;
+  showDescription?: boolean;
+  showBenefits?: boolean;
+  showSpecifications?: boolean;
+  showReviews?: boolean;
+  showNutritionInfo?: boolean;
 }
 
-const Info: React.FC<InfoProps> = ({ data }) => {
+const Info: React.FC<InfoProps> = ({ data, showDescription = true }) => {
   const [quantity, setQuantity] = useState(1);
-  const cart = useCart(); 
-  const route = useRouter();// Initialize quantity state
+  const cart = useCart();
+  const router = useRouter();
 
   const onIncrement = () => {
     if (quantity < 5) {
@@ -32,35 +52,50 @@ const Info: React.FC<InfoProps> = ({ data }) => {
       toast.error("Minimum quantity reached!");
     }
   };
+
   const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    cart.addItem(data);
+    const itemWithQuantity = { ...data, quantity };
+    cart.addItem(itemWithQuantity);
+    toast.success("Item added to cart", { icon: "👏" });
   };
+
   const onPurchased: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    cart.addItem(data);
-    route.push("/cart")
+    const itemWithQuantity = { ...data, quantity };
+    cart.addItem(itemWithQuantity);
+    router.push("/cart");
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-900">{data.name}</h1>
-      <p className="rounded-full bg-green-900 text-white px-4 py-1 w-fit">Save 80%</p>
+    <div className="h-screen overflow-scroll hide-scrollbar">
+      <h1 className="text-3xl font-bold text-gray-900 hidden md:block ">
+        {data.name}
+      </h1>
+      {/* <p className="rounded-full bg-green-900 text-white px-4 w-fit absolute ">
+
+      </p> */}
+      <Badge className="absolute  md:top-auto  right-5 p-1 bg-green-900 z-0">
+        Save 80%
+      </Badge>
 
       <div className="mt-3 flex items-end justify-between">
-        <p className="text-xl text-gray-900 flex flex-row-reverse gap-2">
-          <div className="flex text-lg font-extralight">
+        <p className="text-xl text-gray-900 flex flex-col gap-2">
+          <div className="flex text-lg space-x-1">
             <span>MRP:</span>
             <span className="text-red-700 stroke-current">
-              <del><Currency value={1200} /></del>
+              <del>
+                <Currency value={1200} />
+              </del>
             </span>
+            <span className="text-sm">(incl. of all taxes)</span>
           </div>
-          <div className="flex">
+          <div className="flex space-x-1">
             <span>Offer Price:</span>
             <span className="text-green-800">
               <Currency value={data?.price} />
-              <span className="text-sm">(incl. of all taxes)</span>
             </span>
+            <span className="text-sm">(incl. of all taxes)</span>
           </div>
         </p>
       </div>
@@ -70,31 +105,33 @@ const Info: React.FC<InfoProps> = ({ data }) => {
       <div className="flex flex-col gap-y-6">
         <div className="flex items-center gap-x-4">
           <h3 className="font-semibold text-black">Size:</h3>
-          <div>{data?.size?.name}</div>
+          <ToggleGroup type="single" size="lg" >
+            <ToggleGroupItem value="bold" aria-label="Toggle bold" className="bg-none border-black">
+              200g
+            </ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Toggle italic">
+              400g
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="strikethrough"
+              aria-label="Toggle strikethrough"
+            >
+              600g
+            </ToggleGroupItem>
+          </ToggleGroup>
         </div>
-
-        <div className="flex items-center gap-x-4">
-          <h3 className="font-semibold text-black">Color:</h3>
-          <div
-            className="h-6 w-6 rounded-full border border-gray-600"
-            style={{ backgroundColor: data?.color?.value }}
-          />
-        </div>
-
-        <div className="flex items-center gap-x-4">{data.description}</div>
       </div>
 
-      {/* Quantity Selector */}
-      <div className="mt-4 flex items-center space-x-4 n">
+      <div className="mt-4 flex items-center space-x-4">
         <h3 className="font-semibold text-black">Quantity:</h3>
-        <div className="flex items-center space-x-2 border p-1 rounded-full bg-[#3D1D1D] text-white w-24 justify-between">
+        <div className="flex items-center space-x-2   text-white w-24 justify-between">
           <button
             onClick={onDecrement}
             className="bg-gray-200 p-2 rounded-full text-sm hover:bg-gray-300 text-black"
           >
             <Minus size={12} />
           </button>
-          <span className="text-lg font-semibold">{quantity}</span>
+          <span className="text-lg font-semibold text-black">{quantity}</span>
           <button
             onClick={onIncrement}
             className="bg-gray-200 p-2 rounded-full text-sm hover:bg-gray-300 text-black"
@@ -103,16 +140,104 @@ const Info: React.FC<InfoProps> = ({ data }) => {
           </button>
         </div>
       </div>
-
-      {/* Buttons */}
-      <div className="mt-10 flex items-center gap-x-3">
-        <Button className="flex items-center gap-x-2"  onClick={onAddToCart}>
+      <div className="my-5 flex  items-center gap-x-3 w-full gap-y-2">
+        <Button
+          className=" bg-[#3D1D1D] flex items-center gap-x-2 w-full hover:bg-[#502a2a]"
+          onClick={onAddToCart}
+        >
           Add to Cart <ShoppingCart />
         </Button>
-        <Button className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-700 razorpay-affordability-widget" onClick={onPurchased}>
+        <Button
+          className="bg-transparent border text-[#3D1D1D] hover:bg-[#3d202000] hover:text-black px-4 py-2 rounded-lg w-full  "
+          onClick={onPurchased}
+        >
           Buy It Now <WalletCards />
         </Button>
       </div>
+      <GreeneryBanner />
+
+      {showDescription && (
+        <Accordion
+          type="single"
+          defaultValue="description"
+          className="mt-6 w-full"
+        >
+          <AccordionItem value="description">
+            <AccordionTrigger className="flex w-full items-center justify-between py-4 font-medium text-gray-900">
+              Description
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-700">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus
+              enim officiis quia ad est distinctio eaque nam maiores quam,
+              suscipit consequatur at nemo, architecto illum sit repudiandae
+              dolorem, reiciendis laborum nostrum incidunt? Laborum eius nostrum
+              possimus distinctio saepe fugit harum illo quos ab fuga . Saepe,
+              nisi? Inventore, corporis adipisci. Animi?
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="benefits">
+            <AccordionTrigger className="flex w-full items-center justify-between py-4 font-medium text-gray-900">
+              Benefits
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-700">
+              <ul className="list-disc pl-5">
+                <li>High-quality materials for durability</li>
+                <li>Ergonomic design for comfort</li>
+                <li>Eco-friendly and sustainable</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="specifications">
+            <AccordionTrigger className="flex w-full items-center justify-between py-4 font-medium text-gray-900">
+              Specifications
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-700">
+              <ul className="list-disc pl-5">
+                <li>Material: 100% Cotton</li>
+                <li>Dimensions: 30 x 20 x 10 cm</li>
+                <li>Weight: 500 grams</li>
+                <li>Color Options: Red, Blue, Green</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="reviews">
+            <AccordionTrigger className="flex w-full items-center justify-between py-4 font-medium text-gray-900">
+              Reviews
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-700">
+              <div>
+                <p className="font-semibold">John Doe:</p>
+                <p>"Great product! Highly recommend."</p>
+                <p className="font-semibold">Jane Smith:</p>
+                <p>"Good quality and fast shipping."</p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="nutrition-info">
+            <AccordionTrigger className="flex w-full items-center justify-between py-4 font-medium text-gray-900">
+              Nutrition Info
+            </AccordionTrigger>
+            <AccordionContent className="text-gray-700">
+              <ul className="list-disc pl-5">
+                <li>Calories: 200</li>
+                <li>Protein: 10g</li>
+                <li>Fat: 5g</li>
+                <li>Carbohydrates: 30g</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )}
+      <Button
+        className=" bg-[#3D1D1D] flex items-center gap-x-2 w-full hover:bg-[#502a2a]"
+        onClick={onAddToCart}
+      >
+        Add to Cart <ShoppingCart />
+      </Button>
     </div>
   );
 };

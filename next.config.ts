@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
     domains: [
       "res.cloudinary.com",
       "www.shreemithai.com",
+      "cdn-icons-png.freepik.com",
+      "img.freepik.com",
       "cloud.appwrite.io"
     ]
     

@@ -25,7 +25,7 @@ const CartPage = () => {
               {cart.items.length === 0 && (
                 <p className="text-neutral-500">No items added to cart</p>
               )}
-              <ul>
+              <ul >
                 {cart.items.map((item) => (
                   <CartItem data={item} key={item.id} />
                 ))}

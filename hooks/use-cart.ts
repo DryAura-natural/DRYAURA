@@ -7,6 +7,7 @@ interface CartStore {
   items: (Product & { quantity: number })[]; // Add quantity to the Product type
   addItem: (data: Product) => void;
   incrementItem: (id: string) => void;
+  decrementItem: (id: string) => void;
   removeItem: (id: string) => void;
   removeAll: () => void;
 }
@@ -20,36 +21,45 @@ const useCart = create<CartStore>()(
         const existingItem = currentItems.find((item) => item.id === data.id);
 
         if (existingItem) {
-          return toast("Item already in cart", { icon: "🫠" });
+          toast("Item already in cart", { icon: "🫠" });
+          return;
         }
 
         set({ items: [...currentItems, { ...data, quantity: 1 }] }); // Initialize with quantity 1
         toast.success("Item added to cart", { icon: "👏" });
       },
       incrementItem: (id: string) => {
-        set({
-          items: get().items.map((item) =>
-            item.id === id && item.quantity < 5
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          ),
+        set((state) => {
+          const item = state.items.find((item) => item.id === id);
+          if (item && item.quantity < 5) {
+            const updatedItems = state.items.map((item) =>
+              item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+            );
+            toast.success("Item quantity incremented", { icon: "👍" });
+            return { items: updatedItems };
+          }
+          return state; // No change if item not found or quantity is max
         });
-        toast.success("Item quantity incremented", { icon: "👍" });
       },
       decrementItem: (id: string) => {
-        set({
-          items: get().items.map((item) =>
-            item.id === id && item.quantity > 1
-              ? { ...item, quantity: item.quantity - 1 }
-              : item
-          ),
+        set((state) => {
+          const item = state.items.find((item) => item.id === id);
+          if (item && item.quantity > 1) {
+            const updatedItems = state.items.map((item) =>
+              item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+            );
+            toast.success("Item quantity decremented", { icon: "😴" });
+            return { items: updatedItems };
+          }
+          return state; // No change if item not found or quantity is min
         });
-        toast.success("Item quantity decremented", { icon: "😴" });
       },
-      
       removeItem: (id: string) => {
-        set({ items: get().items.filter((item) => item.id !== id) });
-        toast.success("Item removed from cart", { icon: "😜" });
+        set((state) => {
+          const updatedItems = state.items.filter((item) => item.id !== id);
+          toast.success("Item removed from cart", { icon: "😜" });
+          return { items: updatedItems };
+        });
       },
       removeAll: () => {
         set({ items: [] });
