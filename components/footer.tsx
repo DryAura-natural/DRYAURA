@@ -2,7 +2,6 @@
 
 "use client";
 
-
 import { Mails } from "lucide-react";
 import Input from "@/components/ui/Input";
 
@@ -55,71 +54,8 @@ const Footer = () => {
 
   return (
     <>
-      {/* <div className="w-auto h-auto text-gray-100">
-        <div
-          style={{
-            backgroundImage: `url("https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9cc150025f5a63c5c/view?project=67a96cd2001e32766970&mode=admin")`,
-          }}
-          className="relative bg-cover bg-center bg-no-repeat md:aspect-[2.4/1]"
-        >
-          <div className="h-full w-full flex flex-col justify-center items-center text-center bg-black bg-opacity-80 py-10 sm:py-5">
-            <div className="mb-2">
-              <Image
-                src="https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9d16d0027ce92d6a9/view?project=67a96cd2001e32766970&mode=admin"
-                width={150}
-                height={100}
-                alt="DryAura Logo"
-              />
-            </div>
-            <div className="max-w-2xl font-thin text-center tracking-wider text-xl mt-5">
-              <p>
-                "At DRYAURA, we source only the best dry fruits, handpicked for
-                their freshness and superior quality. Experience the perfect
-                blend of taste, health, and sustainability in every bite!"
-              </p>
-            </div>
-            <div className="max-w-xs font-extralight text-center my-8">
-              <h1 className="font-semibold text-lg">STORE</h1>
-              <p>
-                Dunsmuir Ave, Los Angeles, CA 90036, USA Atkins Ave, Brooklyn,
-                NY 11208, USA
-              </p>
-            </div>
-            <div className="max-w-xs font-extralight text-center">
-              <h1 className="font-semibold text-lg uppercase">
-                News As Fresh As Our
-              </h1>
-              <div className="border border-white flex my-2 rounded-md overflow-hidden">
-                <Input
-                  type="email"
-                  placeholder="Your email address"
-                  className="p-2 bg-transparent text-white placeholder-gray-400"
-                  value={email}
-                  onChange={handleEmailChange}
-                />
-                <button
-                  onClick={handleEmailSubmit}
-                  disabled={isSubmitting}
-                  className={`px-5 py-3 border justify-center transition-colors duration-300 ${isSubmitting ? 'bg-gray-400' : 'bg-white hover:bg-gray-200'}`}
-                >
-                  {isSubmitting ? (
-                    <span className="loader"></span> // You can replace this with a spinner component
-                  ) : (
-                    <Mails color="black" />
-                  )}
-                </button>
-              </div>
-              {submitStatus && (
-                <div className={`mt-2 ${submitStatus.includes("successful") ? "text-green-500" : "text-red-500"}`}>
-                  {submitStatus}
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div> */}
-           <footer className="w-full text-white mt-auto relative rounded-t-3xl bg-gradient-to-r from-[#3a1b1b] to-[#512828]">
-       <div className="max-w-7xl mx-auto px-4 py-8 ">
+           <footer className="w-full text-white mt-auto relative rounded-t-3xl bg-gradient-to-r from-[#3a1b1b] to-[#512828] pt-12 pb-8">
+       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
            {/* Left Side - Logo and Contact Info */}
            <div className="space-y-6">
@@ -161,19 +97,19 @@ const Footer = () => {
                <h3 className="text-lg font-medium">
                  Subscribe to our newsletter for updates and special offers!
                </h3>
-               <div className="flex gap-2 ">
+               <div className="flex gap-2 flex-col sm:flex-row">
                  <input
                    type="email"
                    placeholder="Enter Your Email"
-                   className="bg-transparent border-white border-2 text-black px-2 placeholder:text-gray-400 outline-none text-white"
+                   className="bg-transparent border-white border-2 text-white px-4 py-2 placeholder:text-gray-400 outline-none w-full sm:w-auto"
                  />
-                 <button className="bg-white text-black hover:bg-gray-200 whitespace-nowrap px-6 py-2 rounded">
+                 <button className="bg-white text-black hover:bg-gray-200 whitespace-nowrap px-6 py-2 rounded transition-colors duration-200">
                    SUBSCRIBE
                  </button>
                </div>
              </div>
 
-             <div className="flex items-center justify-end gap-4">
+             <div className="flex items-center justify-end gap-4 mt-6">
                <div className="text-right font-semibold">
                  <p className="text-sm text-gray-300">FSSAI License No. - 10016051001876</p>
                  <p className="text-sm text-gray-300">FSSAI License No. - 10017061000315</p>
@@ -183,9 +119,9 @@ const Footer = () => {
            </div>
          </div>
        </div>
-       <div className="bg-gradient-to-r from-[#3a1b1b] to-[#512828] text-white border-t-2 border-white/20">
+       <div className="bg-gradient-to-r from-[#3a1b1b] to-[#512828] text-white border-t-2 border-white/20 mt-8">
         <div className="max-w-screen mx-auto px-4 py-5">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-y-2">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-y-4">
             {/* Quick Links */}
             <div className="mb-6 md:mb-0">
               <ul className="flex space-x-6">
@@ -252,7 +188,7 @@ const Footer = () => {
               </a>
             </div>
             <h3 className="font-sans text-sm">
-              © 2025 DRYAURA. All rights reserved.
+              2025 DRYAURA. All rights reserved.
             </h3>
           </div>
         </div>
@@ -265,5 +201,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
