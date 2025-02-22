@@ -97,7 +97,7 @@ const Footer = () => {
                <h3 className="text-lg font-medium">
                  Subscribe to our newsletter for updates and special offers!
                </h3>
-               <div className="flex gap-2 flex-col sm:flex-row">
+               <div className="flex items-center gap-2 flex-col sm:flex-row flex-wrap">
                  <input
                    type="email"
                    placeholder="Enter Your Email"
