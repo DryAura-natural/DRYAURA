@@ -12,9 +12,10 @@ interface Category {
   link: string;
 }
 
+
 const CategoryCard: React.FC = () => {
   return (
-    <div className="flex overflow-x-auto hide-scrollbar space-x-4 z-50 scroll-smooth p-10 justify-center">
+    <div className="flex overflow-x-auto hide-scrollbar space-x-4 scroll-smooth py-10 lg:justify-center w-full">
       {categories.map((category, index) => (
         <Link key={index} href={category.link} passHref>
           <motion.div
@@ -35,7 +36,7 @@ const CategoryCard: React.FC = () => {
                     alt={category.name}
                     width={200}
                     height={200}
-                    className="object-cover rounded-lg transition-transform duration-300 hover:animate-flip"
+                    className="object-cover rounded-lg transition-transform duration-300 hover:animate-flip hover:scale-110"
                   />
                 </motion.div>
               </div>

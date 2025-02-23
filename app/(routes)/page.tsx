@@ -14,6 +14,7 @@ import Poster from "@/components/poster";
 import ProductList from "@/components/product-list";
 import ShopByPurpose from "@/components/ShopByPurpose";
 import CategoryCard from "@/components/ui/CategoryCard";
+// import CategoryDisplay from "@/components/ui/CategoryDisplay";
 import { Container } from "@/components/ui/container";
 import PremiumNutsBanner from "@/components/ui/NutsBanner";
 import OfferCarousel from "@/components/ui/offerCrousel";
@@ -83,7 +84,7 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
         <div className="  ">
           {/* <VideoBillboard/> */}
           <HeroSection />
-          <div className="">
+          <div className="w-full">
             <CategoryCard />
           </div>
 
@@ -119,8 +120,10 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
             <ComboProduct title="Combos Products" items={products} />
           </div>
           <div className="">
-            {/* <ImageCarousel /> */}
+            <ImageCarousel />
+            
           </div>
+        
           <div className=" max-w-full">
             <DryfruitPhoto />
           </div>

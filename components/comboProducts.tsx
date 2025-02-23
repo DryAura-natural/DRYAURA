@@ -142,7 +142,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
     >
       <h3
         id="product-list-heading"
-        className={`${inter.className} text-3xl md:text-4xl font-semibold tracking-tight text-gray-900`}
+        className={`${inter.className} text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mt-5`}
       >
         {title}
       </h3>

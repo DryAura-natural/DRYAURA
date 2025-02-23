@@ -84,13 +84,11 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
       role="article"
     >
       <div className="flex justify-between">
-        <Badge variant="outline" className="bg-green-900 text-white z-20">80% off</Badge>
-        <Badge variant="outline" className="bg-red-500 text-white z-20">sale</Badge>
+        <Badge variant="outline" className="bg-green-900 text-white z-10">80% off</Badge>
+        <Badge variant="outline" className="bg-red-500 text-white z-10">sale</Badge>
       </div>
       <div
-        className={`aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out ${
-          isHovered ? "scale-105" : "scale-100"
-        }`}
+        className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-105"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         aria-label="Product image"
@@ -104,8 +102,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
           src={imageError ? "/placeholder.png" : (data?.images?.length ? data.images[imageIndex].url : "/placeholder.png")}
           fill
           onClick={handleClick}
-          className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out"
-          style={{ transform: isHovered ? "scale(1.1)" : "scale(1)" }}
+          className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110"
           onLoadingComplete={() => setImageLoaded(true)}
           onError={() => setImageError(true)}
           loading="lazy"
@@ -121,13 +118,11 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
             />
             <IconButton
               onClick={onAddToCart}
-              icon={
-                isAddingToCart ? (
-                  <Loader2 className="w-5 h-5 text-gray-600 animate-spin" />
-                ) : (
-                  <ShoppingCart size={20} className="text-gray-600" />
-                )
-              }
+              icon={isAddingToCart ? (
+                <Loader2 className="w-5 h-5 text-gray-600 animate-spin" />
+              ) : (
+                <ShoppingCart size={20} className="text-gray-600" />
+              )}
               aria-label="Add to cart"
             />
           </div>
@@ -141,9 +136,9 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
 
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <h3 className="font-semibold  py-2 truncate text-base md:text-lg">{data.name}...</h3>
+          <h3 className="font-semibold py-2 truncate text-base md:text-lg">{data.name}...</h3>
         </div>
-        <div className="font-light text-sm md:text-lg ">{data.description?.slice(0,50) || 'No description available'}...</div>
+        <div className="font-light text-sm md:text-lg">{data.description?.slice(0,50) || 'No description available'}...</div>
         <div className="flex items-center space-x-5 flex-wrap text-sm md:text-lg mb-2">
           MRP: <del className="text-red-500 font-semibold">1200</del>
           <span className="text-green-900"><Currency value={data?.price} /></span>

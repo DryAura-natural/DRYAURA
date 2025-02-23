@@ -1,11 +1,11 @@
-// components/CustomerForm.tsx
+// components/BillingForm.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { customerSchema, BillingInfo } from "@/utils/validation";
-import Input from "@/components/ui/Input";
+import  Input  from "@/components/ui/Input";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/Button";
 import stateList from "@/public/data/index";
@@ -74,7 +74,7 @@ const CustomerForm = ({ onSuccess }: CustomerFormProps) => {
     fetchUserData();
   }, [isLoaded, user, setValue]);
 
-  const onSubmits = async (data: BillingInfo) => {
+  const onSubmit = async (data: BillingInfo) => {
     if (!user) {
       toast.error("User not authenticated");
       return;
@@ -121,98 +121,106 @@ const CustomerForm = ({ onSuccess }: CustomerFormProps) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmits)}
-      className="space-y-6 p-6 bg-white rounded-lg shadow-lg animate-fadeIn"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-4 md:p-6 bg-white rounded-lg shadow-lg animate-fadeIn w-full max-w-2xl mx-auto">
       <div className="space-y-4">
-        {/* Name, Email, and Contact fields */}
-        <Input
-          label="Full Name"
-          {...register("name")}
-          defaultValue={existingUser?.name || user?.fullName || ""}
-          error={errors.name?.message}
-          className="w-full"
-        />
-        <Input
-          label="Email"
-          {...register("email")}
-          defaultValue={existingUser?.email || user?.primaryEmailAddress?.emailAddress || ""}
-          error={errors.email?.message}
-          className="w-full"
-        />
-        <Input
-          label="Contact"
-          {...register("phone")}
-          defaultValue={existingUser?.phone || ""}
-          error={errors.phone?.message}
-          className="w-full"
-        />
-
-        {/* Address Fields */}
-        <Input
-          label="Flat, House no., Building, Company, Apartment"
-          {...register("streetAddress")}
-          defaultValue={existingUser?.streetAddress || ""}
-          error={errors.streetAddress?.message}
-          className="w-full"
-        />
-        <Input
-          label="Area, Street, Sector, Village"
-          {...register("city")}
-          defaultValue={existingUser?.city || ""}
-          error={errors.city?.message}
-          className="w-full"
-        />
-        <Input
-          label="Landmark"
-          {...register("landmark")}
-          defaultValue={existingUser?.landmark || ""}
-          error={errors.landmark?.message}
-          className="w-full"
-        />
-        <Input
-          label="Pincode"
-          {...register("postalCode")}
-          defaultValue={existingUser?.postalCode || ""}
-          error={errors.postalCode?.message}
-          className="w-full"
-        />
-
-        <div className="flex flex-col md:flex-row md:space-x-2">
+        <div className="space-y-2">
+          <label htmlFor="name" className="text-sm font-medium text-gray-700">Full Name</label>
           <Input
-            label="Town/City"
+            id="name"
+            {...register("name")}
+            defaultValue={existingUser?.name || user?.fullName || ""}
+            error={errors.name?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="email" className="text-sm font-medium text-gray-700">Email</label>
+          <Input
+            id="email"
+            {...register("email")}
+            defaultValue={existingUser?.email || user?.primaryEmailAddress?.emailAddress || ""}
+            error={errors.email?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="phone" className="text-sm font-medium text-gray-700">Contact</label>
+          <Input
+            id="phone"
+            {...register("phone")}
+            defaultValue={existingUser?.phone || ""}
+            error={errors.phone?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="streetAddress" className="text-sm font-medium text-gray-700">Street Address</label>
+          <Input
+            id="streetAddress"
+            {...register("streetAddress")}
+            defaultValue={existingUser?.streetAddress || ""}
+            error={errors.streetAddress?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="city" className="text-sm font-medium text-gray-700">City</label>
+          <Input
+            id="city"
+            {...register("city")}
+            defaultValue={existingUser?.city || ""}
+            error={errors.city?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="landmark" className="text-sm font-medium text-gray-700">Landmark</label>
+          <Input
+            id="landmark"
+            {...register("landmark")}
+            defaultValue={existingUser?.landmark || ""}
+            error={errors.landmark?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="postalCode" className="text-sm font-medium text-gray-700">Postal Code</label>
+          <Input
+            id="postalCode"
+            {...register("postalCode")}
+            defaultValue={existingUser?.postalCode || ""}
+            error={errors.postalCode?.message}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="town" className="text-sm font-medium text-gray-700">Town/City</label>
+          <Input
+            id="town"
             {...register("town")}
             defaultValue={existingUser?.town || ""}
             error={errors.town?.message}
-            className="flex-1"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
           />
-
-          {/* State as a Select Dropdown */}
-          <div className="flex-1 space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
-              State
-            </label>
-            <select
-              {...register("state")}
-              defaultValue={existingUser?.state || ""}
-              className="block w-full mt-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 p-1.5"
-            >
-              <option value="">Select State</option>
-              {statesList.map((state, index) => (
-                <option key={index} value={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-            {errors.state && (
-              <p className="text-red-500 text-sm">{errors.state.message}</p>
-            )}
-          </div>
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="state" className="text-sm font-medium text-gray-700">State</label>
+          <select
+            id="state"
+            {...register("state")}
+            defaultValue={existingUser?.state || ""}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          >
+            <option value="">Select State</option>
+            {statesList.map((state, index) => (
+              <option key={index} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
-
-      <Button type="submit" className="w-full mb-4">
+      <Button type="submit" className="w-full bg-[#2D1515] py-2 rounded-md shadow-md transition-all hover:bg-[#3D1D1D] text-white">
         {existingUser ? "Update Details" : "Submit Details"}
       </Button>
     </form>

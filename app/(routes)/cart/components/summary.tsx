@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CustomerForm from "@/components/BillingForm";
+import BillingDialog from "@/components/BillingDialog";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
 import { useUser } from "@clerk/nextjs";
@@ -24,6 +24,13 @@ declare global {
   interface Window {
     Razorpay: any;
   }
+}
+
+interface SummaryProps {
+  cartItems: any[];
+  totalPrice: number;
+  isProcessing: boolean;
+  handlePayment: () => void;
 }
 
 const Summary = () => {
@@ -173,78 +180,44 @@ const Summary = () => {
 
       {/* Billing Information Section */}
       <div className="mt-6 mb-4">
-        <h5 className="text-xl font-semibold text-gray-900">
-          Billing Information
-        </h5>
+        <div className="mb-4">
+          <h5 className="text-xl font-semibold text-gray-900">
+            Billing Information
+          </h5>
+          <p className="text-sm text-gray-500">
+            Please review your billing information before proceeding with the
+            payment.
+          </p>
+        </div>
         <DeliveryAddress />
 
         {!userData && (
-          <p className="text-gray-500 flex justify-between">
-            No billing information {" "}
-              {/* <Dialog>
-          <div className="flex justify-end">
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                className=" text-orange-600 flex items-center gap-x-2 text-sm bg-white hover:bg-gray-50 border-gray-300 transition-transform transform hover:scale-105 active:scale-95"
-              >
-                <Edit size={16} className="text-gray-700 text-orange-600" />
-                Add Billing Information
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-screen-sm overflow-y-auto max-h-[90vh] animate-slideIn">
-              <DialogHeader>
-                <DialogTitle className="text-xl font-semibold animate-fadeIn">
-                  Add Billing Information
-                </DialogTitle>
-                <DialogDescription className="text-gray-600 animate-fadeIn">
-                  Add your your Billing Information here. Click save when you're
-                  done.
-                </DialogDescription>
-              </DialogHeader>
+          <>
+            <h5 className="text-xl font-semibold text-gray-900">
+              ADD BILLING INFORMATION
+            </h5>
+            <p className="text-sm text-gray-500">
+              Please add your billing information to proceed with the payment.
+            </p>
 
-              <CustomerForm />
-            </DialogContent>
-          </div>
-        </Dialog> */}
-         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-
-<DialogTrigger asChild>
-
-  <Button variant="outline">Open Customer Form</Button>
-
-</DialogTrigger>
-
-<DialogContent className="sm:max-w-[600px]">
-
-  <DialogHeader>
-
-    <DialogTitle>Customer Information</DialogTitle>
-
-  </DialogHeader>
-
-  <CustomerForm onSuccess={() => setIsOpen(false)} />
-
-</DialogContent>
-
-</Dialog>
-          </p>
+            <BillingDialog
+              title="Billing Information"
+              subtitle="Please enter your billing information to complete the order."
+              triggerLabel="Add Billing Information"
+              onSuccess={() => setIsBillingFormVisible(false)}
+            />
+          </>
         )}
-
-      
-
-        {/* {isBillingFormVisible && <CustomerForm />} */}
+        {!isBillingFormVisible && (
+          <Button
+            className="w-full bg-[#2D1515] py-2 rounded-md shadow-md transition-all hover:bg-[#3D1D1D] text-white mb-4"
+            onClick={handlePayment}
+            disabled={isProcessing}
+          >
+            {isProcessing ? "Processing..." : "Proceed to Payment"}
+          </Button>
+        )}
       </div>
-
-      {!isBillingFormVisible && (
-        <Button
-          className="w-full bg-[#2D1515] py-2 rounded-md shadow-md transition-all hover:bg-[#3D1D1D]"
-          onClick={handlePayment}
-          disabled={isProcessing}
-        >
-          {isProcessing ? "Processing..." : "Proceed to Payment"}
-        </Button>
-      )}
     </div>
   );
 };

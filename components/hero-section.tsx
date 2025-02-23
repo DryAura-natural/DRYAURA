@@ -124,7 +124,7 @@ export function HeroSection() {
                       {slide.description}
                     </p>
                     <Button
-                      className="mt-8 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full transform transition-transform duration-300 hover:scale-105"
+                      className="mt-8 bg-[#800020] hover:bg-orange-700 text-white px-8 py-4 rounded-full transform transition-transform duration-300 hover:scale-105"
                       onClick={() => window.location.href = '/shop'}
                     >
                      <ShoppingCart  className="w-4 h-4 text-white" /> Shop Now

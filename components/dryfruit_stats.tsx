@@ -99,7 +99,7 @@ const DryFruitStats = () => {
       </motion.h2>
     
       <motion.div
-        className="flex overflow-x-scroll gap-6 px-4 py-4 hide-scrollbar snap-x snap-mandatory md:items-center md:gap-4 md:px-2 w-full"
+        className="flex overflow-x-scroll overflow-y-hidden gap-6 px-4 py-4 hide-scrollbar snap-x snap-mandatory md:items-center md:gap-4 md:px-2 w-full"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
