@@ -1,95 +1,185 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
+import { useState, useRef, MouseEvent, TouchEvent, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
-const images = [
-  "https://img.freepik.com/free-psd/brunch-concept-voucher-template_23-2148465807.jpg?t=st=1739700719~exp=1739704319~hmac=bdb5e2a14773c336b448b6a2e3e36f17eb73601cdefd3b5c0d2a273f143615e3&w=1380",
-  "https://img.freepik.com/free-psd/restaurant-voucher-template_23-2148466841.jpg?t=st=1739700733~exp=1739704333~hmac=69f4f7dad134a1695df6591a1c19cb3eb9e6c847cce1c0786d0b8bfbede4c23f&w=1380",
-  "https://img.freepik.com/free-psd/music-festival-landing-page-template-design_23-2149421241.jpg?t=st=1739700750~exp=1739704350~hmac=f80a1ff2092d9ea3bfb84ffa3f1d51befc386ae5bdeef2a219de26a20970b624&w=1380",
-  "https://img.freepik.com/free-psd/music-festival-landing-page-template-design_23-2149421241.jpg?t=st=1739700750~exp=1739704350~hmac=f80a1ff2092d9ea3bfb84ffa3f1d51befc386ae5bdeef2a219de26a20970b624&w=1380",
+const slides = [
+  {
+    src: "https://img.freepik.com/free-psd/lohri-festival-celebration-template_23-2151895065.jpg?t=st=1740540899~exp=1740544499~hmac=6fedfdb1339c4c6e167c074d3431e18fbf34475cb9750c157f9df1e7af849aec&w=1060",
+    alt: "Slide 1",
+    shadowColor: "#997523",
+  },
+  {
+    src: "https://img.freepik.com/free-vector/healthy-restaurant-square-flyer-template_23-2148899793.jpg?t=st=1740540937~exp=1740544537~hmac=445591647ae5776abcccf9e92c20d62c33faac8e6305e31942765b0d3e153c42&w=900",
+    alt: "Slide 2",
+    shadowColor: "#653622",
+  },
+  {
+    src: "https://img.freepik.com/free-psd/ramadan-kareem-social-media-post-template-design_505751-3592.jpg?t=st=1740540978~exp=1740544578~hmac=3834b5faf27b9ac7c19b32d7f326bd92524a3c43c86e866d10922d3242ea7a97&w=900",
+    alt: "Slide 3",
+    shadowColor: "#99521C",
+  },
+  {
+    src: "https://img.freepik.com/free-vector/bio-healthy-food-squared-flyer-template_23-2148865340.jpg?t=st=1740541029~exp=1740544629~hmac=eb21e68be989062800ef60d372fed3a5464bc3be14040a3f2d3bdd4ac16b47ff&w=900",
+    alt: "Slide 4",
+    shadowColor: "#59301E",
+  },
 ];
 
-export default function OfferCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0); // Start with the first image
+export const OfferCarousel = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const dragDistance = useRef(0);
 
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  }, []);
+  const handleDragStart = (clientX: number) => {
+    setIsDragging(true);
+    dragStartX.current = clientX;
+  };
 
-  const prevSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-  }, []);
+  const handleDragMove = (clientX: number) => {
+    if (isDragging) {
+      dragDistance.current = clientX - dragStartX.current;
+    }
+  };
+
+  const handleDragEnd = () => {
+    if (isDragging) {
+      setIsDragging(false);
+
+      if (Math.abs(dragDistance.current) > 50) {
+        if (dragDistance.current > 0) {
+          setCurrentIndex((prev) =>
+            prev === 0 ? slides.length - 1 : prev - 1
+          );
+        } else {
+          setCurrentIndex((prev) =>
+            prev === slides.length - 1 ? 0 : prev + 1
+          );
+        }
+      }
+      dragDistance.current = 0;
+    }
+  };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 6000); // Auto-slide every 6 seconds
-    return () => clearInterval(interval);
-  }, []);
+    if (!isDragging) {
+      const timer = setInterval(() => {
+        setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+      }, 3000);
+
+      return () => clearInterval(timer);
+    }
+  }, [isDragging]);
+
+  const handleMouseDown = (e: MouseEvent) => {
+    handleDragStart(e.clientX);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    handleDragMove(e.clientX);
+  };
+
+  const handleMouseUp = () => {
+    handleDragEnd();
+  };
+
+  const handleTouchStart = (e: TouchEvent) => {
+    handleDragStart(e.touches[0].clientX);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    handleDragMove(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    handleDragEnd();
+  };
+
+  const getSlideIndex = (offset: number) => {
+    let index = currentIndex + offset;
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    return index;
+  };
+
+  const getShadowColor = (index: number) => {
+    return slides[index].shadowColor;
+  };
 
   return (
-    <>
-      <h1 className="text-2xl md:text-4xl font-bold text-center text-gray-800 mb-2">
-        Premium Nutty Deals Await!
-      </h1>
-      <p className="text-lg text-center text-gray-600 mb-8">
-        Treat yourself to the finest selection of nutty delights at unbeatable prices!
-      </p>
+    <div className="relative w-full max-w-[1200px] h-[500px] mx-auto overflow-hidden">
+      
+      <div
+        className="relative w-full h-full flex items-center justify-center "
 
-      <div className="relative w-full mx-auto px-5 md:p-20 overflow-hidden">
-        <div className="flex justify-center items-center transition-all duration-700 ease-in-out">
-          {/* Previous Image */}
-          <div className="flex-shrink-0 relative w-1/3 h-64 md:h-80 mx-2 transition-all duration-700 ease-in-out">
-            <Image
-              src={images[(currentIndex - 1 + images.length) % images.length]} // Previous image
-              alt="Previous Slide"
-              fill
-              className="object-cover rounded-lg scale-90 opacity-50 blur-sm"
-            />
-          </div>
-
-          {/* Current Image */}
-          <div className="flex-shrink-0 relative w-5/6 lg:w-1/3  h-52 md:h-80 mx-2 transition-all duration-700 ease-in-out">
-            <Image
-              src={images[currentIndex]}
-              alt="Current Slide"
-              fill
-              priority
-              className="object-cover rounded-lg scale-125 opacity-100 shadow-xl shadow-orange-400/50 transition-all duration-500"
-            />
-          </div>
-
-          {/* Next Image */}
-          <div className="flex-shrink-0 relative w-1/3 h-64 md:h-80 mx-2 transition-all duration-700 ease-in-out">
-            <Image
-              src={images[(currentIndex + 1) % images.length]} // Next image
-              alt="Next Slide"
-              fill
-              className="object-cover rounded-lg scale-90 opacity-50 blur-sm"
-            />
-          </div>
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        style={{ cursor: isDragging ? "grabbing" : "grab" }}
+      >
+        <h1 className="text-2xl md:text-3xl text-center font-bold -mt-96">Nutty Delight Offers </h1>
+        {/* Previous Slide */}
+        <div
+          className={cn(
+            "absolute w-[70%] h-[60%] transition-all duration-500 ease-in-out select-none rounded-lg",
+            "-translate-x-[85%] opacity-50 scale-75"
+          )}
+        >
+          <img
+            src={slides[getSlideIndex(-1)].src}
+            alt={slides[getSlideIndex(-1)].alt}
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter "
+            style={{
+              boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(-1))}`,
+            }}
+            loading="lazy"
+            draggable="false"
+          />
         </div>
 
-        <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {images.map((_, i) => (
-            <div
-              key={i}
-              className={`h-1.5 w-1.5 rounded-full transition-all duration-300 ${i === currentIndex ? 'bg-orange-500 scale-125' : 'bg-gray-300'}`}
-            />
-          ))}
+        {/* Current Slide */}
+        <div
+          className={cn(
+            "absolute w-[70%] h-[55%] transition-all duration-300 ease-in-out select-none z-10",
+            isDragging ? "transition-none" : ""
+          )}
+          style={{
+            transform: `translateX(${dragDistance.current}px) scale(1.1)`,
+          }}
+        >
+          <img
+            src={slides[currentIndex].src}
+            alt={slides[currentIndex].alt}
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter ]"
+            style={{ boxShadow: `0 10px 20px ${getShadowColor(currentIndex)}` }}
+            loading="lazy"
+            draggable="false"
+          />
         </div>
 
-        <button
-          onClick={prevSlide}
-          className="absolute left-5 md:left-10 top-1/2 transform -translate-y-1/2 bg-orange-500 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 hover:bg-orange-600 shadow-lg"
+        {/* Next Slide */}
+        <div
+          className={cn(
+            "absolute w-[70%] h-[60%] transition-all duration-500 ease-in-out select-none",
+            "translate-x-[85%] opacity-50 scale-75"
+          )}
         >
-          &lt;
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-5 md:right-10 top-1/2 transform -translate-y-1/2 bg-orange-500 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 hover:bg-orange-600 shadow-lg"
-        >
-          &gt;
-        </button>
+          <img
+            src={slides[getSlideIndex(1)].src}
+            alt={slides[getSlideIndex(1)].alt}
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter drop-shadow-[0_10px_20px_rgba(255,105,180,0.5)] drop-shadow-[0_10px_20px_rgba(255,0,0,0.5)]"
+            style={{
+              boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(1))}`,
+            }}
+            loading="lazy"
+            draggable="false"
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
-}
+};

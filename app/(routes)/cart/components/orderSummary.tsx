@@ -2,7 +2,6 @@ import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
-import CustomToast from "@/components/CustomToast";
 import toast from "react-hot-toast";
 
 const OrderSummary = () => {
@@ -51,7 +50,7 @@ const OrderSummary = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-3 p-4 bg-white rounded-xl shadow-xl"
+      className="space-y-3 p-2 bg-white rounded-xl shadow-xl w-full"
     >
       <h2 className="text-xl font-bold text-gray-900 mb-4">Your Order Details</h2>
 

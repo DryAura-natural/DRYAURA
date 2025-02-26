@@ -30,9 +30,10 @@ interface InfoProps {
   showSpecifications?: boolean;
   showReviews?: boolean;
   showNutritionInfo?: boolean;
+  showShowBanner?: boolean;
 }
 
-const Info: React.FC<InfoProps> = ({ data, showDescription = true }) => {
+const Info: React.FC<InfoProps> = ({ data, showDescription = true, showShowBanner = true }) => {
   const [quantity, setQuantity] = useState(1);
   const cart = useCart();
   const router = useRouter();
@@ -68,7 +69,7 @@ const Info: React.FC<InfoProps> = ({ data, showDescription = true }) => {
   };
 
   return (
-    <div className="h-screen overflow-scroll hide-scrollbar">
+    <div className="overflow-scroll hide-scrollbar">
       <h1 className="text-2xl md:text-3xl font-bold text-gray-900 hidden md:block ">
         {data.name}
       </h1>
@@ -153,9 +154,10 @@ const Info: React.FC<InfoProps> = ({ data, showDescription = true }) => {
       </div>
       
 
+      {showShowBanner && <GreeneryBanner />}
       {showDescription && (
         <>
-        <GreeneryBanner />
+       
         <Accordion
           type="single"
           defaultValue="description"
@@ -204,12 +206,7 @@ const Info: React.FC<InfoProps> = ({ data, showDescription = true }) => {
         </Accordion>
         </>
       )}
-      {/* <Button
-        className="bg-[#3D1D1D] flex items-center gap-x-2 w-full hover:bg-[#502a2a] text-white"
-        onClick={onAddToCart}
-      >
-        Add to Cart <ShoppingCart />
-      </Button> */}
+
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { MouseEventHandler, useState, useEffect, memo } from "react";
 import usePreviewModal from "@/hooks/use-preview-model";
 import useCart from "@/hooks/use-cart";
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
 import getProduct from "@/actions/get-product";
 import GifLoader from "./one-loder";
 
@@ -79,13 +79,17 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
   return (
     <article
       onClick={handleClick}
-      className="bg-white group cursor-pointer rounded-xl p-2 border hover:shadow-lg aspect-auto relative"
+      className="bg-white group cursor-pointer rounded-xl p-2 border  border-black/10 hover:shadow-lg aspect-auto relative"
       aria-label={`Product: ${data.name}`}
       role="article"
     >
       <div className="flex justify-between">
-        <Badge variant="outline" className="bg-green-900 text-white z-10">80% off</Badge>
-        <Badge variant="outline" className="bg-red-500 text-white z-10">sale</Badge>
+        <Badge variant="outline" className="bg-green-900 text-white z-10 left-0">
+          80% off
+        </Badge>
+        <Badge variant="outline" className="bg-red-500 text-white z-10">
+          sale
+        </Badge>
       </div>
       <div
         className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-105"
@@ -99,7 +103,13 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
 
         <Image
           alt={data.name}
-          src={imageError ? "/placeholder.png" : (data?.images?.length ? data.images[imageIndex].url : "/placeholder.png")}
+          src={
+            imageError
+              ? "/placeholder.png"
+              : data?.images?.length
+              ? data.images[imageIndex].url
+              : "/placeholder.png"
+          }
           fill
           onClick={handleClick}
           className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110"
@@ -118,11 +128,13 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
             />
             <IconButton
               onClick={onAddToCart}
-              icon={isAddingToCart ? (
-                <Loader2 className="w-5 h-5 text-gray-600 animate-spin" />
-              ) : (
-                <ShoppingCart size={20} className="text-gray-600" />
-              )}
+              icon={
+                isAddingToCart ? (
+                  <Loader2 className="w-5 h-5 text-gray-600 animate-spin" />
+                ) : (
+                  <ShoppingCart size={20} className="text-gray-600" />
+                )
+              }
               aria-label="Add to cart"
             />
           </div>
@@ -136,15 +148,20 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
 
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <h3 className="font-semibold py-2 truncate text-base md:text-lg">{data.name}...</h3>
+          <h3 className="text-sm capitalize  text-balance">
+            {data.name?.slice(0, 40) || ''}...
+          </h3>
         </div>
-        <div className="font-light text-sm md:text-lg">{data.description?.slice(0,50) || 'No description available'}...</div>
-        <div className="flex items-center space-x-5 flex-wrap text-sm md:text-lg mb-2">
-          MRP: <del className="text-red-500 font-semibold">1200</del>
-          <span className="text-green-900"><Currency value={data?.price} /></span>
-          <span className="text-sm">(incl. of all taxes)</span>
+        {/* <div className="text-xs text-gray-500">{data.description?.slice(0,50) || 'No description available'}...</div> */}
+        <div className="flex items-center space-x-2 flex-wrap text-xs md:text-sm mb-2">
+          MRP: <del className="text-red-500 font-light"><Currency value={1200} /></del>
+          <span className="text-green-900 font-bold">
+            <Currency value={data?.price} />
+          </span>
+          <br />
+          <span className="text-xs flex">(₹/100g)</span>
         </div>
-        <div className="bg-[#3D1D1D] text-white p-2 rounded-lg text-center hover:bg-opacity-90 transition-colors">
+        <div className="bg-[#3D1D1D] text-white p-2 rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs">
           Add To Cart
         </div>
       </div>

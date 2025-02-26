@@ -10,14 +10,14 @@ export const categories: Category[] = [
  
   {
     id: '1',
-    background: "bg-[#E6B67E]",
+    background: "bg-[#126782]",
     name: "Cashews",
     hoverImageUrl: "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b5f9cd0010a01ed07b/view?project=67a96cd2001e32766970&mode=admin",
     link: "/Cashews", // Add a link for navigation
   },
   {
     id: '2',
-    background: "bg-[#F9C14C]",
+    background: "bg-[#ad7f57]",
     name: "Raisins",
     hoverImageUrl: "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b5f9d500167eb39747/view?project=67a96cd2001e32766970&mode=admin",
     link: "/raisins", // Add a link for navigation
@@ -31,14 +31,14 @@ export const categories: Category[] = [
   },
   {
     id: '4',
-    background: "bg-[#737233]",
+    background: "bg-[#916a5e]",
     name: "Almond",
     hoverImageUrl: "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b4bec1002350e98a2d/view?project=67a96cd2001e32766970&mode=admin",
     link: "/almond", // Add a link for navigation
   },
   {
     id: '5',
-    background: "bg-[#814F1D]",
+    background: "bg-[#841e3e]",
     name: "Walnuts",
     hoverImageUrl: "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b5f9e7001ff28737da/view?project=67a96cd2001e32766970&mode=admin",
     link: "/walnuts", // Add a link for navigation

@@ -17,7 +17,9 @@ import CategoryCard from "@/components/ui/CategoryCard";
 // import CategoryDisplay from "@/components/ui/CategoryDisplay";
 import { Container } from "@/components/ui/container";
 import PremiumNutsBanner from "@/components/ui/NutsBanner";
-import OfferCarousel from "@/components/ui/offerCrousel";
+import { OfferCarousel } from "@/components/ui/offerCrousel";
+
+import VideoPlayer from "@/components/ui/VideoPlayer";
 
 export const revalidate = 0;
 
@@ -83,16 +85,18 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
       <Container>
         <div className="  ">
           {/* <VideoBillboard/> */}
-          <HeroSection />
-          <div className="w-full">
+          <div className="flex flex-col lg:flex-col-reverse">
             <CategoryCard />
+
+            <HeroSection />
           </div>
 
-          <div className="flex flex-col gap-y-8 px-1 sm:px-6 lg:px-8">
-            <ProductList title="Featured Products" items={products} />
+          <div className="flex flex-col gap-y-8 px-1 sm:px-6 lg:px-8 py-5">
+            <ProductList title="Top selling Products" items={products} />
           </div>
-          <div className="py-10">
-            <OfferCarousel />
+          <div className="">
+            {/* <OfferCarousel /> */}
+            <OfferCarousel/>
           </div>
 
           {/* <div className="py-10">
@@ -101,7 +105,7 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
           <div className="max-h-full  pb-5 md:px-5 px-2">
             <DryFruitStats />
           </div>
-
+          {/* <VideoPlayer/> */}
           {/* <div className="max-h-full p-10">
             <BannerCrusel />
           </div> */}
@@ -121,9 +125,8 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
           </div>
           <div className="">
             <ImageCarousel />
-            
           </div>
-        
+
           <div className=" max-w-full">
             <DryfruitPhoto />
           </div>

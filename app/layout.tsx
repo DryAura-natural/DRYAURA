@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Geist, Geist_Mono, Urbanist } from "next/font/google";
+import { Anton, Geist, Geist_Mono, Urbanist, Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/react";
@@ -12,6 +12,12 @@ import GifLoader from "@/components/ui/one-loder"; // First-time Loader
 import VideoLoader from "@/components/ui/global-loader"; // Page Transition Loader
 
 const geistSans = Geist({ subsets: ["latin"] });
+const poppins = Poppins({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-poppins',
+});
 
 export const metadata: Metadata = {
   title: "Dry Aura - Premium Dry Fruits & Immunity Boosters",
@@ -20,14 +26,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className={`${geistSans.className} ${poppins.variable}`}>
         <head>
+      
           {/* ✅ Basic Meta Tags */}
           <meta charSet="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,11 +66,11 @@ export default function RootLayout({
 
           {/* ✅ Favicon & PWA Support */}
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png"/>
-          <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-          <link rel="manifest" href="/site.webmanifest" />
+          {/* <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+          <link rel="manifest" href="/site.webmanifest" /> */}
         </head>
 
-        <body className={`${geistSans.className} antialiased`}>
+        <body className={`antialiased`}>
           <ModelProvider />
           <ToastProvider />
           <SiteHeader />

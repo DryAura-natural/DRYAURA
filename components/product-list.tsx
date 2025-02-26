@@ -71,7 +71,7 @@ const ProductList: React.FC<ProductListProps> = ({ title, items, isLoading, erro
 
   return (
     <section aria-labelledby="product-list-heading" className="space-y-4 relative">
-      <h3 id="product-list-heading" className={`${inter.className} text-3xl md:text-4xl font-semibold tracking-tight text-gray-900`}>{title}</h3>
+      <h3 id="product-list-heading" className={`${inter.className} text-xl md:text-4xl text-center font-bold tracking-normal text-gray-900 `}>{title}</h3>
       {items.length === 0 && <NoResult />}
       <div className="relative">
         {showScrollButtons && (
@@ -101,7 +101,7 @@ const ProductList: React.FC<ProductListProps> = ({ title, items, isLoading, erro
           <motion.div
             ref={containerRef}
             role="list"
-            className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-4 md:gap-4 md:p-4 overflow-x-hidden scroll-smooth flex-wrap"
+            className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-2 md:gap-4 md:p-4 overflow-x-hidden scroll-smooth flex-wrap p-2"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"

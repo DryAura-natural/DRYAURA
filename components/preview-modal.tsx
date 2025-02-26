@@ -21,7 +21,7 @@ const PreviewModel = () => {
 
             </div>
             <div className="sm:col-span-8 lg:col-span-7">
-                  <Info data={product}showDescription={false}/>
+                  <Info data={product}showDescription={false} showShowBanner={false}/>
                   
 
             </div>

@@ -15,7 +15,7 @@ interface Category {
 
 const CategoryCard: React.FC = () => {
   return (
-    <div className="flex overflow-x-auto hide-scrollbar space-x-4 scroll-smooth py-10 lg:justify-center w-full">
+    <div className="flex overflow-x-auto hide-scrollbar pb-0 pt-5 space-x-2 scroll-smooth lg:justify-center w-full">
       {categories.map((category, index) => (
         <Link key={index} href={category.link} passHref>
           <motion.div
@@ -23,12 +23,12 @@ const CategoryCard: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: index * 0.1, ease: "easeInOut" }}
             viewport={{ once: true }}
-            className="relative group w-24 h-24 aspect-square sm:w-32 sm:h-32 cursor-pointer"
+            className="relative group w-20 h-20 aspect-square sm:w-32 sm:h-32 cursor-pointer"
           >
             <div className={`w-full h-full rounded-full overflow-hidden shadow-lg ${category.background}`}>
               <div className="absolute inset-0 w-full h-full flex items-center justify-center p-2 drop-shadow-sm">
                 <motion.div
-                  whileHover={{ y: -60 }}
+                  whileHover={{ y: -30 }}
                   transition={{ duration: 0.5 }}
                 >
                   <Image
@@ -41,7 +41,7 @@ const CategoryCard: React.FC = () => {
                 </motion.div>
               </div>
             </div>
-            <div className="absolute bottom-0 left-0 right-0 text-center bg-white bg-opacity-80 p-1 rounded-b-full text-sm">
+            <div className="absolute bottom-0 left-0 right-0 text-center bg-white bg-opacity-80 p-1 rounded-b-full text-xs">
               <span className="font-semibold text-gray-800">{category.name}</span>
             </div>
           </motion.div>

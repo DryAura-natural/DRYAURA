@@ -1,6 +1,7 @@
 import { Users, Leaf, Recycle, Lightbulb, LucideIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
+// Improved component organization and formatting
 interface ImpactCardProps {
   icon: LucideIcon;
   value: string;
@@ -147,13 +148,13 @@ const EquivalentCard = ({
 
 const GreeneryBanner = () => {
   return (
-    <div className="h-auto w-full  mx-auto bg-gradient-to-br from-[#3d1d1d39] to-[#3d1d1d9d] p-4 rounded-lg">
+    <div className="h-auto w-full mx-auto bg-gradient-to-br from-[#3d1d1d39] to-[#3d1d1d9d] p-4 rounded-lg">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className=" flex justify-between"
+          className="flex justify-between"
         >
           <h1 className="text-lg font-bold text-[#3D1D1D] mb-2">
             Sustainability Impact
@@ -168,7 +169,7 @@ const GreeneryBanner = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="bg-white/30 backdrop-blur-sm p-4 rounded-xl mb-6 max-w-full w-full"
           >
-            <h2 className="text-lg font-semibold text-[#5f3c3c] mb-4 ">
+            <h2 className="text-lg font-semibold text-[#5f3c3c] mb-4">
               Top 3 Initiatives Impact
             </h2>
             <ProjectCard
@@ -208,7 +209,7 @@ const GreeneryBanner = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <h2 className="text-lg font-semibold text-[#3D1D1D] ">
+          <h2 className="text-lg font-semibold text-[#3D1D1D]">
             Environmental Equivalents
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white/30 backdrop-blur-sm p-4 rounded-xl">
