@@ -293,8 +293,8 @@ export function SiteHeader() {
    
 
       {/* Floating Cart Button for Mobile */}
-      <div className="md:hidden fixed bottom-20 right-4 z-50">
-        <NavbarAction className=" p-4 rounded-full" />
+      <div className="md:hidden fixed bottom-20 right-4 z-50 ">
+        <NavbarAction className=" p-4 rounded-full border-none  "  />
       </div>
 
       {/* Mobile Bottom Navigation Bar */}

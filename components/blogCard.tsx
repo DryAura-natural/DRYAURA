@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { Button } from "./ui/Button";
 import { Card } from "./ui/card";
 import { ChevronLeft, ChevronRight, Share2 } from "lucide-react"; // Import Share2 icon
+import Image from "next/image";
 
 export interface BlogPost {
   id: number;
@@ -22,7 +23,7 @@ const blogPosts: BlogPost[] = [
     category: "Nutritional Blog",
     author: "Admin",
     date: "Feb 19, 2025",
-    image: "https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9cc150025f5a63c5c/view?project=67a96cd2001e32766970&mode=admin",
+    image: "https://img.freepik.com/free-photo/networking-media-sharing-icons-graphic-concept_53876-120836.jpg?t=st=1740676371~exp=1740679971~hmac=5c2304876269b66918973c8753676d30dd1420e4e9ae500c6649fa84d5534bba&w=900",
   },
   {
     id: 2,
@@ -31,7 +32,7 @@ const blogPosts: BlogPost[] = [
     category: "Health Benefits",
     author: "Admin",
     date: "Feb 15, 2025",
-    image: "https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9cc150025f5a63c5c/view?project=67a96cd2001e32766970&mode=admin",
+    image: "https://img.freepik.com/free-photo/networking-media-sharing-icons-graphic-concept_53876-120836.jpg?t=st=1740676371~exp=1740679971~hmac=5c2304876269b66918973c8753676d30dd1420e4e9ae500c6649fa84d5534bba&w=900",
   },
   {
     id: 3,
@@ -40,7 +41,7 @@ const blogPosts: BlogPost[] = [
     category: "Health Benefits",
     author: "Admin",
     date: "Feb 10, 2025",
-    image: "https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9cc150025f5a63c5c/view?project=67a96cd2001e32766970&mode=admin",
+    image: "https://img.freepik.com/free-photo/networking-media-sharing-icons-graphic-concept_53876-120836.jpg?t=st=1740676371~exp=1740679971~hmac=5c2304876269b66918973c8753676d30dd1420e4e9ae500c6649fa84d5534bba&w=900",
   },
   {
     id: 4,
@@ -49,7 +50,7 @@ const blogPosts: BlogPost[] = [
     category: "Health Benefits",
     author: "Admin",
     date: "Feb 10, 2025",
-    image: "https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9cc150025f5a63c5c/view?project=67a96cd2001e32766970&mode=admin",
+    image: "https://img.freepik.com/free-photo/networking-media-sharing-icons-graphic-concept_53876-120836.jpg?t=st=1740676371~exp=1740679971~hmac=5c2304876269b66918973c8753676d30dd1420e4e9ae500c6649fa84d5534bba&w=900",
   },
 ];
 
@@ -80,7 +81,7 @@ export const BlogCarousel = () => {
       <Button
         variant="ghost"
         size="icon"
-        className ="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white/90 transition-all duration-200"
+        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white/90 transition-all duration-200"
         onClick={() => scroll("left")}
       >
         <ChevronLeft className="h-6 w-6" />

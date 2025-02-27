@@ -13,14 +13,14 @@ import "slick-carousel/slick/slick-theme.css";
 const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700"] });
 
 interface comboProductProps {
-  title: string;
+  // title: string;
   items: Product[];
   isLoading?: boolean;
   error?: Error | null;
 }
 
 const ComboProduct: React.FC<comboProductProps> = ({
-  title,
+  // title,
   items,
   isLoading,
   error,
@@ -73,7 +73,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
+    
     visible: (index: number) => ({
       opacity: 1,
       scale: 1,
@@ -87,7 +87,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
   const NextArrow = () => (
     <button
       onClick={() => sliderRef.current?.slickNext()}
-      className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 hover:bg-gray-100 transition-colors"
+      className=" bg-white rounded-full p-1 md:p-2 shadow-md z-10 hover:bg-gray-100 transition-colors"
       aria-label="Next slide"
     >
       <ChevronRight className="w-6 h-6 text-gray-700" />
@@ -97,7 +97,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
   const PrevArrow = () => (
     <button
       onClick={() => sliderRef.current?.slickPrev()}
-      className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 hover:bg-gray-100 transition-colors"
+      className=" bg-white rounded-full p-1 md:p-2 shadow-md z-10 hover:bg-gray -100 transition-colors"
       aria-label="Previous slide"
     >
       <ChevronLeft className="w-6 h-6 text-gray-700" />
@@ -105,14 +105,15 @@ const ComboProduct: React.FC<comboProductProps> = ({
   );
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
-    centerPadding: '80px',
+    centerPadding: "80px",
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -121,49 +122,76 @@ const ComboProduct: React.FC<comboProductProps> = ({
           slidesToScroll: 1,
           infinite: true,
           dots: true,
-          centerPadding: '20px'
-        }
+          centerPadding: "0px",
+        },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
-          centerPadding: '40px'
-        }
-      }
+          centerPadding: "0px",
+        },
+      },
     ],
+   
   };
 
   return (
-    <section
-      aria-labelledby="product-list-heading"
-      className="space-y-4 relative"
-    >
-      <h3
-        id="product-list-heading"
-        className={`${inter.className} text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mt-5`}
+    <div className="h-full">
+      <section
+        aria-labelledby="product-list-heading"
+        className=" relative bg-no-repeat bg-center bg-cover "
       >
-        {title}
-      </h3>
-      {items.length === 0 && <NoResult />}
-      <div className="relative lg:px-24">
-        <Slider ref={sliderRef} {...settings}>
-          {items.map((item, index) => (
-            <div key={item.id}>
-              <motion.article
-                role="listitem"
-                className="hover:shadow-lg transition-shadow duration-200 snap-center border-2 border-[#FF9031] rounded-xl mx-1"
-                variants={cardVariants}
-                custom={index}
-              >
-                <ProductCard data={item} />
-              </motion.article>
+        {items.length === 0 && <NoResult />}
+        <div
+          className="relative lg:px-24 rounded-3xl lg:rounded-none"
+          style={{
+            backgroundImage:
+              "url(https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67bf458b002853f04e4e/view?project=67a96cd2001e32766970&mode=admin)",
+            backgroundSize: "cover",
+            backgroundPosition: "",
+            width: "100%",
+            minHeight: "45vh",
+            maxHeight: "90vh",
+            backgroundColor: "#f0f0f0",
+          }}
+        >
+          <div className="flex justify-center space-x-5 py-5">
+            <div className=" text-white py-5 text-left  px-5 lg:px-10">
+              <h1 className="text-xl md:text-3xl font-bold  w-full">
+                Go "COMBO" on Nutrition With DRYAURA
+              </h1>
+              <p className="text-xs lg:text-base ">
+                Experience the power of nature in our premium range of
+                health-friendly products. Choose from our wide selection of
+                nutrient-dense nuts, seeds, and dried fruits to fuel your
+                active lifestyle.
+              </p>
             </div>
-          ))}
-        </Slider>
-      </div>
-    </section>
+            <div className="flex justify-center items-center space-x-5 pr-4 lg:pr-20 ">
+              <PrevArrow />
+              <NextArrow />
+            </div>
+          </div>
+
+          <Slider ref={sliderRef} {...settings} className="ml-4 ">
+            {items.map((item, index) => (
+              <div key={item.id}>
+                <motion.article
+                  role="listitem"
+                  className="hover:shadow-lg transition-shadow duration-200 snap-center border-2 border-white rounded-xl   mx-1 bg-black p-2  "
+                  variants={cardVariants}
+                  custom={index}
+                >
+                  <ProductCard data={item} />
+                </motion.article>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </section>
+    </div>
   );
 };
 

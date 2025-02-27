@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
       "img.freepik.com",
       "cloud.appwrite.io"
     ]
+  
     
   },
   async rewrites() {

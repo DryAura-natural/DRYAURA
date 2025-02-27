@@ -268,3 +268,11 @@ body,
     color: var(--foreground);
   }
 }
+
+
+.slick-slider.slick-list {
+  overflow: clip; /* Example customization */
+}
+.custom-slick-list {
+  overflow: clip; /* Example customization */
+}

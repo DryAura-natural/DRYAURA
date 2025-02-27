@@ -79,15 +79,15 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
   return (
     <article
       onClick={handleClick}
-      className="bg-white group cursor-pointer rounded-xl p-2 border  border-black/10 hover:shadow-lg aspect-auto relative"
+      className="bg-white group cursor-pointer rounded-xl p-1 border  border-black/10 hover:shadow-lg aspect-auto relative"
       aria-label={`Product: ${data.name}`}
       role="article"
     >
       <div className="flex justify-between">
-        <Badge variant="outline" className="bg-green-900 text-white z-10 left-0">
+        <Badge variant="outline" className="bg-green-900 text-white  z-10 left-0">
           80% off
         </Badge>
-        <Badge variant="outline" className="bg-red-500 text-white z-10">
+        <Badge variant="outline" className="bg-red-500 text-white  z-10">
           sale
         </Badge>
       </div>
@@ -148,14 +148,14 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
 
       <div className="flex flex-col">
         <div className="flex justify-between">
-          <h3 className="text-sm capitalize  text-balance">
+          <h3 className="text-sm capitalize  text-balance ">
             {data.name?.slice(0, 40) || ''}...
           </h3>
         </div>
         {/* <div className="text-xs text-gray-500">{data.description?.slice(0,50) || 'No description available'}...</div> */}
         <div className="flex items-center space-x-2 flex-wrap text-xs md:text-sm mb-2">
-          MRP: <del className="text-red-500 font-light"><Currency value={1200} /></del>
-          <span className="text-green-900 font-bold">
+          MRP: <del className="text-slate-600 font-light"><Currency value={1200} /></del>
+          <span className="text-[#3D1D1D] font-black text-sm">
             <Currency value={data?.price} />
           </span>
           <br />

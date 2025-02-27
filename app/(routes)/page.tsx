@@ -6,7 +6,7 @@ import OfferBanner from "@/components/bannerOffer";
 import { BlogCarousel } from "@/components/blogCard";
 import ComboProduct from "@/components/comboProducts";
 import Description from "@/components/description";
-import DryFruitStats from "@/components/dryfruit_stats";
+import StoreLocator from "@/components/dryfruit_stats";
 import { HeroSection } from "@/components/hero-section";
 import ImageCarousel from "@/components/ImageCarousel";
 import DryfruitPhoto from "@/components/Photos";
@@ -24,10 +24,11 @@ import VideoPlayer from "@/components/ui/VideoPlayer";
 export const revalidate = 0;
 
 const HomePage = async () => {
-  const descriptionText = `
-## The Importance of Dry Fruits in a Healthy Diet
+//   ## The Importance of Dry Fruits in a Healthy Diet
 
-In today’s health-conscious world, dry fruits have become a staple in many diets, offering a convenient and nutritious snack option.
+// In today’s health-conscious world, dry fruits have become a staple in many diets, offering a convenient and nutritious snack option.
+
+  const descriptionText = `
 
 ## About Dryaura
 
@@ -96,19 +97,16 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
           </div>
           <div className="">
             {/* <OfferCarousel /> */}
-            <OfferCarousel/>
+            <OfferCarousel />
           </div>
 
           {/* <div className="py-10">
             <OfferBanner />
           </div> */}
-          <div className="max-h-full  pb-5 md:px-5 px-2">
-            <DryFruitStats />
+          <div className="max-h-full">
+            <StoreLocator />
           </div>
-          {/* <VideoPlayer/> */}
-          {/* <div className="max-h-full p-10">
-            <BannerCrusel />
-          </div> */}
+
           <div className="md:px-4 px-2">
             <PremiumNutsBanner />
           </div>
@@ -120,8 +118,8 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
               alt="Premium Nuts"
             />
           </div>
-          <div className="flex flex-col gap-y-8  sm:px-6 lg:px-8 py-2 px-1">
-            <ComboProduct title="Combos Products" items={products} />
+          <div className="flex flex-col gap-y-8  px-2 lg:px-0  py-2">
+            <ComboProduct items={products} />
           </div>
           <div className="">
             <ImageCarousel />
@@ -133,16 +131,13 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
 
           <div className="max-h-screen">
             <section className="container mx-auto px-4  lg:my-14">
-              <h1 className="text-3xl md:text-4xl font-semibold text-center mb-12">
+              <h1 className="text-xl md:text-3xl font-bold text-center mb-6">
                 Our Recent Blogs
               </h1>
               <BlogCarousel />
             </section>
           </div>
 
-          {/* <div className=" max-w-full">
-            <AutoScrollLogos />
-          </div> */}
           <div className="">
             <Description text={descriptionText} />
           </div>

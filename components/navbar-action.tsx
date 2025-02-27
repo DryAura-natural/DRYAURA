@@ -43,23 +43,23 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
   }, 0);
 
   return (
-    <div className={`ml-auto flex items-center gap-x-4 ${className}`}>
+    <div className={`ml-auto flex items-center gap-x-4 ${className}`}> 
       {/* Cart Button */}
       <Button
         onClick={() => setIsCartOpen(true)} // Open cart drawer on click
-        className={`relative p-5 ${styles.cartButton}`}
+        className={`relative ${styles.cartButton}`}
       >
-        <BaggageClaim  className="text-black h-12 w-10" />
+        <BaggageClaim className="text-black h-20 w-20" />
         {/* Badge */}
-        <span className="absolute -right-2 -top-3 flex items-center justify-center w-4 h-4 rounded-full bg-black text-white text-xs font-semibold">
+        <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-primary-foreground">
           {cart.items.length}
         </span>
       </Button>
 
       {/* Cart Drawer */}
       <div
-        className={`fixed inset-0 z-50 transition-opacity duration-500 ease-in-out ${
-          isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 z-50 transition-all duration-300 ease-out ${
+          isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Overlay */}

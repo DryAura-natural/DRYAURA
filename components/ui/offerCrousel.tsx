@@ -107,7 +107,9 @@ export const OfferCarousel = () => {
   };
 
   return (
-    <div className="relative w-full max-w-[1200px] h-[500px] mx-auto overflow-hidden">
+    <>
+
+    <div className="relative w-full max-w-[1200px] h-[500px]  lg:h-[600px] mx-auto overflow-hidden">
       
       <div
         className="relative w-full h-full flex items-center justify-center "
@@ -121,11 +123,11 @@ export const OfferCarousel = () => {
         onTouchEnd={handleTouchEnd}
         style={{ cursor: isDragging ? "grabbing" : "grab" }}
       >
-        <h1 className="text-2xl md:text-3xl text-center font-bold -mt-96">Nutty Delight Offers </h1>
+        <h1 className="text-2xl md:text-3xl text-center font-bold mb-[25rem] lg:mb-[30rem]">Nutty Delight Offers </h1>
         {/* Previous Slide */}
         <div
           className={cn(
-            "absolute w-[70%] h-[60%] transition-all duration-500 ease-in-out select-none rounded-lg",
+            "absolute w-[70%] h-[60%] lg:w-[40%] lg:h-[70%] transition-all duration-500 ease-in-out select-none rounded-lg",
             "-translate-x-[85%] opacity-50 scale-75"
           )}
         >
@@ -144,7 +146,7 @@ export const OfferCarousel = () => {
         {/* Current Slide */}
         <div
           className={cn(
-            "absolute w-[70%] h-[55%] transition-all duration-300 ease-in-out select-none z-10",
+            "absolute w-[70%] h-[55%]  lg:w-[40%] lg:h-[60%] transition-all duration-300 ease-in-out select-none z-10",
             isDragging ? "transition-none" : ""
           )}
           style={{
@@ -164,14 +166,14 @@ export const OfferCarousel = () => {
         {/* Next Slide */}
         <div
           className={cn(
-            "absolute w-[70%] h-[60%] transition-all duration-500 ease-in-out select-none",
+            "absolute w-[70%] h-[60%] lg:w-[40%] lg:h-[70%] transition-all duration-500 ease-in-out select-none",
             "translate-x-[85%] opacity-50 scale-75"
           )}
         >
           <img
             src={slides[getSlideIndex(1)].src}
             alt={slides[getSlideIndex(1)].alt}
-            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter drop-shadow-[0_10px_20px_rgba(255,105,180,0.5)] drop-shadow-[0_10px_20px_rgba(255,0,0,0.5)]"
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter  "
             style={{
               boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(1))}`,
             }}
@@ -181,5 +183,6 @@ export const OfferCarousel = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };

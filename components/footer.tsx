@@ -55,15 +55,15 @@ const Footer = () => {
   return (
     <>
            <footer className="w-full text-white mt-auto relative rounded-t-3xl bg-gradient-to-r from-[#3a1b1b] to-[#512828] pt-12 pb-8">
-       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
            {/* Left Side - Logo and Contact Info */}
            <div className="space-y-6">
              <div className="flex items-center">
                <img
-                 src="https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9d0130039f0ca3918/view?project=67a96cd2001e32766970&mode=admin"
+                 src="https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67a9d16d0027ce92d6a9/view?project=67a96cd2001e32766970&mode=admin"
                  alt="DRYAURA Logo"
-                 className="h-16 object-contain"
+                 className="h-16 w-16 object-contain"
                />
              </div>
 
