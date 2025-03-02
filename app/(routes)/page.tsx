@@ -78,7 +78,7 @@ When it comes to selecting a provider for dry fruits, Dryaura stands out for sev
 
 Dryaura is more than just a brand; it represents a commitment to quality, sustainability, and health. By choosing Dryaura, you are not only indulging in delicious dry fruits but also supporting a company that values the well-being of its customers and the environment. Experience the difference with Dryaura and elevate your snacking habits today!
 `;
-  const billboard = await getBillboard("06eb9231-2a6f-486d-adf9-8a9f079671e2");
+  const billboard = await getBillboard("8ab6486c-39c4-4f1f-96b3-a4d98814f17b");
   const products = await getProducts({ isFeatured: true });
 
   return (

@@ -92,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
         </Badge>
       </div>
       <div
-        className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-105"
+        className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-105 "
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         aria-label="Product image"
@@ -112,7 +112,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
           }
           fill
           onClick={handleClick}
-          className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110"
+          className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110 overflow-hidden"
           onLoadingComplete={() => setImageLoaded(true)}
           onError={() => setImageError(true)}
           loading="lazy"

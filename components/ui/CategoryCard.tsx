@@ -6,7 +6,7 @@ import { categories } from "@/constants/categories";
 import { motion } from "framer-motion";
 
 interface Category {
-  background: string;
+  backgroundColor: string;
   name: string;
   hoverImageUrl: string;
   link: string;
@@ -25,7 +25,7 @@ const CategoryCard: React.FC = () => {
             viewport={{ once: true }}
             className="relative group w-20 h-20 aspect-square sm:w-32 sm:h-32 cursor-pointer"
           >
-            <div className={`w-full h-full rounded-full overflow-hidden shadow-lg ${category.background}`}>
+            <div className="w-full h-full rounded-full overflow-hidden shadow-lg" style={{ backgroundColor: category.backgroundColor }}>
               <div className="absolute inset-0 w-full h-full flex items-center justify-center p-2 drop-shadow-sm">
                 <motion.div
                   whileHover={{ y: -30 }}

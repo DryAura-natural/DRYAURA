@@ -103,21 +103,21 @@ const OrderSummary = () => {
             transition={{ duration: 0.3 }}
             className="flex flex-col items-center justify-between border-b border-gray-200 py-3"
           >
-            <div className="flex items-center justify-between border-b border-gray-200 py-3">
-              <div className="text-base font-medium text-gray-700">
+            <div className="flex items-center border-b border-gray-200 py-3">
+              <div className="text-base font-medium text-gray-700 ">
                 Discount Code:
               </div>
-              <div className="flex items-center gap-2 w-full">
+              <div className="flex items-center gap-1 ">
                 <input
                   type="text"
                   value={promotionCode}
                   onChange={(e) => setPromotionCode(e.target.value)}
                   placeholder="Enter code"
-                  className="px-4 py-2 flex-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3D1D1D] focus:border-transparent transition-all text-base"
+                  className="px-4 py-1 flex-1 border w-full border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3D1D1D] focus:border-transparent transition-all text-base"
                 />
                 <button
                   onClick={handleApplyPromotion}
-                  className="px-6 py-2.5 bg-[#3D1D1D] text-white rounded-xl hover:bg-[#522929] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3D1D1D] text-base"
+                  className="px-2 py-2  text-sm bg-[#3D1D1D]  text-white rounded-xl hover:bg-[#522929] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3D1D1D] "
                 >
                   Apply Code
                 </button>

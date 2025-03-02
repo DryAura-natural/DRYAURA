@@ -33,7 +33,7 @@ const PremiumNutsBanner = () => {
     <div className="bg-gradient-to-r from-black via-orange-900 to-black text-white rounded-lg p-8 md:p-12 w-full mx-auto animate-fade-in">
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
         {features.map((feature, index) => (
-          <div key={index} className="flex flex-col items-center text-center">
+          <div key={index} className="flex flex-col items-center text-center ">
             <div className="icon-container mb-4">
               <Image src={feature.icon} className="md:w-14 md:h-14 animate-pulse" alt={feature.title} height={60} width={60} />
             </div>
@@ -41,9 +41,7 @@ const PremiumNutsBanner = () => {
               <span className="text-sm md:text-base">
                 {feature.description}
               </span>
-              {feature.title === 'Fast Delivery' && (
-                <span className="font-bold"> ₹999</span>
-              )}
+           
             </p>
           </div>
         ))}

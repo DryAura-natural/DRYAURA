@@ -3,34 +3,40 @@ import { Tab } from "@headlessui/react";
 import { Image as ImageType } from "@/types";
 import GalleryTab from "./gallery-tab";
 import Image from "next/image";
+import { Badge } from "../ui/badge";
 
 interface GalleryProps {
   images: ImageType[];
 }
 
 const Gallery: React.FC<GalleryProps> = ({ images }) => {
-
-  
   return (
-    <Tab.Group as="div" className="flex flex-col-reverse md:flex-row gap-6">
+    <Tab.Group as="div" className="flex flex-col-reverse md:flex-row gap-4">
       {/* Thumbnails */}
-      <div className="mx-auto sm:w-3/4 md:w-1/6">
-        <Tab.List className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-1 gap-4 p-4 border border-gray-300 rounded-lg bg-gray-50">
+      <div className="w-full md:w-24 lg:w-28 xl:w-32">
+        <Tab.List className="grid grid-cols-4 gap-2 md:grid-cols-1 p-2 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50 bg-gray-50 border border-gray-200 rounded-lg">
           {images.map((image) => (
             <GalleryTab key={image.id} image={image} />
           ))}
         </Tab.List>
       </div>
+
       {/* Main Image Panel */}
-      <Tab.Panels className="w-full md:w-5/6">
+      <Tab.Panels className="relative w-full md:flex-1">
+        <Badge className="absolute top-4 right-4 px-2 py-1 bg-red-900 text-white z-10 rounded-md">
+          Value Offer
+        </Badge>
         {images.map((image) => (
-          <Tab.Panel key={image.id} className="flex items-center justify-center">
-            <div className="relative w-full max-w-3xl aspect-square overflow-hidden rounded-lg shadow-lg">
+          <Tab.Panel key={image.id} className="w-full">
+            <div className="relative w-full max-w-4xl aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow">
               <Image
                 fill
                 src={image.url}
-                alt="image"
+                alt={`Product image ${image.id}`}
                 className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 80vw"
+                quality={85}
+                priority={image === images[0]}
               />
             </div>
           </Tab.Panel>

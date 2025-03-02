@@ -62,7 +62,7 @@ const ImpactCard = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: delay + 0.4 }}
-        className="text-sm text-gray-600"
+        className="text-sm text-[#3D1D1D]"
       >
         {label}
       </motion.p>
@@ -139,7 +139,7 @@ const EquivalentCard = ({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: delay + 0.5 }}
-      className="text-xs text-gray-600"
+      className="text-xs text-[#3D1D1D]"
     >
       {label}
     </motion.p>
@@ -162,14 +162,14 @@ const GreeneryBanner = () => {
           <p className="text-sm text-[#3D1D1D]">Since April 2024</p>
         </motion.div>
 
-        <div className="flex justify-between gap-x-5">
+        <div className="flex  flex-col sm:flex-row justify-between gap-x-5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white/30 backdrop-blur-sm p-4 rounded-xl mb-6 max-w-full w-full"
+            className="bg-white/30 backdrop-blur-sm p-4 rounded-xl mb-2 max-w-full w-full"
           >
-            <h2 className="text-lg font-semibold text-[#5f3c3c] mb-4">
+            <h2 className="text-lg font-semibold text-[#3D1D1D] mb-4">
               Top 3 Initiatives Impact
             </h2>
             <ProjectCard
@@ -188,7 +188,7 @@ const GreeneryBanner = () => {
               delay={0.8}
             />
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-1 gap-3 mb-6 w-full">
+          <div className="grid grid-cols-2 md:grid-cols-1 gap-3 mb-2 w-full">
             <ImpactCard
               icon={Users}
               value="450"
@@ -209,10 +209,10 @@ const GreeneryBanner = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <h2 className="text-lg font-semibold text-[#3D1D1D]">
+          <h2 className="text-lg font-semibold text-[#3D1D1D] pb-2">
             Environmental Equivalents
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 bg-white/30 backdrop-blur-sm p-4 rounded-xl">
+          <div className="grid grid-cols-3 md:grid-cols-3 gap-3 bg-white/30 backdrop-blur-sm p-1 rounded-xl">
             <EquivalentCard
               icon={Lightbulb}
               value="1580 days"

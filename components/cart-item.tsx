@@ -54,7 +54,7 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
           <IconButton 
             onClick={handleRemove} 
             icon={<X size={18} />} 
-            className="hover:bg-red-50 hover:text-red-600 transition-colors duration-200"
+            className="hover:bg-red-50 hover:text-red-600  text-black transition-colors duration-200"
           />
         </div>
 

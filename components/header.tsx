@@ -18,21 +18,15 @@ import {
   Menu,
   X,
   UserCog,
-  Truck,
   Home,
   Store,
   ShoppingCart,
-  List,
+  
   User,
-  ArrowBigLeft,
   ArrowBigRight,
-  PartyPopper,
-  Nut,
-  Apple,
-  Rocket,
-  Gift,
-  Package,
   ShoppingBag,
+  ListOrdered,
+  Settings,
 } from "lucide-react";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { NavbarAction } from "./navbar-action";
@@ -182,7 +176,7 @@ export function SiteHeader() {
             <Search className="w-6 h-6" />
           </button>
 
-          <NavbarAction className="p-4 rounded-full" />
+          <NavbarAction className="p-0 bg-black/80 rounded-lg text-white border border-black/20" />
           {/* User Icon */}
         </div>
       </div>
@@ -293,8 +287,8 @@ export function SiteHeader() {
    
 
       {/* Floating Cart Button for Mobile */}
-      <div className="md:hidden fixed bottom-20 right-4 z-50 ">
-        <NavbarAction className=" p-4 rounded-full border-none  "  />
+      <div className="md:hidden fixed bottom-20 right-4 z-50 p-0">
+        <NavbarAction className=" bg-black/100 rounded-lg text-white border border-black/20" />
       </div>
 
       {/* Mobile Bottom Navigation Bar */}
@@ -352,43 +346,71 @@ export function SiteHeader() {
           </div>
 
           {/* Account & Cart (Desktop) */}
-          <div className="flex items-center space-x-4">
-            <SignedIn>
-              <NavigationMenu className="flex items-center bg-white rounded-lg shadow-lg md:w-auto md:flex-row md:space-x-4 md:space-y-0">
-                <NavigationMenuList className="flex flex-col md:flex-row">
-                  <NavigationMenuItem className="flex items-center">
-                    <NavigationMenuTrigger className="text-black hover:text-orange-500 transition-colors duration-300 ease-in-out">
-                      <User className="w-6 h-6" />
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="flex flex-col space-y-2 bg-white rounded-lg shadow-lg p-2 w-full px-2">
-                      <Link
-                        href="/orders"
-                        className="text-black hover:text-orange-500 transition-colors duration-300 ease-in-out"
-                      >
-                        View Your Orders
-                      </Link>
-                      <Link
-                        href="/user-profile"
-                        className="text-black flex items-start hover:text-orange-500 transition-colors duration-300 ease-in-out"
-                      >
-                        Manage Your Account
-                      </Link>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-            </SignedIn>
-            <SignedOut>
-              <Link
-                href="/sign-in"
-                className="text-black hover:text-orange-300 transition-colors duration-300 ease-in-out"
-              >
-                <UserCog className="w-6 h-6" />
-              </Link>
-            </SignedOut>
-            <NavbarAction />
-            <ShoppingBag />
-          </div>
+         <div className="flex items-center space-x-4">
+  <SignedIn>
+    <NavigationMenu 
+      className="flex items-center bg-white rounded-lg shadow-lg 
+                 md:flex-row md:space-x-4 md:space-y-0 
+                 w-full md:w-auto p-2"
+    >
+      <NavigationMenuList 
+        className="flex flex-col md:flex-row w-full md:w-auto"
+      >
+        <NavigationMenuItem 
+          className="flex items-center w-full"
+        >
+          <NavigationMenuTrigger 
+            className="text-black hover:text-orange-500 
+                      transition-colors duration-300 ease-in-out 
+                      flex items-center p-2 w-full md:w-auto"
+          >
+            <User className="w-6 h-6 mr-2" />
+          </NavigationMenuTrigger>
+          <NavigationMenuContent 
+            className="flex flex-col space-y-2 bg-white 
+                      rounded-lg shadow-lg p-1 w-full 
+                      max-w-sm md:w-[200px]"
+          >
+            <Link
+              href="/orders"
+              className="text-black hover:text-orange-500 
+                        transition-colors duration-300 ease-in-out 
+                        p-2 rounded-md hover:bg-orange-50  
+                         items-center space-x-2 flex justify-center  gap-x-2"
+            >
+              <ListOrdered name="Package" className="w-6 h-6 mr-2" />
+              View Your Order History
+            </Link>
+            <Link
+              href="/user-profile"
+              className="text-black hover:text-orange-500 
+                        transition-colors duration-300 ease-in-out 
+                        p-2 rounded-md hover:bg-orange-50  
+                         items-center space-x-2 flex justify-center  gap-x-2"
+            >
+              <Settings name="User" className="w-6 h-6 mr-2" />
+              Manage Your Profile &amp; Settings
+            </Link>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+      </NavigationMenuList>
+    </NavigationMenu>
+  </SignedIn>
+  
+  <SignedOut>
+    <Link
+      href="/sign-in"
+      className="text-black hover:text-orange-300 
+                transition-colors duration-300 ease-in-out 
+                p-2 rounded-md hover:bg-orange-50"
+    >
+      <UserCog className="w-6 h-6" />
+    </Link>
+  </SignedOut>
+  
+  <NavbarAction className="bg-black/100 rounded-xl shadow-lg hover:bg-black/80 text-white"/>
+  <ShoppingBag />
+</div>
         </div>
       </div>
       {/* Navigation Menu (Desktop) */}

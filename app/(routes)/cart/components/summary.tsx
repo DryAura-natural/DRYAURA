@@ -175,7 +175,7 @@ const Summary = () => {
   };
 
   return (
-    <div className="rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8 h-full">
+    <div className="rounded-lg bg-gray-50 px-0 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8 h-full">
       <OrderSummary />
 
       {/* Billing Information Section */}

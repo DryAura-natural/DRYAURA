@@ -1,13 +1,14 @@
 "use client";
 
-import { BaggageClaim, ShoppingBag, X } from "lucide-react";
-import { Button } from "@/components/ui/Button"; // Using shadcn/ui for better styling
+import { BaggageClaim, ShoppingBag, X,  } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { useEffect, useState } from "react";
 import useCart from "@/hooks/use-cart";
 import { useRouter } from "next/navigation";
 import CartItem from "./cart-item";
 import Currency from "./ui/currency";
-import styles from './navbar-action.module.css';
+import emptyCart from "@/public/emptycart.gif";
+import Image from "next/image";
 
 interface NavbarActionProps {
   className?: string;
@@ -15,7 +16,7 @@ interface NavbarActionProps {
 
 export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false); // State to control cart drawer
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCart();
   const router = useRouter();
   const items = useCart((state) => state.items);
@@ -26,9 +27,9 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
 
   useEffect(() => {
     if (isCartOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
   }, [isCartOpen]);
 
@@ -43,40 +44,38 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
   }, 0);
 
   return (
-    <div className={`ml-auto flex items-center gap-x-4 ${className}`}> 
-      {/* Cart Button */}
+    <div className={`ml-auto flex items-center gap-x-4 ${className}`}>
       <Button
-        onClick={() => setIsCartOpen(true)} // Open cart drawer on click
-        className={`relative ${styles.cartButton}`}
+        onClick={() => setIsCartOpen(true)}
+        className="relative border-none bg-transparent hover:bg-transparent"
       >
-        <BaggageClaim className="text-black h-20 w-20" />
-        {/* Badge */}
+        <BaggageClaim className="text-white h-6 w-6 hover:text-black" />
         <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[11px] font-medium text-primary-foreground">
           {cart.items.length}
         </span>
       </Button>
 
-      {/* Cart Drawer */}
       <div
         className={`fixed inset-0 z-50 transition-all duration-300 ease-out ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Overlay */}
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={() => setIsCartOpen(false)} // Close cart drawer on overlay click
+          onClick={() => setIsCartOpen(false)}
         />
 
-        {/* Cart Content */}
         <div
           className={`fixed right-0 top-0 h-full w-full md:w-96 sm:w-3/4 bg-white shadow-lg transform transition-transform duration-500 ease-in-out ${
             isCartOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {/* Cart Header */}
-          <div className="flex items-center justify-between p-6 border-b">
-            <h2 className="text-xl font-semibold">Your Cart</h2>
+          <div className="text-xs bg-black text-white w-full p-2 text-center">
+            Free shiping on all order over ₹999
+          </div>
+          <div className="flex  items-center justify-between p-6 pt-0 border-b">
+            <h2 className="text-xl font-semibold text-black">Your Cart</h2>
+
             <button
               onClick={() => setIsCartOpen(false)}
               className="text-gray-500 hover:text-gray-700 transition-colors duration-300"
@@ -85,11 +84,10 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
             </button>
           </div>
 
-          {/* Cart Items */}
           <div className="p-6 overflow-y-auto h-[calc(100%-150px)]">
             {cart.items.length === 0 ? (
-              <div className="flex items-center gap-x-2">
-                <ShoppingBag size={24} className="text-gray-500" />
+              <div className="flex flex-col items-center gap-x-2">
+                <Image src={emptyCart} className="w-40 h-40" alt="empty cart" />
                 <p className="text-gray-500">Your cart is empty.</p>
               </div>
             ) : (
@@ -101,12 +99,11 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
             )}
           </div>
 
-          {/* Cart Footer */}
           <div className="absolute bottom-0 left-0 right-0 p-6 border-t bg-white">
             <div className="flex justify-between items-center">
               <span className="font-semibold">Total:</span>
               <span className="font-semibold">
-                <Currency value={totalPrice.toString()} /> {/* Ensure totalPrice is passed as a string */}
+                <Currency value={totalPrice.toString()} />
               </span>
             </div>
             <Button
@@ -114,9 +111,9 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
                 router.push("/cart");
                 setIsCartOpen(false);
               }}
-              className={styles.checkoutButton}
+              className="w-full mt-4 bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              Checkout
+              <ShoppingBag size={24} className="inline-block mr-2" /> Checkout
             </Button>
           </div>
         </div>
