@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface MainNavProps {
-  data: Category[];
+  
 }
 
 export const MainNav: React.FC<MainNavProps> = ({ data }) => {

@@ -30,7 +30,7 @@ export const categories: Category[] = [
     link: "/dates", // Add a link for navigation
   },
   {
-    id: '4',
+    id: '06eb9231-2a6f-486d-adf9-8a9f079671e2',
     backgroundColor: "#916a5e",
     name: "Almond",
     hoverImageUrl: "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b4bec1002350e98a2d/view?project=67a96cd2001e32766970&mode=admin",
@@ -44,7 +44,7 @@ export const categories: Category[] = [
     link: "/walnuts", // Add a link for navigation
   },
   {
-    id: '6',
+    id: '',
     backgroundColor: "#633E63",
     name: "Seeds",
     hoverImageUrl: "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b5f9ee002c785844cd/view?project=67a96cd2001e32766970&mode=admin",

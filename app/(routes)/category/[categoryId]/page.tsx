@@ -8,6 +8,7 @@ import Filter from "./components/filter";
 import NoResult from "@/components/ui/no-result";
 import ProductCard from "@/components/ui/product-card";
 import MobileFilters from "./components/mobile-filters";
+import CategoryCard from "@/components/ui/CategoryCard";
 
 interface CategoryPageprops {
   params: {
@@ -34,6 +35,10 @@ const CategoryPage: React.FC<CategoryPageprops> = async ({
     <div className="bg-white">
       <Container>
         <Billboard data={category.billboard} />
+        <div className="pb-5 px-5"> 
+        <CategoryCard />
+
+        </div>
         <div className="px-4 sm:px-6 lg:px-8 pb-24">
           <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
             {/* Add Mobile Filters */}
