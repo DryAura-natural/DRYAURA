@@ -70,7 +70,7 @@ export function SiteHeader() {
     {
       icon: SignedIn ? UserCog : User,
       label: SignedIn ? "Account" : "Sign Up",
-      link: SignedIn ? "/orders" : "/sign-up",
+      link: SignedIn ? "/account" : "/sign-up",
     },
   ];
 
@@ -333,15 +333,15 @@ export function SiteHeader() {
 
         {/* Search Bar (Desktop) */}
         <div className="flex items-center space-x-4">
-          <div className="flex items-center bg-white rounded-lg p-1 shadow-lg justify-between">
+          <div className="flex items-center bg-white rounded-lg p-1 shadow-lg justify-between border">
             <Input
               label=""
               type="search"
               placeholder="Search..."
               className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
             />
-            <Button className="   rounded-lg">
-              <Search className="w-4 h-4 text-black" />
+            <Button className=" bg-white rounded-lg border border-black hover:border-orange-300 hover:bg-black/10">
+              <Search className="w-4 h-4 text-black " />
             </Button>
           </div>
 
@@ -350,11 +350,11 @@ export function SiteHeader() {
   <SignedIn>
     <NavigationMenu 
       className="flex items-center bg-white rounded-lg shadow-lg 
-                 md:flex-row md:space-x-4 md:space-y-0 
+                 md:flex-row md:space-x-4 md:space-y-0  
                  w-full md:w-auto p-2"
     >
       <NavigationMenuList 
-        className="flex flex-col md:flex-row w-full md:w-auto"
+        className="flex flex-col md:flex-row w-full md:w-auto border rounded-md"
       >
         <NavigationMenuItem 
           className="flex items-center w-full"
@@ -372,7 +372,7 @@ export function SiteHeader() {
                       max-w-sm md:w-[200px]"
           >
             <Link
-              href="/orders"
+              href="/account/orders"
               className="text-black hover:text-orange-500 
                         transition-colors duration-300 ease-in-out 
                         p-2 rounded-md hover:bg-orange-50  
@@ -382,7 +382,7 @@ export function SiteHeader() {
               View Your Order History
             </Link>
             <Link
-              href="/user-profile"
+              href="/account"
               className="text-black hover:text-orange-500 
                         transition-colors duration-300 ease-in-out 
                         p-2 rounded-md hover:bg-orange-50  
@@ -409,7 +409,7 @@ export function SiteHeader() {
   </SignedOut>
   
   <NavbarAction className="bg-black/100 rounded-xl shadow-lg hover:bg-black/80 text-white"/>
-  <ShoppingBag />
+ 
 </div>
         </div>
       </div>

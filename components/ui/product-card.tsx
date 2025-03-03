@@ -78,7 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
 
   return (
     <article
-      onClick={handleClick}
+     
       className="bg-white group cursor-pointer rounded-xl p-1 border  border-black/10 hover:shadow-lg aspect-auto relative"
       aria-label={`Product: ${data.name}`}
       role="article"
@@ -92,6 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
         </Badge>
       </div>
       <div
+       onClick={handleClick}
         className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-105 "
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
