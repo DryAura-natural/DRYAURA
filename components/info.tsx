@@ -1,5 +1,5 @@
 "use client";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useState, useMemo } from "react";
 import { Product } from "@/types";
 import {
   ShoppingCart,
@@ -62,16 +62,68 @@ const Info: React.FC<InfoProps> = ({
 
   const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    const itemWithQuantity = { ...data, quantity };
+    
+    // Ensure a variant is selected
+    if (!currentVariant) {
+      toast.error('Please select a variant');
+      return;
+    }
+
+    const itemWithQuantity = { 
+      ...data, 
+      quantity, 
+      selectedVariant: currentVariant 
+    };
+
     cart.addItem(itemWithQuantity);
-    toast.success("Item added to cart", { icon: "👏" });
+    
+ 
   };
 
   const onPurchased: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    const itemWithQuantity = { ...data, quantity };
+    
+    // Ensure a variant is selected
+    if (!currentVariant) {
+      toast.error('Please select a variant');
+      return;
+    }
+
+    const itemWithQuantity = { 
+      ...data, 
+      quantity, 
+      selectedVariant: currentVariant 
+    };
+
     cart.addItem(itemWithQuantity);
     router.push("/cart");
+  };
+
+  // Determine available variants
+  const availableVariants = data.variants?.filter(variant => variant.sizeId) || [];
+
+  // State for selected variant
+  const [selectedVariant, setSelectedVariant] = useState<string | null>(
+    availableVariants.length > 0 ? availableVariants[0].sizeId : null
+  );
+
+  // Get selected variant details with fallback
+  const currentVariant = useMemo(() => {
+    if (availableVariants.length === 0) return null;
+    return availableVariants.find(
+      variant => variant.sizeId === selectedVariant
+    ) || availableVariants[0];
+  }, [availableVariants, selectedVariant]);
+
+  // Pricing calculations with null check
+  const mrp = currentVariant?.mrp || data.mrp || 1300;
+  const price = currentVariant?.price || data.price;
+  const save = mrp - price;
+  const percentage = Math.round((save / mrp) * 100);
+
+  // Handle variant selection
+  const handleVariantSelect = (value: string) => {
+    setSelectedVariant(value);
   };
 
   return (
@@ -86,23 +138,23 @@ const Info: React.FC<InfoProps> = ({
             <span>MRP:</span>
             <span className="text-gray-700 stroke-current">
               <del>
-                <Currency value={1200} />
+                <Currency value={mrp} />
               </del>
             </span>
             <span className="text-xs md:text-sm text-orange-600">
-              Save ₹526
+              Save ₹{save}
             </span>
           </div>
           <div className="flex space-x-1">
             <span className="text-red-800 font-black">
-              <Currency value={data?.price} />
+              <Currency value={price} />
             </span>
             <span className="text-xs md:text-sm">(incl. of all taxes)</span>
           </div>
         </p>
         <div>
           <Badge className=" top-5 right-5 px-2 bg-green-900 z-10 text-white">
-            80% off
+            {percentage}% off
           </Badge>
         </div>
       </div>
@@ -114,28 +166,22 @@ const Info: React.FC<InfoProps> = ({
           <h3 className="font-semibold text-black text-base md:text-lg">
             Size:
           </h3>
-          <ToggleGroup type="single" size="lg">
-            <ToggleGroupItem
-              value="bold"
-              aria-label="Toggle bold"
-              className="bg-none  data-[state=on]:bg-green-900 data-[state=on]:text-white border border-gray-700"
-            >
-              200g
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="italic"
-              aria-label="Toggle italic"
-              className="bg-none  data-[state=on]:bg-green-900 data-[state=on]:text-white border border-gray-700"
-            >
-              400g
-            </ToggleGroupItem>
-            <ToggleGroupItem
-              value="strikethrough"
-              aria-label="Toggle strikethrough"
-              className="bg-none  data-[state=on]:bg-green-900 data-[state=on]:text-white border border-gray-700"
-            >
-              600g
-            </ToggleGroupItem>
+          <ToggleGroup 
+            type="single" 
+            size="lg" 
+            value={selectedVariant || ''}
+            onValueChange={handleVariantSelect}
+          >
+            {availableVariants.map((variant) => (
+              <ToggleGroupItem
+                key={variant.sizeId}
+                value={variant.sizeId}
+                aria-label={`Select ${variant.sizeId} variant`}
+                className="bg-none data-[state=on]:bg-green-900 data-[state=on]:text-white border border-gray-700"
+              >
+                {variant.size?.value}
+              </ToggleGroupItem>
+            ))}
           </ToggleGroup>
         </div>
       </div>
@@ -191,12 +237,8 @@ const Info: React.FC<InfoProps> = ({
                 Description
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Possimus enim officiis quia ad est distinctio eaque nam maiores
-                quam, suscipit consequatur at nemo, architecto illum sit
-                repudiandae dolorem, reiciendis laborum nostrum incidunt?
-                Laborum eius nostrum possimus distinctio saepe fugit harum illo
-                quos ab fuga . Saepe, nisi? Inventore, corporis adipisci. Animi?
+              
+                {data.description}
               </AccordionContent>
             </AccordionItem>
 

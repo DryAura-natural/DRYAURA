@@ -1,23 +1,35 @@
 "use client";
 
-import { Product } from "@/types";
-import Image from "next/image";
+import { Product, ProductVariant, Category, Badge, Image } from "@/types";
+import NextImage from "next/image";
 import IconButton from "@/components/ui/icon-button";
-import { Expand, ShoppingCart, Loader2 } from "lucide-react";
+import { Expand, ShoppingCart, Loader2, Tag, Check } from "lucide-react";
 import Currency from "@/components/ui/currency";
 import { useRouter } from "next/navigation";
-import { MouseEventHandler, useState, useEffect, memo } from "react";
+import { MouseEventHandler, useState, useMemo, memo } from "react";
 import usePreviewModal from "@/hooks/use-preview-model";
 import useCart from "@/hooks/use-cart";
-import { Badge } from "@/components/ui/badge";
+import { Badge as BadgeComponent } from "@/components/ui/badge";
 import getProduct from "@/actions/get-product";
 import GifLoader from "./one-loder";
+import { motion, AnimatePresence } from "framer-motion";
+import toast from 'react-hot-toast';
 
 interface ProductCardProps {
   data: Product;
+  variants?: ProductVariant[];
+  categories?: Category[];
+  badges?: Badge[];
+  productBanner?: Image[];
 }
 
-const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
+const ProductCard: React.FC<ProductCardProps> = memo(({
+  data,
+  variants = [],
+  categories = [],
+  badges = [],
+  productBanner = [],
+}) => {
   const router = useRouter();
   const cart = useCart();
   const previewModal = usePreviewModal();
@@ -28,10 +40,36 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
   const [isNavigating, setIsNavigating] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    setImageLoaded(false);
-    setImageError(false);
-  }, [imageIndex]);
+  // Memoize image URL to prevent unnecessary re-renders
+  const imageUrl = useMemo(() => {
+    if (imageError) return "/placeholder.png";
+    return data?.images?.length 
+      ? data.images[imageIndex].url 
+      : "/placeholder.png";
+  }, [data?.images, imageIndex, imageError]);
+
+  // Calculate least price from variants
+  const leastPrice = useMemo(() => {
+    if (variants.length === 0) return data?.price || 0;
+    return Math.min(...variants.map(variant => variant.price || 0));
+  }, [variants, data?.price]);
+
+  // Calculate least MRP from variants
+  const leastMrp = useMemo(() => {
+    if (variants.length === 0) return data?.mrp || 0;
+    return Math.min(...variants.map(variant => variant.mrp || 0));
+  }, [variants, data?.mrp]);
+
+  // Calculate discount percentage based on least price
+  const discountPercentage = useMemo(() => {
+    if (!leastPrice || !leastMrp) return 0;
+    return Math.round(((leastMrp - leastPrice) / leastMrp) * 100);
+  }, [leastPrice, leastMrp]);
+
+  // Memoize price calculation
+  const discountedPrice = useMemo(() => {
+    return leastPrice;
+  }, [leastPrice]);
 
   const handleClick = async () => {
     setIsNavigating(true);
@@ -40,6 +78,8 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
       const productPromise = getProduct(data.id);
       await router.push(`/product/${data?.id}`);
       await productPromise;
+    } catch (error) {
+      console.error('Navigation error:', error);
     } finally {
       setIsNavigating(false);
     }
@@ -50,13 +90,54 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
     previewModal.onOpen(data);
   };
 
-  const onAddToCart: MouseEventHandler<HTMLButtonElement> = async (event) => {
-    event.stopPropagation();
-    setIsAddingToCart(true);
-    try {
-      await cart.addItem(data);
-    } finally {
-      setIsAddingToCart(false);
+  const onAddToCart = () => {
+    // Determine the variant to use
+    const selectedVariant = variants.length > 0 ? variants[0] : null;
+    
+    // Prepare product data for cart
+    const cartProduct = {
+      ...data,
+      ...(selectedVariant && {
+        price: selectedVariant.price,
+        mrp: selectedVariant.mrp,
+        selectedVariant: {
+          ...selectedVariant,
+          colorId: selectedVariant.colorId,
+          sizeId: selectedVariant.sizeId
+        }
+      }),
+      quantity: 1
+    };
+
+    // Validate before adding to cart
+    if (!isAddingToCart) {
+      setIsAddingToCart(true);
+      
+      // Simulate async operation (optional)
+      setTimeout(() => {
+        try {
+          cart.addItem(cartProduct);
+          // toast.success('Product added to cart', { 
+          //   icon: '🛒',
+          //   style: {
+          //     borderRadius: '10px',
+          //     background: '#333',
+          //     color: '#fff',
+          //   }
+          // });
+        } catch (error) {
+          // toast.error('Failed to add product to cart', {
+          //   icon: '❌',
+          //   style: {
+          //     borderRadius: '10px',
+          //     background: '#ff4444',
+          //     color: '#fff',
+          //   }
+          // });
+        } finally {
+          setIsAddingToCart(false);
+        }
+      }, 500);
     }
   };
 
@@ -78,22 +159,26 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
 
   return (
     <article
-     
-      className="bg-white group cursor-pointer rounded-xl p-1 border  border-black/10 hover:shadow-lg aspect-auto relative"
+      className="bg-white group cursor-pointer rounded-xl p-1 border border-black/10 hover:shadow-lg aspect-auto relative"
       aria-label={`Product: ${data.name}`}
       role="article"
     >
-      <div className="flex justify-between">
-        <Badge variant="outline" className="bg-green-900 text-white  z-10 left-0">
-          80% off
-        </Badge>
-        <Badge variant="outline" className="bg-red-500 text-white  z-10">
-          sale
-        </Badge>
-      </div>
+      <div className="hidden sm:flex justify-between absolute top-3 left-2 z-10 bg-green-900 text-white px-2 py-1 rounded-full text-xs font-bold">
+        <span className="">
+          {badges.length > 0 ? badges[0].label : 'New Launch'}
+        </span>
+      </div> 
+
+      {/* Discount Badge */}
+      {discountPercentage > 0 && (
+        <div className="absolute top-3 right-2 z-10 bg-red-900 text-white px-2 py-1 rounded-full text-xs font-bold">
+          {discountPercentage}% OFF
+        </div>
+      )}
+      
       <div
-       onClick={handleClick}
-        className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-105 "
+        onClick={handleClick}
+        className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-100 truncate"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         aria-label="Product image"
@@ -102,15 +187,9 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
           <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
         )}
 
-        <Image
-          alt={data.name}
-          src={
-            imageError
-              ? "/placeholder.png"
-              : data?.images?.length
-              ? data.images[imageIndex].url
-              : "/placeholder.png"
-          }
+        <NextImage
+          alt={data.name || 'Product image'}
+          src={imageUrl}
           fill
           onClick={handleClick}
           className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110 overflow-hidden"
@@ -140,6 +219,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
             />
           </div>
         </div>
+        
         {isNavigating && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
             <GifLoader />
@@ -147,27 +227,52 @@ const ProductCard: React.FC<ProductCardProps> = memo(({ data }) => {
         )}
       </div>
 
-      <div className="flex flex-col">
-        <div className="flex justify-between">
-          <h3 className="text-sm capitalize  text-balance ">
-            {data.name?.slice(0, 40) || ''}...
-          </h3>
+      <div className="flex flex-col mt-2 px-1">
+        <h3 className="text-sm font-medium capitalize text-balance truncate">
+          {data.name?.slice(0, 40) || 'Unnamed Product'}...
+        </h3>
+        
+        <div className="flex items-center justify-between space-x-2 mt-1">
+          <div className="flex items-center space-x-2 flex-wrap">
+          <span className="text-[#3D1D1D] font-bold text-sm">MRP: </span>
+            {leastMrp > leastPrice && (
+              
+              <del className=" flex text-slate-500 text-xs mr-2">
+              <Currency value={leastMrp} />
+              </del>
+            )}
+            <span className="text-[#3D1D1D] font-bold text-sm">
+               <Currency value={leastPrice} />
+            </span>
+          </div>
+          <span className="text-xs text-slate-500">(₹/100g)</span>
         </div>
-        {/* <div className="text-xs text-gray-500">{data.description?.slice(0,50) || 'No description available'}...</div> */}
-        <div className="flex items-center space-x-2 flex-wrap text-xs md:text-sm mb-2">
-          MRP: <del className="text-slate-600 font-light"><Currency value={1200} /></del>
-          <span className="text-[#3D1D1D] font-black text-sm">
-            <Currency value={data?.price} />
-          </span>
-          <br />
-          <span className="text-xs flex">(₹/100g)</span>
+        <div className="flex items-center space-x-2 text-xs text-gray-600 mt-1">
+          {variants.length > 0 && (
+            <div className="flex items-center space-x-1">
+              <span className="font-medium">Size:</span>
+              <span>
+                {variants[0].size?.value || variants[0].sizeId || 'N/A'}
+              </span>
+            </div>
+          )}
         </div>
-        <div className="bg-[#3D1D1D] text-white p-2 rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs">
-          Add To Cart
+        <div className="py-2">
+        <button 
+          onClick={onAddToCart}
+          className="w-full bg-[#3D1D1D] hover:bg-[#6c3d3d] text-white  rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs py-2"
+        >
+          {isAddingToCart ? 'Adding...' : 'Add To Cart'}
+        </button>
+
         </div>
+        
+      
       </div>
     </article>
   );
 });
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;

@@ -1,15 +1,29 @@
 "use client";
 import { Tab } from "@headlessui/react";
-import { Image as ImageType } from "@/types";
+import { Image as ImageType, Badge as BadgeType } from "@/types";
 import GalleryTab from "./gallery-tab";
 import Image from "next/image";
 import { Badge } from "../ui/badge";
 
 interface GalleryProps {
   images: ImageType[];
+  badges?: BadgeType[] | BadgeType;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ images }) => {
+const Gallery: React.FC<GalleryProps> = ({ images, badges }) => {
+  // Normalize badges to an array
+  const badgeArray = badges 
+    ? Array.isArray(badges) 
+      ? badges 
+      : [badges] 
+    : [];
+
+  // Log the badges
+  console.log('Gallery Badges:', {
+    originalBadges: badges,
+    normalizedBadges: badgeArray
+  });
+
   return (
     <Tab.Group as="div" className="flex flex-col-reverse md:flex-row gap-4">
       {/* Thumbnails */}
@@ -23,9 +37,13 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
 
       {/* Main Image Panel */}
       <Tab.Panels className="relative w-full md:flex-1">
-        <Badge className="absolute top-4 right-4 px-2 py-1 bg-red-900 text-white z-10 rounded-md">
-          Value Offer
-        </Badge>
+        {badgeArray.length > 0 && (
+          <Badge 
+            className="absolute top-4 right-4 px-2 py-1 bg-red-900 text-white z-10 rounded-md"
+          >
+            {badgeArray[0].label}
+          </Badge>
+        )}
         {images.map((image) => (
           <Tab.Panel key={image.id} className="w-full">
             <div className="relative w-full max-w-4xl aspect-square overflow-hidden rounded-xl shadow-md hover:shadow-xl transition-shadow">

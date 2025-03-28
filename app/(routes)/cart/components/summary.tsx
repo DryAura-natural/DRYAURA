@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BillingDialog from "@/components/BillingDialog";
 import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
@@ -10,214 +10,336 @@ import OrderSummary from "./orderSummary";
 import DeliveryAddress from "./deliveryAddress";
 import useCart from "@/hooks/use-cart";
 import getCustomerData from "@/actions/getCustomerData";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Edit } from "lucide-react";
+import { Edit,CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from 'framer-motion';
 
-declare global {
-  interface Window {
-    Razorpay: any;
-  }
-}
+import type {
+  RazorpayCheckoutResponse,
+  RazorpayOptions,
+  RazorpayInstance,
+} from "@/utils/razorpay.d.ts";
+import OrderConfirmationModal from "./orderConformation";
 
-interface SummaryProps {
-  cartItems: any[];
-  totalPrice: number;
-  isProcessing: boolean;
-  handlePayment: () => void;
-}
+// SDK Loading Utility
+const loadRazorpaySdk = (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    if (window.Razorpay) {
+      resolve();
+      return;
+    }
 
-const Summary = () => {
-  const [isBillingFormVisible, setIsBillingFormVisible] = useState(false);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [isRazorpayLoaded, setIsRazorpayLoaded] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
-  const removeAll = useCart((state) => state.removeAll);
-  const { user, isLoaded } = useUser();
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const items = useCart((state) => state.items);
-  const totalPrice: number = items.reduce(
-    (total, item) =>
-      total + (Number(item.price) || 0) * (Number(item.quantity) || 0),
-    0
-  );
-
-  useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
     script.async = true;
-    script.onload = () => setIsRazorpayLoaded(true);
-    document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
+    script.onload = () => {
+      console.log("Razorpay SDK loaded successfully");
+      resolve();
     };
-  }, []);
 
+    script.onerror = () => {
+      console.error("Failed to load Razorpay SDK");
+      reject(new Error("Razorpay SDK load failed"));
+    };
+
+    document.head.appendChild(script);
+  });
+};
+
+// Payment Initialization Utility
+const initializeRazorpay = async (
+  options: RazorpayOptions
+): Promise<RazorpayInstance> => {
+  // Ensure SDK is loaded
+  await loadRazorpaySdk();
+
+  // Validate Razorpay availability
+  if (!window.Razorpay) {
+    throw new Error("Razorpay SDK not available");
+  }
+
+  // Create and validate Razorpay instance
+  const razorpay = new window.Razorpay(options);
+
+  if (!razorpay || typeof razorpay.open !== "function") {
+    throw new Error("Invalid Razorpay instance");
+  }
+
+  return razorpay;
+};
+
+const Summary = () => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [isUserDataLoading, setIsUserDataLoading] = useState(true);
+  const [orderConfirmationDetails, setOrderConfirmationDetails] = useState<{ 
+    isOpen: boolean, 
+    orderId?: string 
+  }>({ isOpen: false });
+
+  const removeAll = useCart((state) => state.removeAll);
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
+  const items = useCart((state) => state.items);
+  const totalPrice = useMemo(() => {
+    return items.reduce((total, item) => {
+      const price = parseFloat(
+        (item.selectedVariant?.price || item.price || "0").toString()
+      );
+      const quantity = parseInt(item.quantity.toString(), 10) || 0;
+      return total + price * quantity;
+    }, 0);
+  }, [items]);
+
+  // User Data Fetching
   useEffect(() => {
-    if (user?.id) {
-      getCustomerData(user.id)
-        .then((data) => setUserData(data))
-        .catch(console.error);
+    const fetchUserData = async () => {
+      try {
+        setIsUserDataLoading(true);
+        if (user?.id) {
+          const data = await getCustomerData(user.id);
+          setUserData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to load user data");
+      } finally {
+        setIsUserDataLoading(false);
+      }
+    };
+
+    if (isLoaded) {
+      fetchUserData();
     }
-  }, [user]);
+  }, [user, isLoaded]);
 
   const handlePayment = async () => {
+    // Comprehensive Pre-Payment Validation
     if (!isLoaded || !user) {
       toast.error("Please sign in before making a payment.");
       router.push("/sign-in");
       return;
     }
-    if (!isRazorpayLoaded) {
-      toast.error("Payment gateway is still loading. Please try again.");
-      return;
-    }
+
     if (totalPrice <= 0) {
-      toast.error("Invalid total price. Please check your cart.");
+      toast.error("Invalid cart total. Please add items to your cart.");
       return;
     }
+
     if (!userData) {
-      toast.error("Please add billing information before proceeding.");
+      toast.error("Please complete your billing information.");
       return;
     }
 
     setIsProcessing(true);
-    const address = `${userData.streetAddress}, ${userData.city}, ${userData.state}, ${userData.postalCode}`;
 
     try {
+      // Create Order
       const orderResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/createOrder`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            storeId: "0d19662d-b031-46bd-86e3-6435bc885e32",
+            storeId: process.env.NEXT_PUBLIC_STORE_ID,
             customerId: user.id,
+            alternatePhone: userData.alternatePhone,
             totalAmount: totalPrice,
-            orderItems: items.map(({ id, quantity }) => ({
-              productId: id,
-              quantity,
-            })),
+            orderItems: items.map(
+              ({ id, quantity, selectedVariant, price, name,images }) => ({
+                productId: id,
+                productName: name,
+                // productImageUrl: images[0] ,
+                variantId: selectedVariant?.id || id,
+                quantity,
+                unitPrice: Number(selectedVariant?.price || price || 0),
+                totalPrice: Number(selectedVariant?.price || price || 0) * quantity,
+              })
+            ),
             phone: userData.phone || "9999999999",
-            address,
+            address: `${userData.streetAddress}, ${userData.city}, ${userData.state}, ${userData.postalCode}`,
+            name: userData.name,
+            email: userData.email,
           }),
         }
       );
 
-      if (!orderResponse.ok) throw new Error("Order creation failed");
-      const { razorpayOrderId } = await orderResponse.json();
+      if (!orderResponse.ok) {
+        const errorText = await orderResponse.text();
+        throw new Error(`Order creation failed: ${errorText}`);
+      }
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: (totalPrice * 100).toString(),
+      const orderData = await orderResponse.json();
+
+      // Razorpay Payment Options
+      const razorpayOptions: RazorpayOptions = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY!,
+        amount: totalPrice * 100, // Convert to paise
         currency: "INR",
         name: "DRYAURA",
-        description: address,
-        order_id: razorpayOrderId,
-        handler: async (response: any) => {
-          if (
-            !response.razorpay_order_id ||
-            !response.razorpay_payment_id ||
-            !response.razorpay_signature
-          ) {
-            toast.error("Payment response is incomplete. Please try again.");
-            return;
-          }
+        description: "Product Purchase",
+        order_id: orderData.paymentOrderDetails.id,
+        handler: async (response: RazorpayCheckoutResponse) => {
+          try {
+            // Verify Payment
+            const verificationResponse = await fetch(
+              `${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/verify-payment`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  order_id: response.razorpay_order_id,
+                  payment_id: response.razorpay_payment_id,
+                  signature: response.razorpay_signature,
+                }),
+              }
+            );
 
-          const verifyResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL_ADMIN}/api/verifyOrder`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
+            if (verificationResponse.ok) {
+              setOrderConfirmationDetails({
+                isOpen: true,
+                orderId: response.razorpay_order_id
+              });
+              removeAll();
+            } else {
+              const errorData = await verificationResponse.json();
+              throw new Error(
+                errorData.message || "Payment verification failed"
+              );
             }
-          );
-
-          const verificationData = await verifyResponse.json();
-          if (verificationData.isOk) {
-            toast.success("Payment Successful");
-            removeAll();
-            setTimeout(() => router.push("/"), 1000);
-          } else {
-            toast.error("Payment failed");
-            router.push("/cart");
+          } catch (verificationError) {
+            console.error("Payment Verification Error:", verificationError);
+            toast.error("Payment verification failed");
           }
         },
         prefill: {
-          name: userData.name || "Guest User",
-          email: userData.email || "",
-          contact: userData.phone || "9999999999",
-          address,
+          name: userData.name,
+          email: userData.email,
+          contact: userData.phone,
         },
         theme: { color: "#3D1D1D" },
       };
 
-      const rzp1 = new window.Razorpay(options);
-      rzp1.open();
-    } catch (error: any) {
-      console.error("Payment failed", error);
-      toast.error(error.message || "Payment initialization failed.");
+      // Initialize and Open Razorpay Checkout
+      const razorpay = await initializeRazorpay(razorpayOptions);
+      razorpay.open();
+    } catch (error) {
+      console.error("Payment Process Error:", error);
+      toast.error(
+        error instanceof Error
+          ? `Payment failed: ${error.message}`
+          : "An unexpected error occurred"
+      );
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className="rounded-lg bg-gray-50 px-0 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8 h-full">
+    <div className="relative space-y-6  border-none rounded-3xl p-0 md:p-8  l transition-all duration-300 ease-in-out">
+      <div className="absolute top-0 left-0 w-24 h-24 bg-[#3D1D1D]/5 rounded-full -translate-x-1/2 -translate-y-1/2 z-0"></div>
+      <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#3D1D1D]/5 rounded-full translate-x-1/2 translate-y-1/2 z-0"></div>
+
       <OrderSummary />
 
-      {/* Billing Information Section */}
-      <div className="mt-6 mb-4">
-        <div className="mb-4">
-          <h5 className="text-xl font-semibold text-gray-900">
-            Billing Information
-          </h5>
-          <p className="text-sm text-gray-500">
-            Please review your billing information before proceeding with the
-            payment.
-          </p>
+      <div className="relative z-10 space-y-6 bg-[#3D1D1D]/5 px-4 py-6 rounded-2xl">
+        <div className="space-y-4 text-[#3D1D1D]/80">
+          {isUserDataLoading ? (
+            <div className="border-t border-[#3D1D1D]/10 pt-6">
+              <div className="animate-pulse space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gray-300 rounded-full"></div>
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-300 rounded"></div>
+                  <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+                </div>
+              </div>
+            </div>
+          ) : !userData ? (
+            <div className="border-t border-[#3D1D1D]/10 pt-6">
+              <div className="flex items-center space-x-4 mb-4">
+                <div className="p-3 bg-[#3D1D1D]/10 rounded-full">
+                  <Edit className="w-6 h-6 text-[#3D1D1D]" />
+                </div>
+                <h5 className="text-xl font-bold text-[#3D1D1D]">
+                  Add Billing Information
+                </h5>
+              </div>
+              <p className="text-sm text-[#3D1D1D]/70 mb-4">
+                Please add your billing information to proceed with the payment.
+              </p>
+              <BillingDialog
+                title="Add Billing Details"
+                subtitle="Complete your billing information"
+                triggerLabel="Add Billing Information"
+              />
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-4">
+                  <div className="p-3 bg-[#3D1D1D]/10 rounded-full">
+                    <Edit className="w-6 h-6 text-[#3D1D1D]" />
+                  </div>
+                  <h5 className="text-2xl font-bold text-[#3D1D1D] tracking-tight">
+                    Billing Information
+                  </h5>
+                </div>
+              </div>
+              <p className="text-sm text-[#3D1D1D]/70">
+                Please review your billing information before proceeding with
+                the payment.
+              </p>
+
+              <DeliveryAddress />
+            </>
+          )}
         </div>
-        <DeliveryAddress />
-
-        {!userData && (
-          <>
-            <h5 className="text-xl font-semibold text-gray-900">
-              ADD BILLING INFORMATION
-            </h5>
-            <p className="text-sm text-gray-500">
-              Please add your billing information to proceed with the payment.
-            </p>
-
-            <BillingDialog
-              title="Billing Information"
-              subtitle="Please enter your billing information to complete the order."
-              triggerLabel="Add Billing Information"
-              onSuccess={() => setIsBillingFormVisible(false)}
-            />
-          </>
-        )}
-        {!isBillingFormVisible && (
-          <Button
-            className="w-full bg-[#2D1515] py-2 rounded-md shadow-md transition-all hover:bg-[#3D1D1D] text-white mb-4"
-            onClick={handlePayment}
-            disabled={isProcessing}
-          >
-            {isProcessing ? "Processing..." : "Proceed to Payment"}
-          </Button>
-        )}
       </div>
+
+      <div className="mt-6 flex justify-center">
+        <Button
+          onClick={handlePayment}
+          disabled={isProcessing || !userData}
+          className="group w-full max-w-md bg-[#3D1D1D] hover:bg-[#2C1515] text-white font-semibold py-4 rounded-xl transition-all duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-[#3D1D1D]/50 flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl"
+        >
+          <span className="transition-transform duration-300 group-hover:translate-x-1">
+            {isProcessing ? "Processing Payment..." : "Proceed to Payment"}
+          </span>
+          {isProcessing ? (
+            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 transition-transform duration-300 group-hover:scale-110"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          )}
+        </Button>
+      </div>
+      <OrderConfirmationModal 
+        isOpen={orderConfirmationDetails.isOpen}
+        orderDetails={{ orderId: orderConfirmationDetails.orderId }}
+        onClose={() => {
+          setOrderConfirmationDetails({ isOpen: false });
+          router.push('/');  // Navigate to home or desired page
+        }}
+      />
     </div>
   );
 };

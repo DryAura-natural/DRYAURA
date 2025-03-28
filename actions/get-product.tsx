@@ -8,19 +8,25 @@ const productCache = new Map<string, { promise: Promise<Product>, timestamp: num
 const getProduct = async (id: string): Promise<Product> => {
   // Validate input
   if (!id || typeof id !== 'string') {
+    console.error('Invalid product ID input:', id);
     throw new Error("Invalid product ID");
   }
 
   // Check cache first
   const cached = productCache.get(id);
   if (cached && Date.now() - cached.timestamp < 3600000) { // 1 hour cache
+    console.log(`Returning cached product for ID: ${id}`);
     return cached.promise;
   }
 
   let controller: AbortController | null = new AbortController();
-  const timeoutId = setTimeout(() => controller?.abort(), 5000); // 5s timeout
+  const timeoutId = setTimeout(() => {
+    console.warn(`Request for product ${id} timed out`);
+    controller?.abort();
+  }, 5000); // 5s timeout
 
   try {
+    console.log(`Fetching product with ID: ${id}`);
     const fetchPromise = fetch(`${API_URL}/${encodeURIComponent(id)}`, {
       method: 'GET',
       headers: {
@@ -35,18 +41,23 @@ const getProduct = async (id: string): Promise<Product> => {
       clearTimeout(timeoutId);
       controller = null;
       
+      console.log(`Response status for product ${id}: ${response.status}`);
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || `Failed to fetch product (HTTP ${response.status})`);
+        const errorData = await response.text(); 
+        console.error(`Failed to fetch product (HTTP ${response.status}):`, errorData);
+        throw new Error(errorData || `Failed to fetch product (HTTP ${response.status})`);
       }
 
       const data = await response.json();
       
-      // Basic response validation
-      if (!data.id || !data.name) {
+      // Enhanced response validation
+      if (!data || !data.id || !data.name) {
+        console.error('Invalid product data structure:', data);
         throw new Error("Invalid product data structure");
       }
 
+      console.log(`Successfully fetched product: ${data.name} (ID: ${data.id})`);
       return data as Product;
     });
 
@@ -65,7 +76,12 @@ const getProduct = async (id: string): Promise<Product> => {
       }
     }
 
-    console.error(`Product fetch error (ID: ${id}):`, error);
+    console.error(`Product fetch error (ID: ${id}):`, {
+      errorName: error instanceof Error ? error.name : 'Unknown Error',
+      errorMessage: error instanceof Error ? error.message : String(error),
+      fullError: error
+    });
+    
     throw new Error(errorMessage);
   } finally {
     // Cleanup cache after 1 hour

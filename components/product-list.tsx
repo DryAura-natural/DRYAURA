@@ -11,28 +11,42 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700"] });
 
 interface ProductListProps {
   title: string;
-  items: Product[];
+  items: Product[] | { products?: Product[] };
   isLoading?: boolean;
   error?: Error | null;
 }
 
 const ProductList: React.FC<ProductListProps> = ({
   title,
-  items,
+  items = [],
   isLoading,
   error,
 }) => {
+  // Normalize items to always be an array
+  const normalizedItems = Array.isArray(items) 
+    ? items 
+    : (items.products || []);
+
+  if (!Array.isArray(normalizedItems)) {
+    console.error('Invalid items prop:', items);
+    items = [];
+  } else {
+    console.log('Product items:', normalizedItems.map((item) => item.name));
+  }
+
+  if (error) {
+    console.error('Error loading products:', error);
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [showControls, setShowControls] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
   const scrollAmount = 300;
-
   const checkScrollPosition = () => {
     if (containerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      // Add small buffer to account for floating-point precision
       const buffer = 1;
       setCanScrollLeft(scrollLeft > buffer);
       setCanScrollRight(scrollLeft + clientWidth + buffer < scrollWidth);
@@ -40,7 +54,7 @@ const ProductList: React.FC<ProductListProps> = ({
   };
 
   useEffect(() => {
-    const shouldShowCarousel = items.length > 4;
+    const shouldShowCarousel = normalizedItems.length > 4;
     setShowControls(shouldShowCarousel);
 
     if (shouldShowCarousel && containerRef.current) {
@@ -64,22 +78,8 @@ const ProductList: React.FC<ProductListProps> = ({
         window.removeEventListener("resize", checkScrollPosition);
       };
     }
-  }, [items.length]);
+  }, [normalizedItems.length]);
 
-  const scrollLeft = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({
-        left: -scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const scrollRight = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
 
   if (error) {
     return (
@@ -115,6 +115,7 @@ const ProductList: React.FC<ProductListProps> = ({
       transition: { delay: index * 0.1, duration: 0.5 },
     }),
   };
+  console.log("this is items of product list", normalizedItems.map((item) => item.name));
 
   return (
     <section
@@ -128,38 +129,9 @@ const ProductList: React.FC<ProductListProps> = ({
         {title}
       </h3>
 
-      {items.length === 0 && <NoResult />}
+      {normalizedItems.length === 0 && <NoResult />}
 
       <div className="relative ">
-        {/* {showControls && (
-          <>
-            <button
-              onClick={scrollLeft}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 transition-all ${
-                canScrollLeft
-                  ? "opacity-100 hover:bg-gray-100"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              aria-label="Scroll left"
-              disabled={!canScrollLeft}
-            >
-              <ChevronLeft className="w-6 h-6 text-gray-700" />
-            </button>
-            <button
-              onClick={scrollRight}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-md z-10 transition-all ${
-                canScrollRight
-                  ? "opacity-100 hover:bg-gray-100"
-                  : "opacity-50 cursor-not-allowed"
-              }`}
-              aria-label="Scroll right"
-              disabled={!canScrollRight}
-            >
-              <ChevronRight className="w-6 h-6 text-gray-700" />
-            </button>
-          </>
-        )} */}
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -179,19 +151,23 @@ const ProductList: React.FC<ProductListProps> = ({
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {items.map((item, index) => (
+            {normalizedItems.map((item, index) => (
               <motion.article
                 key={item.id}
                 role="listitem"
                 className={`hover:shadow-lg transition-shadow duration-200 snap-start ${
                   showControls
-                    ? "min-w-[80%] sm:min-w-[45%] md:min-w-[30%] lg:min-w-[23%]"
+                    ? "min-w-[50%] sm:min-w-[45%] md:min-w-[30%] lg:min-w-[23%]"
                     : "w-full"
                 }`}
-                variants={cardVariants}
-                custom={index}
               >
-                <ProductCard data={item} />
+                <ProductCard
+                  data={item}
+                  variants={item.variants}
+                  categories={item.categories}
+                  badges={item.badges}
+                  productBanner={item.productBanner}
+                />
               </motion.article>
             ))}
           </motion.div>

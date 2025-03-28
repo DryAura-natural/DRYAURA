@@ -20,13 +20,15 @@ interface comboProductProps {
 }
 
 const ComboProduct: React.FC<comboProductProps> = ({
-  // title,
-  items,
+  items = [],
   isLoading,
   error,
 }) => {
+  // Ensure items is always an array
+  const safeItems = Array.isArray(items) ? items : [];
+
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showScrollButtons, setShowScrollButtons] = useState(items.length > 4);
+  const [showScrollButtons, setShowScrollButtons] = useState(safeItems.length > 4);
   const sliderRef = useRef<Slider>(null);
 
   const scrollLeft = () => {
@@ -73,7 +75,6 @@ const ComboProduct: React.FC<comboProductProps> = ({
   };
 
   const cardVariants = {
-    
     visible: (index: number) => ({
       opacity: 1,
       scale: 1,
@@ -134,7 +135,6 @@ const ComboProduct: React.FC<comboProductProps> = ({
         },
       },
     ],
-   
   };
 
   return (
@@ -143,7 +143,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
         aria-labelledby="product-list-heading"
         className=" relative bg-no-repeat bg-center bg-cover "
       >
-        {items.length === 0 && <NoResult />}
+        {safeItems.length === 0 && <NoResult />}
         <div
           className="relative lg:px-24 rounded-3xl lg:rounded-none"
           style={{
@@ -176,7 +176,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
           </div>
 
           <Slider ref={sliderRef} {...settings} className="ml-4 ">
-            {items.map((item, index) => (
+            {safeItems.map((item, index) => (
               <div key={item.id}>
                 <motion.article
                   role="listitem"
@@ -184,7 +184,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
                   variants={cardVariants}
                   custom={index}
                 >
-                  <ProductCard data={item} />
+                  <ProductCard data={item} variants={item.variants} categories={item.categories} badges={item.badges} productBanner={item.productBanner}/>
                 </motion.article>
               </div>
             ))}

@@ -1,7 +1,7 @@
 // components/Description.tsx
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface DescriptionProps {
@@ -9,6 +9,7 @@ interface DescriptionProps {
 }
 const Description = ({ text }: DescriptionProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [truncatedText, setTruncatedText] = useState('');
 
   const toggleReadMore = () => {
     setIsExpanded(!isExpanded);
@@ -20,14 +21,17 @@ const Description = ({ text }: DescriptionProps) => {
     .replace(/- (.*?)\n/g, '<li class="ml-4 list-disc">$1</li>')
     .replace(/\n/g, "<br>");
 
-  const truncateHTML = (html: string, maxLength: number) => {
-    const div = document.createElement("div");
-    div.innerHTML = html;
-    let text = div.textContent || div.innerText || "";
-    return text.length > maxLength
-      ? text.substring(0, maxLength) + "..."
-      : text;
-  };
+  useEffect(() => {
+    const truncateHTML = (html: string, maxLength: number) => {
+      const div = document.createElement('div');
+      div.innerHTML = html;
+      let text = div.textContent || div.innerText || '';
+      return text.length > maxLength
+        ? text.substring(0, maxLength) + '...'
+        : text;
+    };
+    setTruncatedText(truncateHTML(formattedText, 500));
+  }, [formattedText]);
 
   return (
     <div className="max-h-screen overflow-scroll p-5">
@@ -47,7 +51,7 @@ const Description = ({ text }: DescriptionProps) => {
           dangerouslySetInnerHTML={{
             __html: isExpanded
               ? formattedText
-              : truncateHTML(formattedText, 500),
+              : truncatedText,
           }}
         />
       </div>

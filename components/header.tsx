@@ -21,7 +21,8 @@ import {
   Home,
   Store,
   ShoppingCart,
-  
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   User,
   ArrowBigRight,
   ShoppingBag,
@@ -60,17 +61,33 @@ export function SiteHeader() {
     { label: "New Launch", link: "/new-launch", icon: "🚀" },
     { label: "Gifting", link: "/gifting", icon: "🎁" },
     { label: "Bulk Orders", link: "/bulk-orders", icon: "📦" },
-    { label: "Contact Us", link: "/contact-us", icon: "📞" },
+    { label: "Contact Us", link: "/contact", icon: "📞" },
   ];
 
   const mobileBottomNavItems = [
-    { icon: Home, label: "Home", link: "/" },
-    { icon: Store, label: "Shop", link: "/shop" },
-    { icon: ShoppingCart, label: "Cart", link: "/cart" },
+    { 
+      icon: Home, 
+      label: "Home", 
+      link: "/", 
+      prefetch: true 
+    },
+    { 
+      icon: Store, 
+      label: "Shop", 
+      link: "/shop", 
+      prefetch: true 
+    },
+    { 
+      icon: ShoppingCart, 
+      label: "Cart", 
+      link: "/cart", 
+      prefetch: true 
+    },
     {
       icon: SignedIn ? UserCog : User,
-      label: SignedIn ? "Account" : "Sign Up",
-      link: SignedIn ? "/account" : "/sign-up",
+      label: SignedIn ? "Account" : "Sign In",
+      link: SignedIn ? "/account" : "/sign-in",
+      prefetch: true
     },
   ];
 
