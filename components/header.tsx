@@ -28,6 +28,7 @@ import {
   ShoppingBag,
   ListOrdered,
   Settings,
+  Instagram,
 } from "lucide-react";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { NavbarAction } from "./navbar-action";
@@ -40,6 +41,9 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import TrackOrderDialog from './orders/TrackOrder';
+import { FaWhatsapp } from "react-icons/fa";
 
 export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -48,20 +52,22 @@ export function SiteHeader() {
   const { user } = useUser();
 
   const socialIcons = [
-    { icon: Facebook, link: "#" },
-    { icon: Linkedin, link: "#" },
-    { icon: Youtube, link: "#" },
-    { icon: Twitter, link: "#" },
+    { icon: Instagram, link: "https://instagram/dryaura" },
+    { icon: Facebook, link: "https://facebook/dryaura" },
+    { icon: FaWhatsapp, link: "https://whatsapp/dryaura" },
+    { icon: Youtube, link: "https://www.youtube.com/@dryaura" },
+    { icon: Twitter, link: "https://twitter.com/dryaura" },
   ];
 
   const navItems = [
-    { label: " Holi Fiest", link: "/holi-fiest", icon: "🎉" },
+    // { label: " Holi Fiest", link: "/holi-fiest", icon: "🎉" },
+    { label: "Shop Now", link: "/all", icon: "🛒" },
     { label: "Jumbo Nuts", link: "/jumbo-nuts", icon: "🥜" },
-    { label: "Healthy Snacking", link: "/snacking", icon: "🍎" },
+    { label: "Healthy Snacking", link: "/healthy-snacking", icon: "🍎" },
     { label: "New Launch", link: "/new-launch", icon: "🚀" },
     { label: "Gifting", link: "/gifting", icon: "🎁" },
-    { label: "Bulk Orders", link: "/bulk-orders", icon: "📦" },
-    { label: "Contact Us", link: "/contact", icon: "📞" },
+    { label: "Bulk Orders", link: "/contact-us", icon: "📦" },
+    { label: "Contact Us", link: "/contact-us", icon: "📞" },
   ];
 
   const mobileBottomNavItems = [
@@ -74,7 +80,7 @@ export function SiteHeader() {
     { 
       icon: Store, 
       label: "Shop", 
-      link: "/shop", 
+      link: "/collections/all", 
       prefetch: true 
     },
     { 
@@ -125,15 +131,22 @@ export function SiteHeader() {
         <div className="flex items-center space-x-6 flex-wrap">
           <div className="flex items-center space-x-2">
             <MapPin className="w-4 h-4" />
-            <span>Malad West</span>
+            <span>Jammu and Kashmir</span>
           </div>
-          <Link
-            href="#"
-            className="hover:text-orange-300 flex items-center space-x-2"
-          >
-            <CarFront className="w-4 h-4" />
-            <span>Track Order</span>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Link
+                href="/account/orders"
+                className="hover:text-orange-300 flex items-center space-x-2"
+              >
+                <CarFront className="w-4 h-4" />
+                <span>Track Order</span>
+              </Link>
+            </DialogTrigger>
+            <DialogContent>
+              <TrackOrderDialog />
+            </DialogContent>
+          </Dialog>
           <SignedIn>
             <div className="flex items-center space-x-2">
               <span className="font-semibold text-white flex gap-x-2 border p-1 rounded-full">
@@ -271,7 +284,7 @@ export function SiteHeader() {
             {navItems.map(({ label, link, icon }) => (
               <li key={label} className="flex items-center space-x-2">
                 <Link
-                  href={link}
+                  href={`collections${link}`}
                   className="hover:text-orange-300 block py-2 transition-colors duration-300 ease-in-out"
                 >
                   {icon}
@@ -436,7 +449,7 @@ export function SiteHeader() {
           {navItems.map(({ label, link, icon }) => (
             <li key={label}>
               <Link
-                href={link}
+                href={`collections/${link}`}
                 className="flex items-center gap-2 justify-center hover:text-orange-300 transition-colors duration-300 ease-in-out hover:bg-white px-2  py-0.5 rounded-full"
               >
                 {icon} {label}

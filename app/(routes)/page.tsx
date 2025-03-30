@@ -10,7 +10,7 @@ import StoreLocator from "@/components/dryfruit_stats";
 import { HeroSection } from "@/components/hero-section";
 import ImageCarousel from "@/components/ImageCarousel";
 import DryfruitPhoto from "@/components/Photos";
-import Poster from "@/components/poster";
+import {Poster} from "@/components/poster";
 import ProductList from "@/components/product-list";
 import ShopByPurpose from "@/components/ShopByPurpose";
 import CategoryCard from "@/components/ui/CategoryCard";
@@ -78,7 +78,7 @@ When it comes to selecting a provider for dry fruits, Dryaura stands out for sev
 
 Dryaura is more than just a brand; it represents a commitment to quality, sustainability, and health. By choosing Dryaura, you are not only indulging in delicious dry fruits but also supporting a company that values the well-being of its customers and the environment. Experience the difference with Dryaura and elevate your snacking habits today!
 `;
-  const billboard = await getBillboard("8a081fcc-965c-4ecf-9b1a-4521349dce2e");
+  // const billboard = await getBillboard("ceef521d-e446-4a0f-82b0-a0f48be35877");
   const products = await getProducts({ });
 
   return (
@@ -114,8 +114,7 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
           <div className=" md:px-5 px-4 py-2">
             {" "}
             <Poster
-              src="https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67b883f4000e4e4f6df8/view?project=67a96cd2001e32766970&mode=admin"
-              alt="Premium Nuts"
+              billboardId="6689e34f-c768-48c2-9d33-2e1e756b88a6"
             />
           </div>
           <div className="flex flex-col gap-y-8  px-2 lg:px-0  py-2">

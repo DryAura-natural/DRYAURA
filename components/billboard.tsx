@@ -1,15 +1,26 @@
 import { Billboard as BillboardType } from "@/types";
 
 interface BillboardProps {
-  data: BillboardType;
+  data?: BillboardType;
 }
 
 const Billboard: React.FC<BillboardProps> = ({ data }) => {
+  // Fallback to a default image or description if no images
+  const backgroundImage = data?.images?.[0]?.url || '';
+  const backgroundStyle = backgroundImage 
+    ? { backgroundImage: `url(${backgroundImage})` }
+    : { 
+        backgroundColor: '#f0f0f0', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+      };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 rounded-xl h-full xl:h-[600px] overflow-hidden">
       <div
         style={{ 
-          backgroundImage: `url(${data?.imageUrl})`, 
+          ...backgroundStyle,
           backgroundSize: 'cover', 
           backgroundPosition: 'center' 
         }}
@@ -23,10 +34,14 @@ const Billboard: React.FC<BillboardProps> = ({ data }) => {
               {data.label}
             </div>
           )}
+          {!backgroundImage && (
+            <div className="text-gray-700 text-xl">
+              {data?.description || 'No image available'}
+            </div>
+          )}
         </div> */}
       </div>
     </div>
   );
 };
-
 export default Billboard;

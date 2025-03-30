@@ -1,22 +1,29 @@
 export interface Billboard {
   id: string;
   label: string;
-  imageUrl: string;
+  description: string;
+  images: {
+    id: string;
+    url: string;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-export interface VideoBillboard {
-  id: string;
-  label: string;
-  subLabel?: string;
-  videoUrl?: string;
-  textColor?: string;
-  subTextColor?: string;
-}
+// export interface VideoBillboard {
+//   id: string;
+//   label: string;
+//   subLabel?: string;
+//   videoUrl?: string;
+//   textColor?: string;
+//   subTextColor?: string;
+// }
 
 export interface Category {
   id: string;
   name: string;
   billboardId: string;
+  
+  billboard: Billboard;
   createdAt: Date;
   updatedAt: Date;
 }

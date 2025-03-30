@@ -6,7 +6,7 @@ import { useState } from "react";
 const categories = [
   {
     title: "Cooking",
-    description: "Versatile ingredients for sweet & savory recipes",
+    description: "Versatile ingredients for crafting delightful sweet & savory recipes at home",
     href: "/cooking",
     icon: CookingPot,
     bgColor: "bg-gradient-to-b from-[#952C4D] to-[#C8385E]",
@@ -14,7 +14,7 @@ const categories = [
   },
   {
     title: "Gifting",
-    description: "Elegant gift sets for any occasion",
+    description: "Elegant and thoughtfully curated gift sets perfect for every special occasion",
     href: "/gifting",
     icon: GiftIcon,
     bgColor: "bg-gradient-to-b from-[#916A5E] to-[#563f38]",
@@ -22,7 +22,7 @@ const categories = [
   },
   {
     title: "Daily Nutrition",
-    description: "Essential nutrients for daily health",
+    description: "Premium, balanced nutrients to support your holistic daily wellness",
     href: "/nutrition",
     icon: Leaf,
     bgColor: "bg-gradient-to-b from-[#6B705C] to-[#4c5042]",
@@ -30,7 +30,7 @@ const categories = [
   },
   {
     title: "Snacking",
-    description: "Healthy snacks for on-the-go lifestyles",
+    description: "Nutritious and delicious snacks designed for active, modern lifestyles",
     href: "/snacking",
     icon: Popcorn,
     bgColor: "bg-gradient-to-b from-[#126781] to-[#3e4c50]",
@@ -77,7 +77,7 @@ const ShopByPurpose = () => {
               {category.title}
             </h3>
             <p
-              className={`text-xs text-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] px-4 mt-16 ${
+              className={`text-xs text-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] px-4 mt-24 ${
                 activeCategory === category.title
                   ? "opacity-100"
                   : "opacity-0 group-hover:opacity-100"
