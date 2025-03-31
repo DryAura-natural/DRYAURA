@@ -14,6 +14,7 @@ import getProduct from "@/actions/get-product";
 import GifLoader from "./one-loder";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import cn from "classnames";
 
 interface ProductCardProps {
   data: Product;
@@ -160,26 +161,46 @@ const ProductCard: React.FC<ProductCardProps> = memo(
 
     return (
       <article
-        className="bg-white group cursor-pointer rounded-xl p-1 border border-black/10 hover:shadow-lg aspect-auto relative"
+        className={cn(
+          "bg-white group cursor-pointer rounded-xl p-1 border border-black/10  aspect-auto relative ",
+         
+        )}
         aria-label={`Product: ${data.name}`}
         role="article"
       >
-    <div className="hidden sm:flex justify-between absolute top-3 left-2 z-10 bg-green-900 text-white px-2 py-1 rounded-full text-xs font-bold">
-  <span className="">
-    {(() => {
-      console.log('Badges:', badges);
-      
-      if (badges.length > 0) {
-        const badgeDetails = badges[0];
-        console.log('Badge Details:', badgeDetails);
-        
-        return badgeDetails.label || badgeDetails.name || "New Launch";
-      }
-      
-      return "New Launch";
-    })()}
-  </span>
-</div>
+        {/* Out of Stock Overlay */}
+        {data.isOutOfStock && (
+          <div className="absolute inset-0 bg-black/10  rounded-xl z-10 flex items-center justify-center">
+            <div className="bg-white/80 px-4 py-2 rounded-md shadow-md">
+              <span className="text-red-600 font-semibold text-sm uppercase tracking-wider">
+                Out of Stock
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="hidden sm:flex justify-between absolute top-3 left-2 z-10 bg-green-900 text-white px-2 py-1 rounded-full text-xs font-bold">
+          <span className="">
+            {(() => {
+              // Debugging: log the full badges object
+              console.log("Full badges object:", JSON.stringify(badges, null, 2));
+
+              // Check if badges is an array and has length
+              if (Array.isArray(badges) && badges.length > 0) {
+                // Extract badge label from nested object
+                const firstBadge = badges[0];
+                
+                // Check if badge object exists and has a label
+                if (firstBadge.badge && firstBadge.badge.label) {
+                  return firstBadge.badge.label;
+                }
+              }
+              
+              // If no badges found, return empty string
+              return "";
+            })()}
+          </span>
+        </div>
 
         {/* Discount Badge */}
         {discountPercentage > 0 && (
@@ -204,7 +225,10 @@ const ProductCard: React.FC<ProductCardProps> = memo(
             src={imageUrl}
             fill
             onClick={handleClick}
-            className="aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110 overflow-hidden"
+            className={cn(
+              "aspect-square object-cover rounded-md transition-transform duration-700 ease-in-out hover:scale-110 overflow-hidden",
+              data.isOutOfStock && "opacity-50"
+            )}
             onLoadingComplete={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
             loading="lazy"
@@ -240,7 +264,12 @@ const ProductCard: React.FC<ProductCardProps> = memo(
         </div>
 
         <div className="flex flex-col mt-2 px-1">
-          <h3 className="text-sm font-medium capitalize text-balance truncate">
+          <h3
+            className={cn(
+              "text-sm font-medium capitalize text-balance truncate",
+              data.isOutOfStock && "text-gray-400 line-through"
+            )}
+          >
             {data.name?.slice(0, 40) || "Unnamed Product"}...
           </h3>
 
@@ -271,9 +300,12 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           <div className="py-2">
             <button
               onClick={onAddToCart}
-              className="w-full bg-[#3D1D1D] hover:bg-[#6c3d3d] text-white  rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs py-2"
+              className={cn(
+                "w-full bg-[#3D1D1D] hover:bg-[#6c3d3d] text-white  rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs py-2",
+                data.isOutOfStock && "opacity-50 cursor-not-allowed"
+              )}
             >
-              {isAddingToCart ? "Adding..." : "Add To Cart"}
+              {isAddingToCart ? "Adding..." : data.isOutOfStock ? "Out of Stock" : "Add To Cart"}
             </button>
           </div>
         </div>

@@ -44,6 +44,7 @@ export interface Product {
   isArchived: boolean;
   createdAt: Date;
   updatedAt: Date;
+  isOutOfStock: boolean;
   selectedVariant?: ProductVariant;
 }
 
