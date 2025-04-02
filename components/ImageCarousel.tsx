@@ -1,28 +1,52 @@
 "use client";
-
-import Image from "next/image";
-import { Button } from "./ui/Button";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const imageData = [
   {
     id: 1,
-    title: "Unlock Your Potential",
+    title: "Boost Your Immunity",
+    description: "Powerful natural ingredients for optimal health",
     imgSrc:
-      "https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67b9d6b7002f83896c25/view?project=67a96cd2001e32766970&mode=admin",
+      "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67ed39dd002ceeaaa12b/view?project=67a96cd2001e32766970&mode=admin",
+    bgColor: "#E6F3FF",
+    textColor: "#1A5F7A",
+    buttonColor: "#1A5F7A"
   },
   {
     id: 2,
-    title: "A Healthy Brain",
+    title: "Nourish Your Brain",
+    description: "Cognitive enhancement through natural nutrition",
     imgSrc:
-      "https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67b9df78002055bc50b0/view?project=67a96cd2001e32766970&mode=admin",
+      "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67ed39eb000e5df46e1e/view?project=67a96cd2001e32766970&mode=admin",
+    bgColor: "#FFF0E1",
+    textColor: "#8B4513",
+    buttonColor: "#8B4513"
   },
-  // { id: 3, title: 'A Healthy Brain', imgSrc: 'https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b5f9c600138cb2fb9a/view?project=67a96cd2001e32766970&mode=admin' },
+  {
+    id: 3,
+    title: "Energy Unleashed",
+    description: "Supercharge your day with natural vitality",
+    imgSrc:
+      "https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67b5f9c600138cb2fb9a/view?project=67a96cd2001e32766970&mode=admin",
+    bgColor: "#E8F5E9",
+    textColor: "#2E7D32",
+    buttonColor: "#2E7D32"
+  }
 ];
 
 const ImageCarousel = () => {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [bgColor, setBgColor] = useState("#ffffff");
+  const [direction, setDirection] = useState(0);
+
+  const handleImageChange = useCallback((newIndex: number) => {
+    setDirection(newIndex > currentIndex ? 1 : -1);
+    setCurrentIndex(newIndex);
+  }, [currentIndex]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,59 +54,147 @@ const ImageCarousel = () => {
     }, 5000); // Change image every 5 seconds
 
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [currentIndex, handleImageChange]);
 
-  const handleImageChange = (index: number) => {
-    const colors = ["#f0f0f0", "#e0e0e0", "#d0d0d0"]; // Add your desired colors
-    setBgColor(colors[index % colors.length]);
-    setCurrentIndex(index);
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
   };
 
-  const currentImage = imageData[currentIndex];
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const goToPrevious = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? imageData.length - 1 : currentIndex - 1;
+    handleImageChange(newIndex);
+  };
+
+  const goToNext = () => {
+    const isLastSlide = currentIndex === imageData.length - 1;
+    const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    handleImageChange(newIndex);
+  };
+
+  const currentSlide = imageData[currentIndex];
 
   return (
-    <div className="h-[250px]  md:h-[500px] rounded-xl overflow-hidden  py-5">
-      <div className="container mx-auto px-4 h-full flex items-center justify-between carousel-container">
-        <div className="flex flex-col md:flex-row items-start justify-between w-full gap-12  bg-[#800020] rounded-xl py-4 px-6 xl:px-16 lg:py-16 relative">
-          {/* Text Content */}
-          <div className="flex md:flex-col text-cream-light justify-start text-left  text-white animate-fade-in lg:gap-y-4">
-            <h1 className="text-xl md:text-3xl font-bold leading-tight animate-fade-in-delay text-left">
-              Unlock the Secrets of
-              <span className="block mt-2 text-3xl md:text-5xl">
-                OPTIMAL
-                <br />
-                WELLNESS!
-              </span>
-            </h1>
-            <p className="text-sm md:text-2xl opacity-90 max-w-xl animate-fade-in-delay hidden md:block">
-              Discover the powerful connection between nutrition, brain
-              function, and overall well-being.
-            </p>
-          </div>
+    <div 
+      className="relative w-full h-[70vh] overflow-hidden  rounded-xl "
+      style={{ backgroundColor: currentSlide.bgColor }}
+    >
+      <AnimatePresence initial={false} custom={direction}>
+        <motion.div
+          key={currentIndex}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 }
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
 
-          {/* Carousel Items */}
-          <div
-            key={currentImage?.id}
-            className="flex-1 absolute -top-16 -right-20 md:-top-16 md:right-18 lg:top-20 lg:right-26  xl:-top-10 xl:right-24 transform -translate-x-1/2 z-10 transition-all duration-500 ease-in-out hover:scale-105"
-          >
-            <div className="relative w-[150px] h-[200px]  md:w-[200px] md:h-[200px] lg:w-[250px] lg:h-[200px]  xl:w-[300px] xl:h-[300px] 2xl:w-[350px] 2xl:h-[300px] ">
-              {currentImage && (
-                <Image
-                  src={currentImage.imgSrc}
-                  alt={currentImage.title}
-                  width={500}
-                  height={300}
-                  className="object-cover rounded-lg hover:scale-105 transition-all duration-500 ease-in-out  drop-shadow-2xl shadow-white"
+            if (swipe < -swipeConfidenceThreshold) {
+              goToNext();
+            } else if (swipe > swipeConfidenceThreshold) {
+              goToPrevious();
+            }
+          }}
+          className="absolute w-full h-full flex items-center justify-center "
+        >
+          <div className="flex items-center justify-center w-full h-full ">
+            <div className="w-full max-w-6xl mx-auto flex  items-center">
+              <div className=" pl-5 space-y-6 ">
+                <motion.h2 
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-4xl font-bold "
+                  style={{ color: currentSlide.textColor }}
+                >
+                  {currentSlide.title}
+                </motion.h2>
+                <motion.p 
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-lg"
+                  style={{ color: currentSlide.textColor }}
+                >
+                  {currentSlide.description}
+                </motion.p>
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex items-center truncate px-4 py-2 rounded-full text-white font-semibold transform transition hover:scale-105 text-sm w-fit"
+                  style={{ backgroundColor: currentSlide.buttonColor }}
+                  onClick={() => router.push('/collections/all')}
+                >
+                  <Zap className="mr-2" /> Explore Now
+                </motion.button>
+              </div>
+              <div className="w-1/2 flex justify-center">
+                <motion.img 
+                  src={currentSlide.imgSrc} 
+                  alt={currentSlide.title}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="max-h-[500px] object-contain"
                 />
-              )}
+              </div>
             </div>
           </div>
-          <div className="absolute right-0 bottom-0 md:right-5 md:bottom-5 p-2">
-            <Button className="bg-cream text-burgundy bg-white hover:bg-white/80 hover:text-burgundy-dark transition-all duration-300 text-sm lg:text-lg px-4 py-4 lg:px-6 lg:py-6 rounded-full shadow-lg -ml-10">
-              Explore Now
-            </Button>
-          </div>
-        </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* <button 
+        onClick={goToPrevious} 
+        className="absolute top-1/2 left-10 transform -translate-y-1/2 bg-white/30 p-2 rounded-full hover:bg-white/50 transition"
+      >
+        <ChevronLeft className="text-white" size={32} />
+      </button> */}
+      {/* <button 
+        onClick={goToNext} 
+        className="absolute top-1/2 right-10 transform -translate-y-1/2 bg-white/30 p-2 rounded-full hover:bg-white/50 transition"
+      >
+        <ChevronRight className="text-white" size={32} />
+      </button> */}
+
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {imageData.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleImageChange(index)}
+            className={`w-3 h-3 rounded-full transition-all ${
+              index === currentIndex 
+                ? 'bg-white scale-125' 
+                : 'bg-white/50 hover:bg-white/75'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );

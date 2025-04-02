@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 interface Category {
   backgroundColor: string;
   name: string;
+  id: string;
   hoverImageUrl: string;
   link: string;
   slug: string;
@@ -25,7 +26,7 @@ const CategoryCard: React.FC = () => {
         <motion.div
           key={index}
           className="relative group w-20 h-20 aspect-square sm:w-32 sm:h-32 cursor-pointer"
-          onClick={() => router.push(`/category/${category.id}`)}
+          onClick={() => router.push(`/collections${category.link}`)}
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: index * 0.1, ease: "easeInOut" }}

@@ -13,7 +13,7 @@ const StoreLocator = () => {
               alt="Store interior with shelves of products and a neon sign that reads 'DRYAURA SINCE 1926'"
               className="rounded-tl-[50px] rounded-br-[50px] shadow-lg"
               height="200"
-              src="https://storage.googleapis.com/a1aa/image/q814yGav0_5Ykq3z1i2JIWwCxCAcAy74hCBy2oROSts.jpg"
+              src="https://cloud.appwrite.io/v1/storage/buckets/67a96d700017b622e519/files/67ecc9d70017c23593c4/view?project=67a96cd2001e32766970&mode=admin"
               width="600"
             />
           </div>

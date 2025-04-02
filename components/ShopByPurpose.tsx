@@ -43,12 +43,13 @@ const ShopByPurpose = () => {
 
   const handleClick = (title: string) => {
     setActiveCategory(activeCategory === title ? null : title);
+   
   };
 
   return (
     <section className="max-w-7xl mx-auto px-4 pt-6 sm:px-6 lg:px-8">
       <div className="text-center mb-8 space-y-4 animate-fade-in">
-        <h2 className="text-lg font-bold tracking-tight">Shop By Purpose</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Shop By Purpose</h2>
         <p className="text-base text-[#3e4c50] max-w-2xl mx-auto">
           Find your perfect dry fruits for every occasion and need. &nbsp;From sweet treats to savory dishes, and from healthy snacks to thoughtful gifts, we've got you covered.
         </p>
@@ -68,7 +69,7 @@ const ShopByPurpose = () => {
               />
             </div>
             <h3
-              className={`text-sm font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+              className={`text-sm sm:text-lg font-bold absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${
                 activeCategory === category.title
                   ? "opacity-0"
                   : "group-hover:top-5 group-hover:translate-y-0"
@@ -77,7 +78,7 @@ const ShopByPurpose = () => {
               {category.title}
             </h3>
             <p
-              className={`text-xs text-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] px-4 mt-24 ${
+              className={`text-xs text-center transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] px-4 ${
                 activeCategory === category.title
                   ? "opacity-100"
                   : "opacity-0 group-hover:opacity-100"

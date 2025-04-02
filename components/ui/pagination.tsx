@@ -1,8 +1,10 @@
+"use client";
+
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { ButtonProps, buttonVariants } from "@/components/ui/button"
+import { ButtonProps, buttonVariants } from "@/components/ui/utton"
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -106,6 +108,74 @@ const PaginationEllipsis = ({
 )
 PaginationEllipsis.displayName = "PaginationEllipsis"
 
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/Button";
+import qs from "query-string";
+
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+}
+
+const NewPagination: React.FC<PaginationProps> = ({ 
+  currentPage, 
+  totalPages 
+}) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const createPageURL = (pageNumber: number) => {
+    const current = qs.parse(searchParams.toString());
+    const query = {
+      ...current,
+      page: pageNumber.toString()
+    };
+
+    return qs.stringifyUrl({
+      url: window.location.href,
+      query
+    }, { skipNull: true });
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    const url = createPageURL(pageNumber);
+    router.push(url);
+  };
+
+  return (
+    <div className="flex items-center justify-center space-x-2">
+      <Button 
+        variant="outline"
+        size="sm"
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        Previous
+      </Button>
+
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <Button
+          key={page}
+          variant={currentPage === page ? "default" : "outline"}
+          size="sm"
+          onClick={() => handlePageChange(page)}
+        >
+          {page}
+        </Button>
+      ))}
+
+      <Button 
+        variant="outline"
+        size="sm"
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        Next
+      </Button>
+    </div>
+  );
+};
+
 export {
   Pagination,
   PaginationContent,
@@ -114,4 +184,5 @@ export {
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,
+  NewPagination,
 }

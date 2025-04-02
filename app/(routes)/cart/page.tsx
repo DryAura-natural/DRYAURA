@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Summary from "./components/summary";
 import { FiShoppingBag } from "react-icons/fi";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const CartPage = () => {
   const cart = useCart();
@@ -45,6 +46,13 @@ const CartPage = () => {
                   <p className="text-center text-[#3D1D1D]/70">
                     Your cart is currently empty. Start shopping to add items!
                   </p>
+                  <Link 
+                    href="/collections/all"
+                    className="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#3D1D1D] hover:bg-[#2C1515] transition-colors duration-300 ease-in-out"
+                  >
+                    Shop Now
+                    <FiShoppingBag className="ml-2 w-5 h-5" />
+                  </Link>
                 </motion.div>
               )}
               <ul className="space-y-6 rounded-xl">

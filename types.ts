@@ -40,6 +40,8 @@ export interface Product {
   categories: Category[];
   badges: Badge[];
   productBanner: Image[];
+  benefits: string[];
+  specifications: string[];
   isFeatured: boolean;
   isArchived: boolean;
   createdAt: Date;

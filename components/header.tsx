@@ -52,21 +52,20 @@ export function SiteHeader() {
   const { user } = useUser();
 
   const socialIcons = [
-    { icon: Instagram, link: "https://instagram/dryaura" },
-    { icon: Facebook, link: "https://facebook/dryaura" },
-    { icon: FaWhatsapp, link: "https://whatsapp/dryaura" },
+    { icon: Instagram, link: "https://www.instagram.com/dryaura" },
+    { icon: Facebook, link: "https://www.facebook.com/dryaura" },
+    { icon: FaWhatsapp, link: "https://wa.me/dryaura" },
     { icon: Youtube, link: "https://www.youtube.com/@dryaura" },
     { icon: Twitter, link: "https://twitter.com/dryaura" },
   ];
 
   const navItems = [
-    // { label: " Holi Fiest", link: "/holi-fiest", icon: "🎉" },
-    { label: "Shop Now", link: "/all", icon: "🛒" },
-    { label: "Jumbo Nuts", link: "/jumbo-nuts", icon: "🥜" },
-    { label: "Healthy Snacking", link: "/healthy-snacking", icon: "🍎" },
-    { label: "New Launch", link: "/new-launch", icon: "🚀" },
-    { label: "Gifting", link: "/gifting", icon: "🎁" },
-    { label: "Bulk Orders", link: "/contact-us", icon: "📦" },
+    { label: "Shop Now", link: "/collections/all", icon: "🛒" },
+    { label: "Jumbo Nuts", link: "/collections/jumbo-nuts", icon: "🥜" },
+    { label: "Healthy Snacking", link: "/collections/healthy-snacking", icon: "🍎" },
+    { label: "New Launch", link: "/collections/new-launch", icon: "🚀" },
+    { label: "Gifting", link: "/collections/gifting", icon: "🎁" },
+    { label: "Bulk Orders", link: "/bulk-orders", icon: "📦" },
     { label: "Contact Us", link: "/contact-us", icon: "📞" },
   ];
 
@@ -126,7 +125,7 @@ export function SiteHeader() {
           🎉 Free Delivery on All Orders! 🎉
         </span>
         <span className="mt-2 hover:scale-105">
-          🔥 Use Code: SAVE40 to Get 40% Off! 🔥
+          🔥 Save 2% on all orders! 🔥
         </span>
         <div className="flex items-center space-x-6 flex-wrap">
           <div className="flex items-center space-x-2">
@@ -284,7 +283,7 @@ export function SiteHeader() {
             {navItems.map(({ label, link, icon }) => (
               <li key={label} className="flex items-center space-x-2">
                 <Link
-                  href={`collections${link}`}
+                  href={link}
                   className="hover:text-orange-300 block py-2 transition-colors duration-300 ease-in-out"
                 >
                   {icon}
@@ -449,7 +448,7 @@ export function SiteHeader() {
           {navItems.map(({ label, link, icon }) => (
             <li key={label}>
               <Link
-                href={`collections/${link}`}
+                href={link}
                 className="flex items-center gap-2 justify-center hover:text-orange-300 transition-colors duration-300 ease-in-out hover:bg-white px-2  py-0.5 rounded-full"
               >
                 {icon} {label}

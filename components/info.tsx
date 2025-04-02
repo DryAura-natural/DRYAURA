@@ -247,11 +247,15 @@ const Info: React.FC<InfoProps> = ({
                 Benefits
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>High-quality materials for durability</li>
-                  <li>Ergonomic design for comfort</li>
-                  <li>Eco-friendly and sustainable</li>
-                </ul>
+                {data.benefits || (
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>Calories: 250 kcal</li>
+                    <li>Protein: 15g</li>
+                    <li>Carbohydrates: 30g</li>
+                    <li>Fat: 10g</li>
+                    <li>Fiber: 5g</li>
+                  </ul>
+                )}
               </AccordionContent>
             </AccordionItem>
 
@@ -261,10 +265,15 @@ const Info: React.FC<InfoProps> = ({
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
                 <ul className="list-disc pl-5 space-y-2">
-                  <li>Material: 100% Cotton</li>
-                  <li>Dimensions: 30 x 20 x 10 cm</li>
-                  <li>Weight: 500 grams</li>
-                  <li>Color Options: Red, Blue, Green</li>
+                  {data.specifications || (
+                    <>
+                      <li>Material: 100% Organic</li>
+                      <li>Dimensions: 30 x 20 x 10 cm</li>
+                      <li>Weight: 500 grams</li>
+                      <li>Color Options: Red, Blue, Green</li>
+                      <li>Care Instructions: Machine Washable</li>
+                    </>
+                  )}
                 </ul>
               </AccordionContent>
             </AccordionItem>

@@ -111,16 +111,16 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
             <PremiumNutsBanner />
           </div>
           <ShopByPurpose />
-          <div className=" md:px-5 px-4 py-2">
+          <div className=" md:px-5 py-2">
             {" "}
             <Poster
-              billboardId="6689e34f-c768-48c2-9d33-2e1e756b88a6"
+              billboardId={`${process.env.NEXT_POSTER_BILLBOARD_ID}`}
             />
           </div>
           <div className="flex flex-col gap-y-8  px-2 lg:px-0  py-2">
             <ComboProduct items={products} />
           </div>
-          <div className="">
+          <div className="md:p-10 p-2">
             <ImageCarousel />
           </div>
 
@@ -128,9 +128,9 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
             <DryfruitPhoto />
           </div>
 
-          <div className="max-h-screen">
+          <div className="md:p-10 p-2">
             <section className="container mx-auto px-4  lg:my-14">
-              <h1 className="text-xl md:text-3xl font-bold text-center mb-6">
+              <h1 className="text-3xl md:text-3xl font-bold text-center mb-6">
                 Our Recent Blogs
               </h1>
               <BlogCarousel />

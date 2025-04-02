@@ -4,7 +4,7 @@ import NoResult from "@/components/ui/no-result";
 import ProductCard from "@/components/ui/product-card";
 import { Inter } from "next/font/google";
 import { useState, useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, Sparkles, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -27,8 +27,15 @@ const ComboProduct: React.FC<comboProductProps> = ({
   // Ensure items is always an array
   const safeItems = Array.isArray(items) ? items : [];
 
+  // Filter items to only include combo category
+  const comboItems = safeItems.filter(item => 
+    item.categories.some(category => 
+      category.name === 'combo'
+    )
+  );
+
   const containerRef = useRef<HTMLDivElement>(null);
-  const [showScrollButtons, setShowScrollButtons] = useState(safeItems.length > 4);
+  const [showScrollButtons, setShowScrollButtons] = useState(comboItems.length > 4);
   const sliderRef = useRef<Slider>(null);
 
   const scrollLeft = () => {
@@ -143,53 +150,101 @@ const ComboProduct: React.FC<comboProductProps> = ({
         aria-labelledby="product-list-heading"
         className=" relative bg-no-repeat bg-center bg-cover "
       >
-        {safeItems.length === 0 && <NoResult />}
-        <div
-          className="relative lg:px-24 rounded-3xl lg:rounded-none"
-          style={{
-            backgroundImage:
-              "url(https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67bf458b002853f04e4e/view?project=67a96cd2001e32766970&mode=admin)",
-            backgroundSize: "cover",
-            backgroundPosition: "",
-            width: "100%",
-            minHeight: "45vh",
-            maxHeight: "90vh",
-            backgroundColor: "#f0f0f0",
-          }}
-        >
-          <div className="flex justify-center space-x-5 py-5">
-            <div className=" text-white py-5 text-left  px-5 lg:px-10">
-              <h1 className="text-xl md:text-3xl font-bold  w-full">
-                Go "COMBO" on Nutrition With DRYAURA
-              </h1>
-              <p className="text-xs lg:text-base ">
-                Experience the power of nature in our premium range of
-                health-friendly products. Choose from our wide selection of
-                nutrient-dense nuts, seeds, and dried fruits to fuel your
-                active lifestyle.
-              </p>
+        {comboItems.length === 0 && (
+          <div
+            className="relative lg:px-24 rounded-3xl lg:rounded-none"
+            style={{
+              backgroundImage:
+                "url(https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67bf458b002853f04e4e/view?project=67a96cd2001e32766970&mode=admin)",
+              backgroundSize: "cover",
+              backgroundPosition: "",
+              width: "100%",
+              minHeight: "45vh",
+              maxHeight: "90vh",
+              backgroundColor: "#f0f0f0",
+            }}
+          >
+            <div className="flex justify-center space-x-5 py-5">
+              <div className="text-white py-5 text-left px-5 lg:px-10">
+                <h1 className="text-xl md:text-3xl font-bold w-full flex items-center">
+                  <Sparkles className="mr-3 text-yellow-300" size={32} />
+                  Coming Soon: DRYAURA Combo Products
+                </h1>
+                <p className="text-xs lg:text-base mt-3">
+                  Get ready for a nutritional revolution! We're crafting unique 
+                  combo packages that will transform your health and wellness journey.
+                </p>
+              </div>
             </div>
-            <div className="flex justify-center items-center space-x-5 pr-4 lg:pr-20 ">
-              <PrevArrow />
-              <NextArrow />
+            <div className="flex justify-center items-center py-10 space-x-8">
+              <div className="bg-white/20 rounded-lg p-6 text-center transform transition duration-500 hover:scale-105">
+                <Package className="mx-auto text-white mb-3" size={48} />
+                <h3 className="text-white font-semibold">Curated Selections</h3>
+                <p className="text-white/70 text-sm">Expertly combined nutrition</p>
+              </div>
+              <div className="bg-white/20 rounded-lg p-6 text-center transform transition duration-500 hover:scale-105">
+                <Star className="mx-auto text-white mb-3" size={48} />
+                <h3 className="text-white font-semibold">Premium Quality</h3>
+                <p className="text-white/70 text-sm">Handpicked ingredients</p>
+              </div>
+            </div>
+            <div className="text-center pb-10">
+              <button className="bg-white/30 text-white px-6 py-3 rounded-full hover:bg-white/40 transition duration-300 flex items-center mx-auto">
+                <Sparkles className="mr-2" size={20} />
+                Notify Me When Available
+              </button>
             </div>
           </div>
+        )}
 
-          <Slider ref={sliderRef} {...settings} className="ml-4 ">
-            {safeItems.map((item, index) => (
-              <div key={item.id}>
-                <motion.article
-                  role="listitem"
-                  className="hover:shadow-lg transition-shadow duration-200 snap-center border-2 border-white rounded-xl   mx-1 bg-black p-2  "
-                  variants={cardVariants}
-                  custom={index}
-                >
-                  <ProductCard data={item} variants={item.variants} categories={item.categories} badges={item.badges} productBanner={item.productBanner}/>
-                </motion.article>
+        {comboItems.length > 0 && (
+          <div
+            className="relative lg:px-24 rounded-3xl lg:rounded-none"
+            style={{
+              backgroundImage:
+                "url(https://cloud.appwrite.io/v1/storage/buckets/67a9cbfa001285dc191f/files/67bf458b002853f04e4e/view?project=67a96cd2001e32766970&mode=admin)",
+              backgroundSize: "cover",
+              backgroundPosition: "",
+              width: "100%",
+              minHeight: "45vh",
+              maxHeight: "90vh",
+              backgroundColor: "#f0f0f0",
+            }}
+          >
+            <div className="flex justify-center space-x-5 py-5">
+              <div className=" text-white py-5 text-left  px-5 lg:px-10">
+                <h1 className="text-xl md:text-3xl font-bold  w-full">
+                  Go "COMBO" on Nutrition With DRYAURA
+                </h1>
+                <p className="text-xs lg:text-base ">
+                  Experience the power of nature in our premium range of
+                  health-friendly products. Choose from our wide selection of
+                  nutrient-dense nuts, seeds, and dried fruits to fuel your
+                  active lifestyle.
+                </p>
               </div>
-            ))}
-          </Slider>
-        </div>
+              <div className="flex justify-center items-center space-x-5 pr-4 lg:pr-20 ">
+                <PrevArrow />
+                <NextArrow />
+              </div>
+            </div>
+
+            <Slider ref={sliderRef} {...settings} className="ml-4 ">
+              {comboItems.map((item, index) => (
+                <div key={item.id}>
+                  <motion.article
+                    role="listitem"
+                    className="hover:shadow-lg transition-shadow duration-200 snap-center border-2 border-white rounded-xl   mx-1 bg-black p-2  "
+                    variants={cardVariants}
+                    custom={index}
+                  >
+                    <ProductCard data={item} variants={item.variants} categories={item.categories} badges={item.badges} productBanner={item.productBanner}/>
+                  </motion.article>
+                </div>
+              ))}
+            </Slider>
+          </div>
+        )}
       </section>
     </div>
   );
