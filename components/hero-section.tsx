@@ -16,7 +16,7 @@ export function HeroSection() {
     const fetchBillboard = async () => {
       console.log("🚀 HeroSection: Starting Billboard Fetch");
       try {
-        const billboardId = "ceef521d-e446-4a0f-82b0-a0f48be35877";
+        const billboardId = `${process.env.NEXT_HERO_SECTION_BILLBOARD_ID}`;
 
         const fetchedBillboard = await getBillboard(billboardId);
 

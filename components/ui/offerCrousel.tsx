@@ -18,7 +18,7 @@ const shadowColor = "#59301E";
     const fetchBillboard = async () => {
       console.log('🚀 HeroSection: Starting Billboard Fetch');
       try {
-        const billboardId = "ceef521d-e446-4a0f-82b0-a0f48be35877";
+        const billboardId = `${process.env.NEXT_OFFER_CRUSEL_BILLBOARD_ID}`;
         console.log('🎯 HeroSection: Billboard ID', billboardId);
         
         const fetchedBillboard = await getBillboard(billboardId);
