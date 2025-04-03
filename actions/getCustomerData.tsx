@@ -44,7 +44,7 @@ const getCustomerData = async (id: string): Promise<BillingInfo> => {
       name: rawData.name || '',
       email: rawData.email || '',
       phone: rawData.phone || '',
-      alternatePhone: rawData.alternatePhone || undefined, 
+      alternatePhone: rawData.alternatePhone || rawData.phone || '', // Use primary phone if no alternate
       streetAddress: rawData.streetAddress || '',
       city: rawData.city || '',
       state: rawData.state || '',
