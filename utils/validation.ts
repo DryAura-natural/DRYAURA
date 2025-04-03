@@ -25,10 +25,11 @@ export const customerSchema = z.object({
     .trim()
     .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number"),
 
+  alternatePhone: z.string()
+    .trim()
+    .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number")
+    .optional(),
 
-    alternatePhone: z.string()
-  .trim()
-  .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number"),
   streetAddress: z.string()
     .trim()
     .min(5, "Street address must be at least 5 characters")
