@@ -44,12 +44,13 @@ const getCustomerData = async (id: string): Promise<BillingInfo> => {
       name: rawData.name || '',
       email: rawData.email || '',
       phone: rawData.phone || '',
-      alternatePhone: rawData.alternatePhone || '',
+      alternatePhone: rawData.alternatePhone || undefined, 
       streetAddress: rawData.streetAddress || '',
       city: rawData.city || '',
       state: rawData.state || '',
-      landmark: rawData.landmark || '',
+      landmark: rawData.landmark || undefined, 
       postalCode: rawData.postalCode || '',
+      town: rawData.town || undefined, 
     };
 
     try {

@@ -26,7 +26,7 @@ const AccountPage = () => {
   const [billingInfo, setBillingInfo] = useState<BillingInfo | null>(null);
   const [isBillingDialogOpen, setIsBillingDialogOpen] = useState(false);
   const [isBillingCollapsed, setIsBillingCollapsed] = useState(true);
-  
+  const [showBillingDialog, setShowBillingDialog] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -88,6 +88,15 @@ const AccountPage = () => {
           town: customerData.town || ''
         });
 
+        // Check if address is complete
+        const hasCompleteAddress = customerData.streetAddress && 
+                                   customerData.city && 
+                                   customerData.state && 
+                                   customerData.postalCode;
+
+        // Show billing dialog if address is incomplete
+        setShowBillingDialog(!hasCompleteAddress);
+        
         // Fetch latest order
         const { orders: fetchedOrders } = await getOrders({
           customerId: user.id,
@@ -104,6 +113,7 @@ const AccountPage = () => {
         console.error('Failed to fetch data:', error);
         if (error instanceof Error && error.message.includes('Customer not found')) {
           setError('Please complete your profile to view account details');
+          setShowBillingDialog(true);
         } else {
           setError('An unexpected error occurred. Please try again later.');
         }
@@ -142,6 +152,17 @@ const AccountPage = () => {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <p className="text-red-500">{error}</p>
+        {showBillingDialog && (
+          <BillingDialog 
+            title="Complete Your Profile" 
+            subtitle="Please provide your billing information to continue" 
+            triggerLabel="Update Profile"
+            onSuccess={() => {
+              setShowBillingDialog(false);
+              // Optionally, refresh data
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -171,6 +192,17 @@ const AccountPage = () => {
             Start Shopping
           </button>
         </div>
+        {showBillingDialog && (
+          <BillingDialog 
+            title="Complete Your Profile" 
+            subtitle="Please provide your billing information to continue" 
+            triggerLabel="Update Profile"
+            onSuccess={() => {
+              setShowBillingDialog(false);
+              // Optionally, refresh data
+            }}
+          />
+        )}
       </div>
     );
   }
@@ -279,7 +311,17 @@ const AccountPage = () => {
           <LatestOrder latestOrder={latestOrder} />
         </div>
       )}
-
+      {showBillingDialog && (
+        <BillingDialog 
+          title="Complete Your Profile" 
+          subtitle="Please provide your billing information to continue" 
+          triggerLabel="Update Profile"
+          onSuccess={() => {
+            setShowBillingDialog(false);
+            // Optionally, refresh data
+          }}
+        />
+      )}
     </div>
   );
 };
