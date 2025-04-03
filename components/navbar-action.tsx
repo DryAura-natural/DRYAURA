@@ -12,6 +12,8 @@ import { TbCreditCardPay } from "react-icons/tb";
 import { SiPaytm } from "react-icons/si";
 import { PiContactlessPayment } from "react-icons/pi";
 import { Product } from "@/types";
+import ProductList from "./product-list";
+import getProducts from "@/actions/get-products";
 
 interface NavbarActionProps {
   className?: string;
@@ -25,7 +27,7 @@ interface ExtendedProduct extends Product {
   };
 }
 
-export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
+export const NavbarAction: React.FC<NavbarActionProps> = async ({ className }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const cart = useCart();
@@ -59,6 +61,7 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
     return total + price * quantity;
   }, 0);
 
+  const products = await getProducts({ });
   return (
     <div className={`ml-auto flex items-center gap-x-4 ${className}`}>
       <Button
@@ -103,6 +106,11 @@ export const NavbarAction: React.FC<NavbarActionProps> = ({ className }) => {
               <div className="flex flex-col items-center gap-x-2">
                 <Image src={emptyCart} className="w-40 h-40" alt="empty cart" />
                 <p className="text-gray-500">Your cart is empty.</p>
+
+                
+          <div className="flex flex-col gap-y-8 px-1 sm:px-6 lg:px-8 py-5">
+            <ProductList title="Top selling Products" items={products} />
+          </div>
               </div>
             ) : (
               <ul className="space-y-4">
