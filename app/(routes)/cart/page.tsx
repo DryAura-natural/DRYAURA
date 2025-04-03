@@ -40,12 +40,15 @@ const CartPage = () => {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="flex items-center justify-center py-8 text-sm md:text-base"
+                  className="flex flex-col items-center justify-center py-8 text-sm md:text-base"
                 >
-                  <FiShoppingBag className="w-6 h-6 mr-2 text-[#3D1D1D]/70" />
-                  <p className="text-center text-[#3D1D1D]/70">
-                    Your cart is currently empty. Start shopping to add items!
-                  </p>
+                  <div>
+                    <FiShoppingBag className="w-6 h-6 mr-2 text-[#3D1D1D]/70" />
+                    <p className="text-center text-[#3D1D1D]/70">
+                      Your cart is currently empty. Start shopping to add items!
+                    </p>
+                  </div>
+                  <div>
                   <Link 
                     href="/collections/all"
                     className="mt-4 inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#3D1D1D] hover:bg-[#2C1515] transition-colors duration-300 ease-in-out"
@@ -53,6 +56,8 @@ const CartPage = () => {
                     Shop Now
                     <FiShoppingBag className="ml-2 w-5 h-5" />
                   </Link>
+                  </div>
+                  
                 </motion.div>
               )}
               <ul className="space-y-6 rounded-xl">

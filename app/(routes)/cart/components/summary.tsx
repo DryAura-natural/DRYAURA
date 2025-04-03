@@ -485,7 +485,7 @@ const Summary = () => {
         {/* Existing content */}
         {/* <OrderSummary /> */}
 
-        <div className="relative z-10 space-y-6 bg-[#3D1D1D]/5 px-4 py-6 rounded-2xl">
+        <div className="relative z-10 space-y-6 bg-[#3D1D1D]/5 px-2 py-4 rounded-2xl">
           <div className="space-y-4 text-[#3D1D1D]/80">
             {isUserDataLoading ? (
               <div className="border-t border-[#3D1D1D]/10 pt-6">
