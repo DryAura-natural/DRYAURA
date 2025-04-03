@@ -13,10 +13,10 @@ import VideoLoader from "@/components/ui/global-loader"; // Page Transition Load
 
 const geistSans = Geist({ subsets: ["latin"] });
 const poppins = Poppins({
-  weight: ['400', '500', '600', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-poppins',
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children
+  children,
 }: {
   children: React.ReactNode;
 }) {
@@ -34,38 +34,67 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${geistSans.className} ${poppins.variable}`}>
         <head>
-      
           {/* ✅ Basic Meta Tags */}
           <meta charSet="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Dry Aura - Premium Dry Fruits & Immunity Boosters</title>
-          <meta name="description" content="Discover Dry Aura, your go-to store for premium dry fruits and natural immunity boosters. Experience purity, health, and sustainability with eco-friendly packaging." />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          />
+          <title>DryAura - Premium Dry Fruits & Immunity Boosters</title>
+          <meta
+            name="description"
+            content="Discover Dry Aura, your go-to store for premium dry fruits and natural immunity boosters. Experience purity, health, and sustainability with eco-friendly packaging."
+          />
 
           {/* ✅ SEO Meta Tags */}
           <meta name="robots" content="index, follow" />
-          <meta name="keywords" content="Dry Fruits, Immunity Boosters, Healthy Snacks, Organic Dry Fruits, Nuts, Sustainable Packaging" />
+          <meta
+            name="keywords"
+            content="Dry Fruits, Immunity Boosters, Healthy Snacks, Organic Dry Fruits, Nuts, Sustainable Packaging"
+          />
           <link rel="canonical" href="https://dryaura.com/" />
 
           {/* ✅ Open Graph (OG) Meta Tags - For Facebook, LinkedIn */}
           <meta property="og:type" content="website" />
-          <meta property="og:title" content="Dry Aura - Premium Dry Fruits & Immunity Boosters" />
-          <meta property="og:description" content="Experience premium dry fruits with sustainable packaging. Elevate your health with Dry Aura." />
-          <meta property="og:image" content="https://dryaura.com/og-image.jpg" />
+          <meta
+            property="og:title"
+            content="Dry Aura - Premium Dry Fruits & Immunity Boosters"
+          />
+          <meta
+            property="og:description"
+            content="Experience premium dry fruits with sustainable packaging. Elevate your health with Dry Aura."
+          />
+          <meta
+            property="og:image"
+            content="https://dryaura.com/og-image.jpg"
+          />
           <meta property="og:url" content="https://dryaura.com/" />
 
           {/* ✅ Twitter/X Meta Tags */}
           <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content="Dry Aura - Premium Dry Fruits & Immunity Boosters" />
-          <meta name="twitter:description" content="Shop premium dry fruits & immunity boosters. Pure, organic & sustainable." />
-          <meta name="twitter:image" content="https://dryaura.com/twitter-image.jpg" />
+          <meta
+            name="twitter:title"
+            content="Dry Aura - Premium Dry Fruits & Immunity Boosters"
+          />
+          <meta
+            name="twitter:description"
+            content="Shop premium dry fruits & immunity boosters. Pure, organic & sustainable."
+          />
+          <meta
+            name="twitter:image"
+            content="https://dryaura.com/twitter-image.jpg"
+          />
           <meta name="twitter:site" content="@dryaura" />
 
           {/* ✅ Performance & Caching Meta Tags */}
           <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-          <meta httpEquiv="cache-control" content="public, max-age=31536000, immutable" />
+          <meta
+            httpEquiv="cache-control"
+            content="public, max-age=31536000, immutable"
+          />
 
           {/* ✅ Favicon & PWA Support */}
-          <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png"/>
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
           {/* <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
           <link rel="manifest" href="/site.webmanifest" /> */}
         </head>
@@ -80,13 +109,12 @@ export default function RootLayout({
           {/* Page Transition Loader */}
           <VideoLoader />
 
-        
           {children}
 
           {/* Analytics and Performance Monitoring */}
           <Analytics />
           <SpeedInsights />
-           <Footer />
+          <Footer />
         </body>
       </html>
     </ClerkProvider>

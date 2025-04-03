@@ -5,45 +5,53 @@ import toast from "react-hot-toast";
 
 // Utility function to clean up old local storage items
 const cleanupLocalStorage = () => {
-  const tenDaysAgo = new Date();
-  tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
+  // Check if localStorage is available
+  if (typeof window !== 'undefined' && window.localStorage) {
+    const tenDaysAgo = new Date();
+    tenDaysAgo.setDate(tenDaysAgo.getDate() - 10);
 
-  try {
-    // Get all keys in local storage
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      
-      // Check if the key is related to our cart or other app-specific storage
-      if (key && key.startsWith('ecommerce-')) {
-        const itemStr = localStorage.getItem(key);
+    try {
+      // Get all keys in local storage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
         
-        if (itemStr) {
-          try {
-            const item = JSON.parse(itemStr);
-            
-            // Check if the item has a timestamp and is older than 10 days
-            if (item.timestamp && new Date(item.timestamp) < tenDaysAgo) {
+        // Check if the key is related to our cart or other app-specific storage
+        if (key && key.startsWith('ecommerce-')) {
+          const itemStr = localStorage.getItem(key);
+          
+          if (itemStr) {
+            try {
+              const item = JSON.parse(itemStr);
+              
+              // Check if the item has a timestamp and is older than 10 days
+              if (item.timestamp && new Date(item.timestamp) < tenDaysAgo) {
+                localStorage.removeItem(key);
+                console.log(`Removed old item: ${key}`);
+              }
+            } catch (parseError) {
+              // If parsing fails, remove the item
               localStorage.removeItem(key);
-              console.log(`Removed old item: ${key}`);
+              console.error(`Failed to parse item ${key}:`, parseError);
             }
-          } catch (parseError) {
-            // If parsing fails, remove the item
-            localStorage.removeItem(key);
-            console.error(`Failed to parse item ${key}:`, parseError);
           }
         }
       }
+    } catch (error) {
+      console.error('Error during local storage cleanup:', error);
     }
-  } catch (error) {
-    console.error('Error during local storage cleanup:', error);
   }
 };
 
-// Run cleanup on initialization
-cleanupLocalStorage();
+// Run cleanup only on client side
+if (typeof window !== 'undefined') {
+  cleanupLocalStorage();
 
-// Periodic cleanup (every 24 hours)
-setInterval(cleanupLocalStorage, 24 * 60 * 60 * 1000);
+  // Periodic cleanup (every 24 hours)
+  const cleanupInterval = setInterval(cleanupLocalStorage, 24 * 60 * 60 * 1000);
+
+  // Clear interval on window unload to prevent memory leaks
+  window.addEventListener('beforeunload', () => clearInterval(cleanupInterval));
+}
 
 interface CartItem extends Product {
   quantity: number;
