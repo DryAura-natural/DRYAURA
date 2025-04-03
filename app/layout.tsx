@@ -40,7 +40,7 @@ export default function RootLayout({
             name="viewport"
             content="width=device-width, initial-scale=1.0"
           />
-          <title>DryAura - Premium Dry Fruits & Immunity Boosters</title>
+          <title>DryAura: Premium Organic Dry Fruits & Natural Immunity Boosters</title>
           <meta
             name="description"
             content="Discover Dry Aura, your go-to store for premium dry fruits and natural immunity boosters. Experience purity, health, and sustainability with eco-friendly packaging."
