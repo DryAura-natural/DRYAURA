@@ -1,6 +1,6 @@
 'use client';
 
-import { UserButton, UserProfile, useUser } from '@clerk/nextjs';
+import { SignedIn, UserButton, UserProfile, useUser } from '@clerk/nextjs';
 import { Button } from '@/components/ui/Button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Settings, ShoppingCart, User, Package } from 'lucide-react';
@@ -116,7 +116,7 @@ const AccountPage = () => {
   }
 
   if (!user) {
-    return <div>Please log in</div>;
+    return <div><SignedIn/></div>;
   }
 
   const handleViewOrders = () => {
