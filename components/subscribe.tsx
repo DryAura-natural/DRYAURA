@@ -10,17 +10,52 @@ const Subscribe = () => {
   const [email, setEmail] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
   const [isThankYouModalOpen, setIsThankYouModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<'success' | 'already_subscribed'>('success');
 
+  // Email validation function
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValid = emailRegex.test(email);
+    
+    if (!email) {
+      setEmailError("Email is required");
+      return false;
+    }
+    
+    if (!isValid) {
+      setEmailError("Please enter a valid email address");
+      return false;
+    }
+    
+    setEmailError("");
+    return true;
+  };
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    const inputEmail = e.target.value;
+    setEmail(inputEmail);
+    
+    // Optional: Validate email on each change
+    if (inputEmail) {
+      validateEmail(inputEmail);
+    } else {
+      setEmailError("");
+    }
   };
 
   const handleEmailSubmit = async () => {
-    if (!email) return; // Don't submit if the email is empty
+    // Clear previous statuses
+    setSubmitStatus("");
+    setEmailError("");
+
+    // Validate email before submission
+    if (!validateEmail(email)) {
+      return;
+    }
+
     setIsSubmitting(true);
-    setSubmitStatus(""); // Clear any previous status
 
     try {
       const storeId = '52c181d1-539d-4df1-bb5b-4bd27ded858b'; // Your store ID
@@ -82,6 +117,9 @@ const Subscribe = () => {
                 className="bg-transparent border-white/20 border-2 text-white px-4 py-3 placeholder:text-white/50 outline-none w-full rounded-xl focus:border-white/50 transition-all duration-300"
                 icon={<Mails className="text-white/70" />}
               />
+              {emailError && (
+                <p className="text-sm mt-2 text-red-400">{emailError}</p>
+              )}
             </div>
             <button
               onClick={handleEmailSubmit}

@@ -94,7 +94,7 @@ const ImageCarousel = () => {
 
   return (
     <div 
-      className="relative w-full h-[70vh] overflow-hidden  rounded-xl "
+      className="relative w-full h-[40vh] md:h-[70vh] overflow-hidden  rounded-xl "
       style={{ backgroundColor: currentSlide.bgColor }}
     >
       <AnimatePresence initial={false} custom={direction}>

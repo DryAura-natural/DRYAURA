@@ -39,10 +39,10 @@ const DryfruitPhoto: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 flex flex-col justify-center items-center  rounded-ss-lg ">
+    <div className="bg-gray-50 flex flex-col justify-center items-center  rounded-ss-lg pt-2 ">
 
       <div className="text-center mb-8 space-y-2 opacity-0 animate-fade-in px-2">
-        <h2 className="text-xl font-bold tracking-tight">Our Premium Dry Fruits</h2>
+        <h2 className="text-2xl font-bold tracking-tight">Our Premium Dry Fruits</h2>
         <p className="text-base text-gray-600 max-w-2xl mx-auto">
         Experience the goodness of nature with our handpicked premium dry
           fruits. Pure, fresh, and packed with care to deliver health and

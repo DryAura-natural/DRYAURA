@@ -14,7 +14,7 @@ export function HeroSection() {
 
   useEffect(() => {
     const fetchBillboard = async () => {
-      console.log("🚀 HeroSection: Starting Billboard Fetch");
+      console.log("HeroSection: Starting Billboard Fetch");
       try {
         const billboardId = `ceef521d-e446-4a0f-82b0-a0f48be35877`;
 
@@ -22,9 +22,9 @@ export function HeroSection() {
 
         setBillboard(fetchedBillboard);
       } catch (error) {
-        console.error("❌ HeroSection: Failed to fetch billboard", error);
+        console.error("HeroSection: Failed to fetch billboard", error);
       } finally {
-        console.log("🏁 HeroSection: Billboard Fetch Complete");
+        console.log("HeroSection: Billboard Fetch Complete");
         setIsLoading(false);
       }
     };
@@ -68,25 +68,24 @@ export function HeroSection() {
   }
 
   return (
-    <div className="relative w-full xl:h-[calc(100vh-10rem)]  hover:cursor-grab aspect-video overflow-hidden rounded-3xl py-6 px-2 sm:p-4 lg:p-6">
+    <div className="relative w-full h-full xl:h-[calc(100vh-12rem)] hover:cursor-grab aspect-video overflow-hidden rounded-3xl py-2 px-2 sm:p-4 lg:p-6">
       {billboard && billboard.images && billboard.images.length > 0 ? (
         <Slider {...settings}>
           {billboard.images.map((image) => (
-            <div key={image.id} className="w-full  h-full relative">
+            <div key={image.id} className="w-full h-full relative">
               <Image
                 src={image.url}
                 alt={image.id || "Billboard Image"}
                 width={1920}
                 height={1080}
-                className="w-full xl:h-[calc(100vh-12rem)] object-cover rounded-3xl hover:cursor-grab"
+                className="w-full h-full xl:h-[calc(100vh-12rem)] object-cover rounded-3xl hover:cursor-grab"
                 loading="lazy"
-                
               />
             </div>
           ))}
         </Slider>
       ) : (
-        <div className="w-full h-[400px] flex items-center justify-center bg-gray-200">
+        <div className="w-full h-[400px] flex items-center justify-center bg-gray-200 rounded-3xl">
           No images available
         </div>
       )}

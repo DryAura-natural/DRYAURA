@@ -111,8 +111,7 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
             <PremiumNutsBanner />
           </div>
           <ShopByPurpose />
-          <div className=" md:px-5 py-2">
-            {" "}
+          <div className="p-2">
             <Poster
               billboardId={`${process.env.NEXT_POSTER_BILLBOARD_ID}`}
             />

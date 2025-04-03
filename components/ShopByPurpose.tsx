@@ -48,14 +48,14 @@ const ShopByPurpose = () => {
 
   return (
     <section className="max-w-7xl mx-auto px-4 pt-6 sm:px-6 lg:px-8">
-      <div className="text-center mb-8 space-y-4 animate-fade-in">
+      <div className="text-center mb-2 space-y-4 animate-fade-in">
         <h2 className="text-2xl font-bold tracking-tight">Shop By Purpose</h2>
         <p className="text-base text-[#3e4c50] max-w-2xl mx-auto">
           Find your perfect dry fruits for every occasion and need. &nbsp;From sweet treats to savory dishes, and from healthy snacks to thoughtful gifts, we've got you covered.
         </p>
       </div>
 
-      <div className="flex overflow-x-scroll hide-scrollbar md:grid md:grid-cols-2 lg:grid-cols-4 gap-4  py-10 px-0 md:px-5">
+      <div className="flex overflow-x-scroll hide-scrollbar md:grid md:grid-cols-2 lg:grid-cols-4 gap-4  pt-10 px-0 pb-2 md:px-5 ">
         {categories.map((category) => (
           <div
             key={category.title}
