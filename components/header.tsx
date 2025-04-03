@@ -90,7 +90,7 @@ export function SiteHeader() {
     },
     {
       icon: user ? UserCog : User,
-      label: user ? "My Profile" : "Login/Register",
+      label: user ? "My Profile" : "Account",
       link: user ? "/account" : "/sign-in",
       prefetch: true
     },
