@@ -121,9 +121,9 @@ export function SiteHeader() {
             </div>
           </div>
         </div>
-        <span className="mt-2 hover:scale-105">
+        {/* <span className="mt-2 hover:scale-105">
           🎉 Free Delivery on All Orders! 🎉
-        </span>
+        </span> */}
         <span className="mt-2 hover:scale-105">
           🔥 Use Code DRYAURA: 2% Off Storewide! 🔥
         </span>

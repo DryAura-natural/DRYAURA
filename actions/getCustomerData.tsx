@@ -8,21 +8,36 @@ const getCustomerData = async (id: string): Promise<BillingInfo> => {
     throw new Error("User ID is required to fetch customer data");
   }
 
+  console.log(`Attempting to fetch customer data for Clerk User ID: ${id}`);
+
   try {
     const res = await fetch(`${URL}?userId=${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        // Consider adding authorization header if needed
+        // 'Authorization': `Bearer ${process.env.API_TOKEN}`
       },
       cache: 'no-store', // Ensure fresh data
     });
 
+    console.log(`Customer fetch response status: ${res.status}`);
+
     if (!res.ok) {
       const errorBody = await res.text();
+      console.error(`Customer fetch error details: ${errorBody}`);
+      
+      // More specific error handling
+      if (res.status === 404) {
+        // If customer not found, you might want to create a customer
+        console.warn(`Customer not found for User ID: ${id}. Consider creating a new customer.`);
+      }
+
       throw new Error(`Failed to fetch customer data. Status: ${res.status}. Details: ${errorBody}`);
     }
 
     const rawData = await res.json();
+    console.log('Raw customer data received:', JSON.stringify(rawData, null, 2));
 
     // Validate the fetched data against the BillingInfo schema
     const validatedData = {

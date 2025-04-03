@@ -102,6 +102,11 @@ const AccountPage = () => {
         setIsLoading(false);
       } catch (error) {
         console.error('Failed to fetch data:', error);
+        if (error instanceof Error && error.message.includes('Customer not found')) {
+          setError('Please complete your profile to view account details');
+        } else {
+          setError('An unexpected error occurred. Please try again later.');
+        }
         setIsLoading(false);
       }
     };
