@@ -11,83 +11,109 @@ const ADDRESS_REGEX = /^[a-zA-Z0-9\s,.'-]+$/;
 export const customerSchema = z.object({
   name: z.string()
     .trim()
-    .min(2, "Name must be at least 2 characters")
+    .min(1, "Name must be at least 1 character")
     .max(50, "Name cannot exceed 50 characters")
-    .regex(NAME_REGEX, "Name can only contain letters, spaces, hyphens, and apostrophes"),
+    .optional()
+    .transform(val => val === '' ? undefined : val)
+    .refine(val => val === undefined || NAME_REGEX.test(val), { 
+      message: "Name can only contain letters, spaces, hyphens, and apostrophes" 
+    }),
 
   email: z.string()
     .trim()
     .toLowerCase()
     .email("Invalid email address")
-    .max(100, "Email cannot exceed 100 characters"),
+    .max(100, "Email cannot exceed 100 characters")
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   phone: z.string()
     .trim()
     .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number")
-    .optional(), // Make phone optional to allow partial form submission
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   alternatePhone: z.string()
     .trim()
     .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number")
-    .optional(),
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   streetAddress: z.string()
     .trim()
-    .min(2, "Street address must be at least 2 characters") // Reduced minimum length
+    .min(1, "Street address must be at least 1 character")
     .max(200, "Street address cannot exceed 200 characters")
-    .regex(ADDRESS_REGEX, "Invalid street address format")
-    .optional(), // Make optional
+    .optional()
+    .transform(val => val === '' ? undefined : val)
+    .refine(val => val === undefined || ADDRESS_REGEX.test(val), { 
+      message: "Street address contains invalid characters" 
+    }),
 
   city: z.string()
     .trim()
-    .min(2, "City must be at least 2 characters")
+    .min(1, "City must be at least 1 character")
     .max(50, "City cannot exceed 50 characters")
-    .regex(NAME_REGEX, "City name can only contain letters")
-    .optional(), // Make optional
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   landmark: z.string()
     .trim()
-    .min(2, "Landmark must be at least 2 characters")
+    .min(1, "Landmark must be at least 1 character")
     .max(50, "Landmark cannot exceed 50 characters")
-    .optional(),
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   town: z.string()
     .trim()
-    .min(2, "Town must be at least 2 characters")
     .max(50, "Town cannot exceed 50 characters")
-    .optional(),
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   state: z.string()
     .trim()
-    .min(2, "State must be at least 2 characters")
+    .min(1, "State must be at least 1 character")
     .max(50, "State cannot exceed 50 characters")
-    .optional(), // Make optional
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   postalCode: z.string()
     .trim()
     .regex(POSTAL_CODE_REGEX, "Please enter a valid 6-digit postal code")
-    .optional(), // Make optional
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 
   country: z.string()
     .trim()
     .default("India")
-    .optional(),
+    .optional()
+    .transform(val => val === '' ? undefined : val),
 }).partial(); // Allow partial object validation
 
 export type BillingInfo = z.infer<typeof customerSchema>;
 
-// Validation helper function
+// Validation helper function with detailed logging
 export function validateCustomerData(input: unknown): BillingInfo {
-  const result = customerSchema.safeParse(input);
-  
-  if (!result.success) {
-    console.error("Validation errors:", result.error.flatten());
-    throw new Error("Invalid customer data", {
-      cause: result.error.flatten()
-    });
+  try {
+    const result = customerSchema.safeParse(input);
+    
+    if (!result.success) {
+      console.error("Detailed Validation Errors:", 
+        result.error.errors.map(err => ({
+          path: err.path.join('.'),
+          message: err.message,
+          code: err.code
+        }))
+      );
+      
+      // Log the raw input for debugging
+      console.log('Raw Input:', JSON.stringify(input, null, 2));
+    }
+    
+    return result.data as BillingInfo;
+  } catch (error) {
+    console.error("Unexpected validation error:", error);
+    throw error;
   }
-  
-  return result.data;
 }
 
 // Debug utility for detailed error logging
@@ -101,6 +127,9 @@ export function debugValidation(data: unknown) {
         Code: e.code,
         Message: e.message
       })));
+      
+      // Log the raw data for debugging
+      console.log('Raw Data:', JSON.stringify(data, null, 2));
     }
     throw error;
   }

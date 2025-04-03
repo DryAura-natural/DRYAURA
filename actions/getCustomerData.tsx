@@ -36,15 +36,33 @@ const getCustomerData = async (id: string): Promise<BillingInfo> => {
       landmark: rawData.landmark || '',
       postalCode: rawData.postalCode || '',
       country: rawData.country || 'India',
-      town: rawData.town || '',
+      town: rawData.town || '', // Explicitly allow empty string
     };
 
-    // Final validation using the schema
-    return customerSchema.parse(validatedData);
+    // Use safeParse for more detailed error handling
+    const parseResult = customerSchema.safeParse(validatedData);
+    
+    if (!parseResult.success) {
+      console.error("Detailed Validation Errors:", 
+        parseResult.error.errors.map(err => ({
+          path: err.path.join('.'),
+          message: err.message,
+          code: err.code,
+          receivedValue: err.path.reduce((obj, key) => obj?.[key], validatedData)
+        }))
+      );
+      console.log('Raw Input:', JSON.stringify(validatedData, null, 2));
+      console.log('Full Zod Error:', JSON.stringify(parseResult.error, null, 2));
+      
+      // Throw a more informative error
+      throw new Error(`Invalid customer data: ${parseResult.error.errors.map(e => e.message).join('; ')}`);
+    }
+
+    return parseResult.data;
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("Data validation error:", error.errors);
-      throw new Error("Invalid customer data received from server");
+      throw new Error(`Invalid customer data: ${error.errors.map(e => e.message).join('; ')}`);
     }
 
     if (error instanceof Error) {
