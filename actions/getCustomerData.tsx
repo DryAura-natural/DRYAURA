@@ -50,12 +50,20 @@ const getCustomerData = async (id: string): Promise<BillingInfo> => {
       state: rawData.state || '',
       landmark: rawData.landmark || '',
       postalCode: rawData.postalCode || '',
-      country: rawData.country || 'India',
-      town: rawData.town || '',
     };
 
-    // Final validation using the schema
-    return customerSchema.parse(validatedData);
+    try {
+      // Validate the data using the customerSchema
+      const parsedData = customerSchema.parse(validatedData);
+      console.log('Parsed customer data:', JSON.stringify(parsedData, null, 2));
+      return parsedData;
+    } catch (validationError) {
+      if (validationError instanceof z.ZodError) {
+        console.error('Customer data validation failed:', validationError.errors);
+        throw new Error(`Invalid customer data: ${validationError.errors.map(e => `${e.path}: ${e.message}`).join(', ')}`);
+      }
+      throw validationError;
+    }
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("Data validation error:", error.errors);
