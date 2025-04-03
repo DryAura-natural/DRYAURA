@@ -29,7 +29,7 @@ const ProductPage: React.FC<ProductPageprops> = async ({ params }) => {
           </h1>
         </div>
 
-        <div className="px-4 py-2 sm:px-6 lg:px-8">
+        <div className="px-2 py-2 sm:px-6 lg:px-8">
           {/* Grid layout for Gallery and Info */}
           <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-12 h-full lg:h-screen">
             {/* Fixed Gallery */}
