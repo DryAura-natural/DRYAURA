@@ -89,9 +89,9 @@ export function SiteHeader() {
       prefetch: true 
     },
     {
-      icon: SignedIn ? UserCog : User,
-      label: SignedIn ? "My Profile" : "Login/Register",
-      link: <SignedIn/> ? "/account" : "/sign-in",
+      icon: user ? UserCog : User,
+      label: user ? "My Profile" : "Login/Register",
+      link: user ? "/account" : "/sign-in",
       prefetch: true
     },
   ];
