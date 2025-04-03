@@ -108,9 +108,9 @@ export const NavbarAction: React.FC<NavbarActionProps> = async ({ className }) =
                 <p className="text-gray-500">Your cart is empty.</p>
 
                 
-          <div className="flex flex-col gap-y-8 px-1 sm:px-6 lg:px-8 py-5">
+          {/* <div className="flex flex-col gap-y-8 px-1 sm:px-6 lg:px-8 py-5">
             <ProductList title="Top selling Products" items={products} />
-          </div>
+          </div> */}
               </div>
             ) : (
               <ul className="space-y-4">
