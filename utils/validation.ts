@@ -23,7 +23,8 @@ export const customerSchema = z.object({
 
   phone: z.string()
     .trim()
-    .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number"),
+    .regex(PHONE_REGEX, "Please enter a valid 10-digit Indian mobile number")
+    .optional(), // Make phone optional to allow partial form submission
 
   alternatePhone: z.string()
     .trim()
@@ -32,15 +33,17 @@ export const customerSchema = z.object({
 
   streetAddress: z.string()
     .trim()
-    .min(5, "Street address must be at least 5 characters")
+    .min(2, "Street address must be at least 2 characters") // Reduced minimum length
     .max(200, "Street address cannot exceed 200 characters")
-    .regex(ADDRESS_REGEX, "Invalid street address format"),
+    .regex(ADDRESS_REGEX, "Invalid street address format")
+    .optional(), // Make optional
 
   city: z.string()
     .trim()
     .min(2, "City must be at least 2 characters")
     .max(50, "City cannot exceed 50 characters")
-    .regex(NAME_REGEX, "City name can only contain letters"),
+    .regex(NAME_REGEX, "City name can only contain letters")
+    .optional(), // Make optional
 
   landmark: z.string()
     .trim()
@@ -57,23 +60,19 @@ export const customerSchema = z.object({
   state: z.string()
     .trim()
     .min(2, "State must be at least 2 characters")
-    .max(50, "State cannot exceed 50 characters"),
+    .max(50, "State cannot exceed 50 characters")
+    .optional(), // Make optional
 
   postalCode: z.string()
     .trim()
-    .regex(POSTAL_CODE_REGEX, "Please enter a valid 6-digit postal code"),
+    .regex(POSTAL_CODE_REGEX, "Please enter a valid 6-digit postal code")
+    .optional(), // Make optional
 
   country: z.string()
     .trim()
     .default("India")
     .optional(),
-}).refine(
-  data => data.phone !== data.alternatePhone, 
-  { 
-    message: "Primary and alternate phone numbers must be different",
-    path: ["alternatePhone"] 
-  }
-);
+}).partial(); // Allow partial object validation
 
 export type BillingInfo = z.infer<typeof customerSchema>;
 
