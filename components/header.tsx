@@ -90,8 +90,8 @@ export function SiteHeader() {
     },
     {
       icon: SignedIn ? UserCog : User,
-      label: SignedIn ? "Account" : "Sign In",
-      link: SignedIn ? "/account" : "/sign-in",
+      label: SignedIn ? "My Profile" : "Login/Register",
+      link: <SignedIn/> ? "/account" : "/sign-in",
       prefetch: true
     },
   ];
@@ -125,7 +125,7 @@ export function SiteHeader() {
           🎉 Free Delivery on All Orders! 🎉
         </span>
         <span className="mt-2 hover:scale-105">
-          🔥 Save 2% on all orders! 🔥
+          🔥 Use Code DRYAURA: 2% Off Storewide! 🔥
         </span>
         <div className="flex items-center space-x-6 flex-wrap">
           <div className="flex items-center space-x-2">

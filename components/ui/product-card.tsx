@@ -265,6 +265,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
 
         <div className="flex flex-col mt-2 px-1">
           <h3
+           onClick={handleClick}
             className={cn(
               "text-sm font-medium capitalize text-balance truncate",
               data.isOutOfStock && "text-gray-400 line-through"
