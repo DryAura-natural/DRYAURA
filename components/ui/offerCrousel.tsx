@@ -28,7 +28,7 @@ const shadowColor = "#59301E";
         
         setBillboard(fetchedBillboard);
       } catch (error) {
-        // console.error('❌ HeroSection: Failed to fetch billboard', error);
+        console.error('❌ HeroSection: Failed to fetch billboard', error);
       } finally {
         // console.log('🏁 HeroSection: Billboard Fetch Complete');
         setIsLoading(false);
@@ -145,8 +145,7 @@ const shadowColor = "#59301E";
           <Image
             src={billboard?.images[getSlideIndex(-1)]?.url || ""}
             alt={billboard?.images[getSlideIndex(-1)]?.id || "Billboard Image"}
-            className="w-full h-full object-cover md:object-contain
- rounded-3xl shadow-2xl pointer-events-none filter "
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter "
             style={{
               boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(-1))}`,
             }}
@@ -170,8 +169,7 @@ const shadowColor = "#59301E";
           <Image
             src={billboard?.images[currentIndex]?.url || ""}
             alt={billboard?.images[currentIndex]?.id || "Billboard Image"}
-            className="w-full h-full object-cover md:object-contain
- rounded-3xl shadow-2xl pointer-events-none filter ]"
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter ]"
             style={{ boxShadow: `0 10px 20px ${getShadowColor(currentIndex)}` }}
             loading="lazy"
             draggable="false"
@@ -183,15 +181,14 @@ const shadowColor = "#59301E";
         {/* Next Slide */}
         <div
           className={cn(
-            "absolute w-[70%] h-[60%] lg:w-[30%] lg:h-[70%] transition-all duration-500 ease-in-out select-none",
+            "absolute w-[70%] h-[60%] lg:w-[40%] lg:h-[70%] transition-all duration-500 ease-in-out select-none",
             "translate-x-[85%] opacity-50 scale-75"
           )}
         >
           <Image
             src={billboard?.images[getSlideIndex(1)]?.url || ""}
             alt={billboard?.images[getSlideIndex(1)]?.id || "Billboard Image"}
-            className="w-full h-full object-cover md:object-contain
- rounded-3xl shadow-2xl pointer-events-none filter  "
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter  "
             style={{
               boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(1))}`,
             }}
