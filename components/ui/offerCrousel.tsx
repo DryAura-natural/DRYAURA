@@ -19,18 +19,18 @@ const shadowColor = "#59301E";
       console.log('🚀 HeroSection: Starting Billboard Fetch');
       try {
         const billboardId = `8a081fcc-965c-4ecf-9b1a-4521349dce2e`;
-        console.log('🎯 HeroSection: Billboard ID', billboardId);
+        // console.log('🎯 HeroSection: Billboard ID', billboardId);
         
         const fetchedBillboard = await getBillboard(billboardId);
         
-        console.log('🖼️ HeroSection: Fetched Billboard', fetchedBillboard);
-        console.log('🖼️ HeroSection: Billboard Images Count', fetchedBillboard?.images?.length || 0);
+        // console.log('🖼️ HeroSection: Fetched Billboard', fetchedBillboard);
+        // console.log('🖼️ HeroSection: Billboard Images Count', fetchedBillboard?.images?.length || 0);
         
         setBillboard(fetchedBillboard);
       } catch (error) {
-        console.error('❌ HeroSection: Failed to fetch billboard', error);
+        // console.error('❌ HeroSection: Failed to fetch billboard', error);
       } finally {
-        console.log('🏁 HeroSection: Billboard Fetch Complete');
+        // console.log('🏁 HeroSection: Billboard Fetch Complete');
         setIsLoading(false);
       }
     };
@@ -145,7 +145,7 @@ const shadowColor = "#59301E";
           <Image
             src={billboard?.images[getSlideIndex(-1)]?.url || ""}
             alt={billboard?.images[getSlideIndex(-1)]?.id || "Billboard Image"}
-            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter "
+            className="w-full h-full object-contain rounded-3xl shadow-2xl pointer-events-none filter "
             style={{
               boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(-1))}`,
             }}
