@@ -183,7 +183,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           <span className="">
             {(() => {
               // Debugging: log the full badges object
-              console.log("Full badges object:", JSON.stringify(badges, null, 2));
+              // console.log("Full badges object:", JSON.stringify(badges, null, 2));
 
               // Check if badges is an array and has length
               if (Array.isArray(badges) && badges.length > 0) {

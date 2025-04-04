@@ -38,10 +38,10 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
   params,
   searchParams,
 }) => {
-  console.log(
-    "Collection Page Search Params:",
-    JSON.stringify(searchParams, null, 2)
-  );
+  // console.log(
+  //   "Collection Page Search Params:",
+  //   JSON.stringify(searchParams, null, 2)
+  // );
 
   const category = await getCategory(params.categoryName);
   if (!category) {
@@ -91,12 +91,20 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
     );
   }
 
+  // console.log(
+  //   "Category Details:",
+  //   JSON.stringify({
+  //     categoryName: params.categoryName,
+  //     categoryId: category.id,
+  //     categoryBillboard: category.billboard?.label
+  //   }, null, 2)
+  // );
+
   const sizes = await getSizes();
   const colors = await getColors();
 
-  // Normalize search parameters
+  // Fetch products with minimal filtering
   const normalizedSearchParams = {
-    categoryName: params.categoryName,
     categoryId: category.id,
     colorId: searchParams.colorId,
     sizeId: searchParams.sizeId,
@@ -105,12 +113,100 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
     priceRange: searchParams.priceRange,
   };
 
-  console.log(
-    "Normalized Search Params:",
-    JSON.stringify(normalizedSearchParams, null, 2)
-  );
-
   const products = await getProducts(normalizedSearchParams);
+
+  // Advanced category filtering with multiple strategies
+  const filteredProducts = products.filter(product => {
+    // Strategy 1: Exact category ID match
+    const exactIdMatch = product.categories.some(cat => cat.id === category.id);
+    
+    // Strategy 2: Category name match (case-insensitive)
+    const categoryNameMatch = product.categories.some(cat => 
+      cat.name && 
+      cat.name.toLowerCase().trim() === params.categoryName.toLowerCase().trim()
+    );
+
+    // Strategy 3: Partial category name match
+    const partialCategoryNameMatch = product.categories.some(cat => 
+      cat.name && 
+      cat.name.toLowerCase().includes(params.categoryName.toLowerCase())
+    );
+
+    // Strategy 4: Product name keyword match
+    const productNameKeywordMatch = params.categoryName && 
+      product.name.toLowerCase().includes(params.categoryName.toLowerCase());
+
+    // Detailed logging for each matching strategy
+    // console.log(`🔍 Product Matching Analysis for "${product.name}":`, {
+    //   exactIdMatch,
+    //   categoryNameMatch,
+    //   partialCategoryNameMatch,
+    //   productNameKeywordMatch,
+    //   productCategories: product.categories.map(cat => ({
+    //     categoryId: cat.id,
+    //     categoryName: cat.name || 'Unnamed Category'
+    //   })),
+    //   requestedCategory: {
+    //     id: category.id,
+    //     name: params.categoryName
+    //   }
+    // });
+
+    // Combine matching strategies
+    return exactIdMatch || 
+           categoryNameMatch || 
+           partialCategoryNameMatch || 
+           productNameKeywordMatch;
+  });
+
+  // Comprehensive logging of filtering results
+  console.log('🔍 Category Filtering Detailed Results:', {
+    requestedCategory: {
+      id: category.id,
+      name: params.categoryName
+    },
+    totalProductsCount: products.length,
+    filteredProductsCount: filteredProducts.length,
+    filterStrategies: {
+      exactIdMatching: filteredProducts.filter(p => 
+        p.categories.some(cat => cat.id === category.id)
+      ).length,
+      exactNameMatching: filteredProducts.filter(p => 
+        p.categories.some(cat => 
+          cat.name && 
+          cat.name.toLowerCase().trim() === params.categoryName.toLowerCase().trim()
+        )
+      ).length,
+      partialNameMatching: filteredProducts.filter(p => 
+        p.categories.some(cat => 
+          cat.name && 
+          cat.name.toLowerCase().includes(params.categoryName.toLowerCase())
+        )
+      ).length,
+      productNameKeywordMatching: filteredProducts.filter(p => 
+        params.categoryName && 
+        p.name.toLowerCase().includes(params.categoryName.toLowerCase())
+      ).length
+    }
+  });
+
+  // Use filtered products, with fallback to all products if no match
+  const productsToRender = filteredProducts.length > 0 ? filteredProducts : products;
+
+  // Additional logging of final products to render
+  // console.log('🔍 Final Products to Render:', JSON.stringify({
+  //   requestedCategoryName: params.categoryName,
+  //   requestedCategoryId: category.id,
+  //   productsCount: productsToRender.length,
+  //   productDetails: productsToRender.map(product => ({
+  //     id: product.id,
+  //     name: product.name,
+  //     categories: product.categories.map(cat => ({
+  //       categoryId: cat.id,
+  //       categoryName: cat.name || 'Unnamed Category'
+  //     }))
+  //   }))
+  // }, null, 2));
 
   return (
     <div className="bg-white">
@@ -141,9 +237,9 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
             </div>
 
             <div className="mt-6 lg:col-span-4 lg:mt-0">
-              {products.length === 0 && <NoResults />}
+              {productsToRender.length === 0 && <NoResults />}
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {products.map((product) => (
+                {productsToRender.map((product) => (
                   <ProductCard
                     key={product.id}
                     data={product}

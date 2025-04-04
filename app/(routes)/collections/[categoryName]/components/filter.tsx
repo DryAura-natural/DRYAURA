@@ -8,15 +8,26 @@ import qs from "query-string";
 interface FilterProps{
       data:(Size | Color | {id: string, name: string})[];
       name:string;
+      value?:string;
       valueKey:string;
 }
 
-const Filter:React.FC<FilterProps> = ({data,name,valueKey}) => {
+const Filter:React.FC<FilterProps & {
+  selectedvalue?: string;
+  onClick: (id: string) => void;
+}> = ({data,name,valueKey,selectedvalue,onClick}) => {
   const searchParams = useSearchParams();
   const router = useRouter()
-  const selectedvalue = searchParams.get(valueKey);
   
-  const onClick = (id:string)=>{
+  // Helper function to get display value
+  const getDisplayValue = (filter: Size | Color | {id: string, name: string}) => {
+    // If it's a Size or Color, use 'value' or 'name'
+    if ('value' in filter) return filter.value;
+    if ('name' in filter) return filter.name;
+    return '';
+  };
+
+  const handleClick = (id:string)=>{
     console.error('Filter Debug:', {
       valueKey,
       id,
@@ -76,9 +87,9 @@ const Filter:React.FC<FilterProps> = ({data,name,valueKey}) => {
                 "rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300 hover:bg-black hover:text-white",
                 selectedvalue === filter.id && "bg-black text-white"
               )} 
-              onClick={()=>onClick(filter.id)}
+              onClick={()=>handleClick(filter.id)}
             >
-              {filter.name}
+              {getDisplayValue(filter)}
             </Button>
           </div>
         ))}
