@@ -247,10 +247,19 @@ const Info: React.FC<InfoProps> = ({
                 Benefits
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
-               
-                  <ul className="list-disc pl-5 space-y-2">
+                <ul className="list-disc pl-5 space-y-2">
                   {data.benefits ? (
-                    <li>{data.benefits}</li>
+                    typeof data.benefits === 'string' ? (
+                      <li>{data.benefits}</li>
+                    ) : Array.isArray(data.benefits) ? (
+                      data.benefits.map((benefit, index) => (
+                        <li key={index}>{String(benefit)}</li>
+                      ))
+                    ) : (
+                      Object.entries(data.benefits).map(([key, value], index) => (
+                        <li key={index}>{`${key}: ${String(value)}`}</li>
+                      ))
+                    )
                   ) : (
                     <>
                     <li>Calories: 250 kcal</li>
@@ -260,8 +269,7 @@ const Info: React.FC<InfoProps> = ({
                     <li>Fiber: 5g</li>
                     </>
                   )}
-                  </ul>
-                
+                </ul>
               </AccordionContent>
             </AccordionItem>
 
@@ -272,7 +280,17 @@ const Info: React.FC<InfoProps> = ({
               <AccordionContent className="text-gray-700 leading-relaxed">
                 <ul className="list-disc pl-5 space-y-2">
                   {data.specifications ? (
-                    <li>{data.specifications}</li>
+                    typeof data.specifications === 'string' ? (
+                      <li>{data.specifications}</li>
+                    ) : Array.isArray(data.specifications) ? (
+                      data.specifications.map((spec, index) => (
+                        <li key={index}>{spec}</li>
+                      ))
+                    ) : (
+                      Object.entries(data.specifications).map(([key, value], index) => (
+                        <li key={index}>{`${key}: ${String(value)}`}</li>
+                      ))
+                    )
                   ) : (
                     <>
                    <li>Material: 100% Organic</li>
@@ -282,7 +300,7 @@ const Info: React.FC<InfoProps> = ({
                       <li>Care Instructions: Machine Washable</li>
                     </>
                   )}
-                  </ul>
+                </ul>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
