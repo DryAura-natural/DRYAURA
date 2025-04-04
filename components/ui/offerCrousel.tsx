@@ -159,8 +159,8 @@ const shadowColor = "#59301E";
         {/* Current Slide */}
         <div
           className={cn(
-            "absolute w-[70%] h-[55%]  lg:w-[40%] lg:h-[60%] transition-all duration-300 ease-in-out select-none z-10",
-            isDragging ? "transition-none" : ""
+            "absolute w-[70%] h-[60%]  lg:w-[40%] lg:h-[70%] transition-all duration-300 ease-in-out select-none z-10",
+            isDragging ? "transition-all" : ""
           )}
           style={{
             transform: `translateX(${dragDistance.current}px) scale(1.1)`,
