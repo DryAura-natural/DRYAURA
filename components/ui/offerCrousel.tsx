@@ -145,7 +145,7 @@ const shadowColor = "#59301E";
           <Image
             src={billboard?.images[getSlideIndex(-1)]?.url || ""}
             alt={billboard?.images[getSlideIndex(-1)]?.id || "Billboard Image"}
-            className="w-full h-full object-contain rounded-3xl shadow-2xl pointer-events-none filter "
+            className="w-full h-full object-cover rounded-3xl shadow-2xl pointer-events-none filter "
             style={{
               boxShadow: `0 10px 20px ${getShadowColor(getSlideIndex(-1))}`,
             }}
