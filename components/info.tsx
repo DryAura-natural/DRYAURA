@@ -247,15 +247,21 @@ const Info: React.FC<InfoProps> = ({
                 Benefits
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
-                {data.benefits || (
+               
                   <ul className="list-disc pl-5 space-y-2">
+                  {data.benefits ? (
+                    <li>{data.benefits}</li>
+                  ) : (
+                    <>
                     <li>Calories: 250 kcal</li>
                     <li>Protein: 15g</li>
                     <li>Carbohydrates: 30g</li>
                     <li>Fat: 10g</li>
                     <li>Fiber: 5g</li>
+                    </>
+                  )}
                   </ul>
-                )}
+                
               </AccordionContent>
             </AccordionItem>
 
@@ -265,16 +271,18 @@ const Info: React.FC<InfoProps> = ({
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
                 <ul className="list-disc pl-5 space-y-2">
-                  {data.specifications || (
+                  {data.specifications ? (
+                    <li>{data.specifications}</li>
+                  ) : (
                     <>
-                      <li>Material: 100% Organic</li>
+                   <li>Material: 100% Organic</li>
                       <li>Dimensions: 30 x 20 x 10 cm</li>
                       <li>Weight: 500 grams</li>
                       <li>Color Options: Red, Blue, Green</li>
                       <li>Care Instructions: Machine Washable</li>
                     </>
                   )}
-                </ul>
+                  </ul>
               </AccordionContent>
             </AccordionItem>
           </Accordion>

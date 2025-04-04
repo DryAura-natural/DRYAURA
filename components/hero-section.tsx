@@ -78,7 +78,7 @@ export function HeroSection() {
                 alt={image.id || "Billboard Image"}
                 width={1920}
                 height={1080}
-                className="w-full h-full xl:h-[calc(100vh-12rem)] object-cover rounded-3xl hover:cursor-grab"
+                className="w-full h-full xl:h-[calc(100vh-12rem)] object-cover md:object-contain rounded-3xl hover:cursor-grab"
                 loading="lazy"
               />
             </div>
