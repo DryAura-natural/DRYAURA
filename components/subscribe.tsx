@@ -100,9 +100,9 @@ const Subscribe = () => {
 
   return (
     <>
-      <div className="space-y-6 py-2">
+      <div className="space-y-6">
         <div className="space-y-4">
-          <h3 className="text-lg  sm:text-xl font-semibold text-white">
+          <h3 className="text-xs text-center sm:text-xl font-semibold text-white">
             Subscribe to our newsletter for updates and special offers!
           </h3>
           <div className="flex items-center gap-2 flex-col sm:flex-row flex-wrap">
@@ -116,18 +116,20 @@ const Subscribe = () => {
                 labelClassName="text-orange-300" 
                 className="bg-transparent border-white/20 border-2 text-white px-4 py-3 placeholder:text-white/50 outline-none w-full rounded-xl focus:border-white/50 transition-all duration-300"
                 icon={<Mails className="text-white/70" />}
+                rightIcon={
+                  <button
+                    onClick={handleEmailSubmit}
+                    disabled={isSubmitting}
+                    className="bg-white text-[#3D1D1D] hover:bg-white/90 whitespace-nowrap px-4 py-2 rounded-xl transition-all duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/50 disabled:opacity-50"
+                  >
+                    {isSubmitting ? "Subscribing..." : "SUBSCRIBE"}
+                  </button>
+                }
               />
               {emailError && (
                 <p className="text-sm mt-2 text-red-400">{emailError}</p>
               )}
             </div>
-            <button
-              onClick={handleEmailSubmit}
-              disabled={isSubmitting}
-              className="bg-white text-[#3D1D1D] hover:bg-white/90 whitespace-nowrap px-6 py-3 rounded-xl transition-all duration-300 ease-in-out transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-white/50 disabled:opacity-50"
-            >
-              {isSubmitting ? "Subscribing..." : "SUBSCRIBE"}
-            </button>
           </div>
           {submitStatus && (
             <p

@@ -105,7 +105,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
   const PrevArrow = () => (
     <button
       onClick={() => sliderRef.current?.slickPrev()}
-      className=" bg-white rounded-full p-1 md:p-2 shadow-md z-10 hover:bg-gray -100 transition-colors"
+      className="bg-white rounded-full p-1 md:p-2 shadow-md z-10 hover:bg-gray-100 transition-colors"
       aria-label="Previous slide"
     >
       <ChevronLeft className="w-6 h-6 text-gray-700" />
@@ -176,7 +176,7 @@ const ComboProduct: React.FC<comboProductProps> = ({
                 </p>
               </div>
             </div>
-            <div className="flex justify-center items-center py-10 space-x-8">
+            <div className="flex justify-center items-center py-5 px-5 space-x-8">
               <div className="bg-white/20 rounded-lg p-6 text-center transform transition duration-500 hover:scale-105">
                 <Package className="mx-auto text-white mb-3" size={48} />
                 <h3 className="text-white font-semibold">Curated Selections</h3>
