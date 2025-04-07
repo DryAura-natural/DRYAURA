@@ -228,18 +228,24 @@ export function SiteHeader() {
         }`}
       >
         <div className="p-4 bg-white">
-          <form onSubmit={handleSearch}>
-            <div className="flex items-center bg-white rounded-lg p-2 shadow-lg">
+          <form onSubmit={handleSearch} className="relative">
+            <div className="flex items-center bg-white rounded-full p-2 shadow-lg border border-gray-200 focus-within:border-black transition-all duration-300">
+              <Search className="w-5 h-5 text-gray-500 mr-2 ml-2" />
               <Input
                 label=""
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search..."
-                className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                placeholder="Search products..."
+                className="w-full border-none focus:outline-none focus:ring-0 text-sm placeholder-gray-400"
               />
-              <Button className="  px-4 rounded-lg">
-                <Search className="w-4 h-4 text-black" />
+              <Button 
+                type="submit"
+                variant="ghost"
+                size="icon"
+                className="bg-black text-white rounded-full w-8 h-8 hover:bg-gray-800 transition-colors"
+              >
+                <Search className="w-4 h-4" />
               </Button>
             </div>
           </form>

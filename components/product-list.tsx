@@ -23,7 +23,7 @@ const ProductList: React.FC<ProductListProps> = ({
   items,
   enableCategoryFilter = false,
   categories = [],
-  limit = 4,
+  limit = 6,
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>(categories);
 
@@ -81,7 +81,7 @@ const ProductList: React.FC<ProductListProps> = ({
   };
 
   useEffect(() => {
-    const shouldShowCarousel = filteredItems.length > 4;
+    const shouldShowCarousel = filteredItems.length > 6;
     setShowControls(shouldShowCarousel);
 
     if (shouldShowCarousel && containerRef.current) {

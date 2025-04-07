@@ -94,7 +94,7 @@ Dryaura is more than just a brand; it represents a commitment to quality, sustai
 
           <div className="flex flex-col gap-y-8 px-1 sm:px-6 lg:px-8 py-5">
             <ProductList title="Top selling Products" items={products}  enableCategoryFilter 
-  categories={["cashew"]}   />
+  categories={["top-selling"]}   />
           </div>
           <div className="">
             {/* <OfferCarousel /> */}

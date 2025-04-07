@@ -62,37 +62,35 @@ const Info: React.FC<InfoProps> = ({
 
   const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    
+
     // Ensure a variant is selected
     if (!currentVariant) {
-      toast.error('Please select a variant');
+      toast.error("Please select a variant");
       return;
     }
 
-    const itemWithQuantity = { 
-      ...data, 
-      quantity, 
-      selectedVariant: currentVariant 
+    const itemWithQuantity = {
+      ...data,
+      quantity,
+      selectedVariant: currentVariant,
     };
 
     cart.addItem(itemWithQuantity);
-    
- 
   };
 
   const onPurchased: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.stopPropagation();
-    
+
     // Ensure a variant is selected
     if (!currentVariant) {
-      toast.error('Please select a variant');
+      toast.error("Please select a variant");
       return;
     }
 
-    const itemWithQuantity = { 
-      ...data, 
-      quantity, 
-      selectedVariant: currentVariant 
+    const itemWithQuantity = {
+      ...data,
+      quantity,
+      selectedVariant: currentVariant,
     };
 
     cart.addItem(itemWithQuantity);
@@ -100,7 +98,8 @@ const Info: React.FC<InfoProps> = ({
   };
 
   // Determine available variants
-  const availableVariants = data.variants?.filter(variant => variant.sizeId) || [];
+  const availableVariants =
+    data.variants?.filter((variant) => variant.sizeId) || [];
 
   // State for selected variant
   const [selectedVariant, setSelectedVariant] = useState<string | null>(
@@ -110,9 +109,10 @@ const Info: React.FC<InfoProps> = ({
   // Get selected variant details with fallback
   const currentVariant = useMemo(() => {
     if (availableVariants.length === 0) return null;
-    return availableVariants.find(
-      variant => variant.sizeId === selectedVariant
-    ) || availableVariants[0];
+    return (
+      availableVariants.find((variant) => variant.sizeId === selectedVariant) ||
+      availableVariants[0]
+    );
   }, [availableVariants, selectedVariant]);
 
   // Pricing calculations with null check
@@ -166,10 +166,10 @@ const Info: React.FC<InfoProps> = ({
           <h3 className="font-semibold text-black text-base md:text-lg">
             Size:
           </h3>
-          <ToggleGroup 
-            type="single" 
-            size="sm" 
-            value={selectedVariant || ''}
+          <ToggleGroup
+            type="single"
+            size="sm"
+            value={selectedVariant || ""}
             onValueChange={handleVariantSelect}
             className="flex flex-wrap gap-y-2"
           >
@@ -224,11 +224,7 @@ const Info: React.FC<InfoProps> = ({
 
       {showDescription && (
         <>
-          <Accordion
-            type="single"
-           collapsible
-            className="mt-6 w-full"
-          >
+          <Accordion type="single" collapsible className="mt-6 w-full py-5">
             <AccordionItem value="description">
               <AccordionTrigger
                 className="flex w-full items-center justify-between py-4 font-medium text-gray-900 hover:text-green-900"
@@ -237,9 +233,7 @@ const Info: React.FC<InfoProps> = ({
                 Description
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 leading-relaxed">
-              
                 {data.description}
-                {data.subLabel}
               </AccordionContent>
             </AccordionItem>
 
@@ -250,24 +244,26 @@ const Info: React.FC<InfoProps> = ({
               <AccordionContent className="text-gray-700 leading-relaxed">
                 <ul className="list-disc pl-5 space-y-2">
                   {data.benefits ? (
-                    typeof data.benefits === 'string' ? (
+                    typeof data.benefits === "string" ? (
                       <li>{data.benefits}</li>
                     ) : Array.isArray(data.benefits) ? (
                       data.benefits.map((benefit, index) => (
                         <li key={index}>{String(benefit)}</li>
                       ))
                     ) : (
-                      Object.entries(data.benefits).map(([key, value], index) => (
-                        <li key={index}>{`${key}: ${String(value)}`}</li>
-                      ))
+                      Object.entries(data.benefits).map(
+                        ([key, value], index) => (
+                          <li key={index}>{`${key}: ${String(value)}`}</li>
+                        )
+                      )
                     )
                   ) : (
                     <>
-                    <li>Calories: 250 kcal</li>
-                    <li>Protein: 15g</li>
-                    <li>Carbohydrates: 30g</li>
-                    <li>Fat: 10g</li>
-                    <li>Fiber: 5g</li>
+                      <li>Calories: 250 kcal</li>
+                      <li>Protein: 15g</li>
+                      <li>Carbohydrates: 30g</li>
+                      <li>Fat: 10g</li>
+                      <li>Fiber: 5g</li>
                     </>
                   )}
                 </ul>
@@ -281,20 +277,22 @@ const Info: React.FC<InfoProps> = ({
               <AccordionContent className="text-gray-700 leading-relaxed">
                 <ul className="list-disc pl-5 space-y-2">
                   {data.specifications ? (
-                    typeof data.specifications === 'string' ? (
+                    typeof data.specifications === "string" ? (
                       <li>{data.specifications}</li>
                     ) : Array.isArray(data.specifications) ? (
                       data.specifications.map((spec, index) => (
                         <li key={index}>{spec}</li>
                       ))
                     ) : (
-                      Object.entries(data.specifications).map(([key, value], index) => (
-                        <li key={index}>{`${key}: ${String(value)}`}</li>
-                      ))
+                      Object.entries(data.specifications).map(
+                        ([key, value], index) => (
+                          <li key={index}>{`${key}: ${String(value)}`}</li>
+                        )
+                      )
                     )
                   ) : (
                     <>
-                   <li>Material: 100% Organic</li>
+                      <li>Material: 100% Organic</li>
                       <li>Dimensions: 30 x 20 x 10 cm</li>
                       <li>Weight: 500 grams</li>
                       <li>Color Options: Red, Blue, Green</li>
@@ -307,7 +305,7 @@ const Info: React.FC<InfoProps> = ({
           </Accordion>
         </>
       )}
-      
+
       {showShowBanner && <GreeneryBanner />}
     </div>
   );

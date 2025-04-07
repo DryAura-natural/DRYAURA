@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/container";
 import Image from "next/image";
 
 interface ProductPageprops {
-  params: { 
+  params: {
     productId: string;
   };
 }
@@ -15,9 +15,9 @@ interface ProductPageprops {
 const ProductPage: React.FC<ProductPageprops> = async ({ params }) => {
   const product = await getProduct(params.productId);
   const suggestedproducts = await getProducts({
-    categoryId: product?.categories?.length 
-      ? product.categories[0].id 
-      : undefined
+    categoryId: product?.categories?.length
+      ? product.categories[0].id
+      : undefined,
   });
   return (
     <div className="bg-white max-h-fit">
@@ -68,7 +68,12 @@ const ProductPage: React.FC<ProductPageprops> = async ({ params }) => {
           </div>
 
           {/* Related Products */}
-          <ProductList title="Related items" items={suggestedproducts} />
+          <ProductList
+            title="Related items"
+            items={suggestedproducts}
+            enableCategoryFilter
+            categories={["all"]}
+          />
         </div>
       </Container>
     </div>
@@ -76,5 +81,3 @@ const ProductPage: React.FC<ProductPageprops> = async ({ params }) => {
 };
 
 export default ProductPage;
-
-
