@@ -162,22 +162,23 @@ const Info: React.FC<InfoProps> = ({
       <hr className="my-4" />
 
       <div className="flex flex-col gap-y-6">
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-4 ">
           <h3 className="font-semibold text-black text-base md:text-lg">
             Size:
           </h3>
           <ToggleGroup 
             type="single" 
-            size="lg" 
+            size="sm" 
             value={selectedVariant || ''}
             onValueChange={handleVariantSelect}
+            className="flex flex-wrap gap-y-2"
           >
             {availableVariants.map((variant) => (
               <ToggleGroupItem
                 key={variant.sizeId}
                 value={variant.sizeId}
                 aria-label={`Select ${variant.sizeId} variant`}
-                className="bg-none data-[state=on]:bg-green-900 data-[state=on]:text-white border border-gray-700"
+                className="bg-gray-100 data-[state=on]:bg-green-900 data-[state=on]:text-white border border-gray-700"
               >
                 {variant.size?.value}
               </ToggleGroupItem>
@@ -221,7 +222,6 @@ const Info: React.FC<InfoProps> = ({
         </Button>
       </div>
 
-      {showShowBanner && <GreeneryBanner />}
       {showDescription && (
         <>
           <Accordion
@@ -239,6 +239,7 @@ const Info: React.FC<InfoProps> = ({
               <AccordionContent className="text-gray-700 leading-relaxed">
               
                 {data.description}
+                {data.subLabel}
               </AccordionContent>
             </AccordionItem>
 
@@ -306,6 +307,8 @@ const Info: React.FC<InfoProps> = ({
           </Accordion>
         </>
       )}
+      
+      {showShowBanner && <GreeneryBanner />}
     </div>
   );
 };

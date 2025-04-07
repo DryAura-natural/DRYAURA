@@ -108,14 +108,15 @@ const getProducts = async (query: Query): Promise<Product[]> => {
   }
 
   // Comprehensive logging of processed price range
-  console.log('🔍 Processed Price Range:', {
-    finalMinPrice: minPrice,
-    finalMaxPrice: maxPrice,
-    originalPriceRange: query.priceRange,
-    originalMinPrice: query.minPrice,
-    originalMaxPrice: query.maxPrice
-  });
+  // console.log('🔍 Processed Price Range:', {
+  //   finalMinPrice: minPrice,
+  //   finalMaxPrice: maxPrice,
+  //   originalPriceRange: query.priceRange,
+  //   originalMinPrice: query.minPrice,
+  //   originalMaxPrice: query.maxPrice
+  // });
 
+  
   const url = qs.stringifyUrl({
     url: URL,
     query: {

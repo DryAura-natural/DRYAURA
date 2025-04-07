@@ -2,8 +2,37 @@
 
 import Image from "next/image";
 import { FaFacebook, FaInstagram, FaYoutube, FaWhatsapp } from "react-icons/fa";
-import { MapPin, Phone, Mail, Warehouse } from "lucide-react";
+import { MapPin, Phone, Mail, Warehouse, ShieldCheck, FileText, Truck, Stethoscope, Info, ShoppingCart, MessageCircle } from "lucide-react";
 import Subscribe from "./subscribe";
+
+const importent = [
+  { label: "Privacy Policy", link: "/pages/privacy-policy", icon: <ShieldCheck className="w-4 h-4 mr-2" /> },
+  {
+    label: "Terms and Conditions",
+    link: "/pages/terms-and-conditions",
+    icon: <FileText className="w-4 h-4 mr-2" />,
+  },
+  { label: "Shipping Policy", link: "/pages/shipping-policy", icon: <Truck className="w-4 h-4 mr-2" /> },
+  { label: "COVID-19 Safety", link: "/pages/covid-19-safety", icon: <Stethoscope className="w-4 h-4 mr-2" /> },
+];
+
+const additionalLinks = [
+  { 
+    label: "About Us", 
+    link: "/about-us", 
+    icon: <Info className="w-4 h-4 mr-2" /> 
+  },
+  { 
+    label: "Shop", 
+    link: "/shop", 
+    icon: <ShoppingCart className="w-4 h-4 mr-2" /> 
+  },
+  { 
+    label: "Contact", 
+    link: "/contact", 
+    icon: <MessageCircle className="w-4 h-4 mr-2" /> 
+  }
+];
 
 const Footer = () => {
   return (
@@ -66,48 +95,67 @@ const Footer = () => {
       </div>
 
       <div className="bg-black/10 text-white border-t border-white/10 mt-0">
-        <div className="max-w-screen mx-auto px-4 py-5">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-y-4">
-            {/* Quick Links */}
-            <div className="mb-6 md:mb-0">
-              <ul className="flex space-x-6">
-                {["About Us", "Shop", "Contact", "Privacy Policy"].map(
-                  (link) => (
-                    <li key={link}>
-                      <a
-                        href={`/${link.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="text-sm text-white/70 hover:text-white hover:underline transition-all"
-                      >
-                        {link}
-                      </a>
-                    </li>
-                  )
-                )}
-              </ul>
+        <div className="max-w-screen-xl mx-auto px-4 py-5">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+            {/* Quick Links - Responsive Dropdown on Mobile */}
+            <div className="w-full md:w-auto">
+              <div className="grid grid-cols-2 md:flex md:space-x-6 gap-4 md:gap-0 justify-center md:justify-start">
+                {importent.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.link}
+                    className="text-xs sm:text-sm text-white/70 hover:text-white hover:underline transition-all flex items-center justify-center md:justify-start"
+                  >
+                   
+                    {item.icon}
+                    <span className="ml-2  md:inline">{item.label}</span>
+                  </a>
+                ))}
+              </div>
             </div>
 
-            {/* Social Media Icons */}
-            <div className="flex space-x-6 mb-6 md:mb-0">
+            <div className="w-full md:w-auto">
+              <div className="grid grid-cols-3 md:flex md:space-x-6 gap-4 md:gap-0 justify-center md:justify-end">
+                {additionalLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.link}
+                    className="text-xs sm:text-sm text-white/70 hover:text-white hover:underline transition-all flex items-center justify-center md:justify-end"
+                  >
+                    {link.icon}
+                    <span className="ml-2 md:inline">{link.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Social Media Icons - Responsive Sizing */}
+            <div className="flex space-x-4 sm:space-x-6 items-center justify-center">
               {[
-                { Icon: FaFacebook, href: "https://www.facebook.com" },
-                { Icon: FaYoutube, href: "https://www.youtube.com" },
-                { Icon: FaWhatsapp, href: "https://www.whatsapp.com" },
-                { Icon: FaInstagram, href: "https://www.instagram.com" },
-              ].map(({ Icon, href }) => (
+                { Icon: FaFacebook, href: "https://www.facebook.com", label: "Facebook" },
+                { Icon: FaYoutube, href: "https://www.youtube.com", label: "YouTube" },
+                { Icon: FaWhatsapp, href: "https://www.whatsapp.com", label: "WhatsApp" },
+                { Icon: FaInstagram, href: "https://www.instagram.com", label: "Instagram" },
+              ].map(({ Icon, href, label }) => (
                 <a
                   key={href}
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xl text-white/70 hover:text-white hover:scale-125 transition-all ease-in-out"
+                  aria-label={label}
+                  className="text-lg sm:text-xl text-white/70 hover:text-white hover:scale-110 transition-all ease-in-out"
                 >
                   <Icon />
                 </a>
               ))}
             </div>
-            <h3 className="font-sans text-sm text-white/70">
-              2025 DRYAURA. All rights reserved.
-            </h3>
+
+            {/* Copyright - Responsive Sizing */}
+            <div className="w-full md:w-auto text-center md:text-right">
+              <h3 className="font-sans text-xs sm:text-sm text-white/70">
+                {new Date().getFullYear()} DRYAURA. All rights reserved.
+              </h3>
+            </div>
           </div>
         </div>
       </div>
