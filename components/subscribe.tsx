@@ -102,7 +102,7 @@ const Subscribe = () => {
     <>
       <div className="space-y-6 py-2">
         <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-white">
+          <h3 className="text-lg  sm:text-xl font-semibold text-white">
             Subscribe to our newsletter for updates and special offers!
           </h3>
           <div className="flex items-center gap-2 flex-col sm:flex-row flex-wrap">
