@@ -162,15 +162,15 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     return (
       <article
         className={cn(
-          "bg-white group cursor-pointer rounded-xl p-1 border border-black/10  aspect-auto relative ",
-         
+          "bg-white group cursor-pointer rounded-xl p-1 border border-black/10 aspect-auto relative flex flex-col h-full",
+          
         )}
         aria-label={`Product: ${data.name}`}
         role="article"
       >
         {/* Out of Stock Overlay */}
         {data.isOutOfStock && (
-          <div className="absolute inset-0 bg-black/10  rounded-xl z-10 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/10 rounded-xl z-10 flex items-center justify-center">
             <div className="bg-white/80 px-4 py-2 rounded-md shadow-md">
               <span className="text-red-600 font-semibold text-sm uppercase tracking-wider">
                 Out of Stock
@@ -211,7 +211,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
 
         <div
           onClick={handleClick}
-          className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-100 truncate"
+          className="aspect-square rounded-xl bg-gray-100 relative overflow-hidden transition-transform duration-500 ease-in-out hover:scale-100 truncate flex-shrink-0"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           aria-label="Product image"
@@ -263,22 +263,22 @@ const ProductCard: React.FC<ProductCardProps> = memo(
           )}
         </div>
 
-        <div className="flex flex-col mt-2 px-1">
+        <div className="flex flex-col mt-2 px-1 flex-grow">
           <h3
-           onClick={handleClick}
+            onClick={handleClick}
             className={cn(
-              "text-sm font-medium capitalize text-balance truncate",
+              "text-sm font-medium capitalize text-balance truncate h-[2.5rem]", // Fixed height for consistent title spacing
               data.isOutOfStock && "text-gray-400 line-through"
             )}
           >
             {data.name?.slice(0, 40) || "Unnamed Product"}...
           </h3>
 
-          <div className="flex items-center justify-between space-x-2 mt-1">
+          <div className="flex items-center justify-between w-full mt-1">
             <div className="flex items-center space-x-2 flex-wrap">
               <span className="text-[#3D1D1D] font-bold text-sm">MRP: </span>
               {leastMrp > leastPrice && (
-                <del className=" flex text-slate-500 text-xs mr-2">
+                <del className="flex text-slate-500 text-xs mr-2">
                   <Currency value={leastMrp} />
                 </del>
               )}
@@ -286,23 +286,23 @@ const ProductCard: React.FC<ProductCardProps> = memo(
                 <Currency value={leastPrice} />
               </span>
             </div>
-            <span className="text-xs text-slate-500">(₹/100g)</span>
+            <span className="text-xs text-slate-500 ml-2">(₹/100g)</span>
           </div>
           <div className="flex items-center space-x-2 text-xs text-gray-600 mt-1">
             {variants.length > 0 && (
               <div className="flex items-center space-x-1">
                 <span className="font-medium">Size:</span>
-                <span>
-                  {variants[0].size?.value || variants[0].sizeId || "N/A"}
+                <span className="min-w-[50px] inline-block text-center">
+                  {variants[0].size?.value ? variants[0].size.value.toUpperCase() : (variants[0].sizeId || "N/A").toUpperCase()}
                 </span>
               </div>
             )}
           </div>
-          <div className="py-2">
+          <div className="py-2 mt-auto">
             <button
               onClick={onAddToCart}
               className={cn(
-                "w-full bg-[#3D1D1D] hover:bg-[#6c3d3d] text-white  rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs py-2",
+                "w-full bg-[#3D1D1D] hover:bg-[#6c3d3d] text-white rounded-lg text-center hover:bg-opacity-90 transition-colors font-semibold text-xs py-2",
                 data.isOutOfStock && "opacity-50 cursor-not-allowed"
               )}
             >
