@@ -27,7 +27,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, badges }) => {
   return (
     <Tab.Group as="div" className="flex flex-col-reverse md:flex-row gap-4">
       {/* Thumbnails */}
-      <div className="w-full md:w-24 lg:w-28 xl:w-32">
+      <div className="w-full md:w-24 lg:w-20   ">
         <Tab.List className="grid grid-cols-4 gap-2 md:grid-cols-1 p-2 max-h-[60vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50 bg-gray-50 border border-gray-200 rounded-lg">
           {images.map((image) => (
             <GalleryTab key={image.id} image={image} />
