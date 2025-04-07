@@ -162,8 +162,7 @@ const ProductCard: React.FC<ProductCardProps> = memo(
     return (
       <article
         className={cn(
-          "bg-white group cursor-pointer rounded-xl p-1 border border-black/10 aspect-auto relative flex flex-col h-full",
-          
+          "bg-white group cursor-pointer rounded-xl p-1 border border-black/10 aspect-auto relative flex flex-col h-full"
         )}
         aria-label={`Product: ${data.name}`}
         role="article"
@@ -189,13 +188,13 @@ const ProductCard: React.FC<ProductCardProps> = memo(
               if (Array.isArray(badges) && badges.length > 0) {
                 // Extract badge label from nested object
                 const firstBadge = badges[0];
-                
+
                 // Check if badge object exists and has a label
                 if (firstBadge.badge && firstBadge.badge.label) {
                   return firstBadge.badge.label;
                 }
               }
-              
+
               // If no badges found, return empty string
               return "";
             })()}
@@ -293,7 +292,9 @@ const ProductCard: React.FC<ProductCardProps> = memo(
               <div className="flex items-center space-x-1">
                 <span className="font-medium">Size:</span>
                 <span className="min-w-[50px] inline-block text-center">
-                  {variants[0].size?.value ? variants[0].size.value.toUpperCase() : (variants[0].sizeId || "N/A").toUpperCase()}
+                  {variants[0].size?.value
+                    ? variants[0].size.value.toUpperCase()
+                    : (variants[0].sizeId || "N/A").toUpperCase()}
                 </span>
               </div>
             )}
@@ -306,7 +307,11 @@ const ProductCard: React.FC<ProductCardProps> = memo(
                 data.isOutOfStock && "opacity-50 cursor-not-allowed"
               )}
             >
-              {isAddingToCart ? "Adding..." : data.isOutOfStock ? "Out of Stock" : "Add To Cart"}
+              {isAddingToCart
+                ? "Adding..."
+                : data.isOutOfStock
+                ? "Out of Stock"
+                : "Add To Cart"}
             </button>
           </div>
         </div>

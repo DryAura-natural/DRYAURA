@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import cn from "classnames";
 
 const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700"] });
 
@@ -14,6 +15,7 @@ interface ProductListProps {
   items: Product[];
   enableCategoryFilter?: boolean;
   categories?: string[];
+  limit?: number;
 }
 
 const ProductList: React.FC<ProductListProps> = ({
@@ -21,106 +23,47 @@ const ProductList: React.FC<ProductListProps> = ({
   items,
   enableCategoryFilter = false,
   categories = [],
+  limit = 4,
 }) => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(categories);
 
+  // Extract unique categories from items
   const availableCategories = useMemo(() => {
-    // If categories are passed, use only those
-    if (categories.length > 0) {
-      return categories;
-    }
-    
-    // Otherwise, extract from items
     return Array.from(new Set(
-      items.flatMap((item) =>
-        item.categories.map((cat) => cat.name)
+      items.flatMap((item) => 
+        item.categories.map(cat => cat.category?.name).filter(Boolean)
       )
     ));
-  }, [items, categories]);
+  }, [items]);
 
+  // Filter logic
+  const filteredItems = useMemo(() => {
+    let result = items;
+
+    // Category filtering
+    if (selectedCategories.length > 0) {
+      result = result.filter(item => 
+        item.categories.some(cat => 
+          selectedCategories.includes(cat.category?.name || '')
+        )
+      );
+    }
+
+    // Apply limit
+    return result.slice(0, limit);
+  }, [items, selectedCategories, limit]);
+
+  // Toggle category selection
   const toggleCategoryFilter = (category: string) => {
-    setSelectedCategories((prev) =>
+    setSelectedCategories(prev => 
       prev.includes(category)
-        ? prev.filter((cat) => cat !== category)
+        ? prev.filter(cat => cat !== category)
         : [...prev, category]
     );
   };
 
-  const filteredItems = useMemo(() => {
-    // If categories are explicitly passed, filter strictly to those categories
-    if (categories.length > 0) {
-      return items.filter(item => 
-        item.categories.some(cat => 
-          cat.name && categories.some(passedCat => 
-            passedCat && 
-            cat.name.toLowerCase().trim() === passedCat.toLowerCase().trim()
-          )
-        )
-      );
-    }
 
-    // If no categories passed and filtering is enabled, use selected categories
-    if (enableCategoryFilter && selectedCategories.length > 0) {
-      return items.filter(item => 
-        item.categories.some(cat => 
-          cat.name && selectedCategories.includes(cat.name)
-        )
-      );
-    }
 
-    // If no filtering conditions, show all items
-    return items;
-  }, [items, categories, selectedCategories, enableCategoryFilter]);
-
-  const renderCategoryFilter = () => {
-    // Only show filter if enableCategoryFilter is true and there are categories
-    if (!enableCategoryFilter || availableCategories.length === 0)
-      return null;
-
-    return (
-      <div className="mb-6 space-y-4">
-        <h4 className="text-lg font-semibold text-center text-gray-700">
-          {categories.length > 0 
-            ? `${categories.join(', ')} Products` 
-            : 'Filter Products by Category'}
-        </h4>
-        <div className="flex flex-wrap justify-center gap-2">
-          {availableCategories.map((category) => (
-            <button
-              key={category}
-              onClick={() => toggleCategoryFilter(category)}
-              className={`px-3 py-1 rounded-full text-sm transition-all ${
-                selectedCategories.includes(category)
-                  ? "bg-primary text-white"
-                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
-        {/* Clear Filters Button */}
-        {selectedCategories.length > 0 && (
-          <div className="text-center mt-4">
-            <button
-              onClick={() => setSelectedCategories([])}
-              className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
-            >
-              Clear All Filters
-            </button>
-          </div>
-        )}
-
-        {/* Filter Summary */}
-        {selectedCategories.length > 0 && (
-          <div className="text-center text-sm text-gray-600 mt-2">
-            Showing {filteredItems.length} of {items.length} products
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [showControls, setShowControls] = useState(false);
@@ -190,7 +133,7 @@ const ProductList: React.FC<ProductListProps> = ({
         {title}
       </h3>
 
-      {renderCategoryFilter()}
+      {/* {renderCategoryFilter()} */}
 
       {filteredItems.length === 0 && <NoResult />}
 

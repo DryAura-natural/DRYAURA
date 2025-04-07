@@ -44,12 +44,24 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import TrackOrderDialog from './orders/TrackOrder';
 import { FaWhatsapp } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [selectedNavItem, setSelectedNavItem] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
   const { user } = useUser();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchExpanded(false);
+      setSearchQuery("");
+    }
+  };
 
   const socialIcons = [
     { icon: Instagram, link: "https://www.instagram.com/dryaura" },
@@ -216,17 +228,21 @@ export function SiteHeader() {
         }`}
       >
         <div className="p-4 bg-white">
-          <div className="flex items-center bg-white rounded-lg p-2 shadow-lg">
-            <Input
-              label=""
-              type="search"
-              placeholder="Search..."
-              className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
-            <Button className="  px-4 rounded-lg">
-              <Search className="w-4 h-4 text-black" />
-            </Button>
-          </div>
+          <form onSubmit={handleSearch}>
+            <div className="flex items-center bg-white rounded-lg p-2 shadow-lg">
+              <Input
+                label=""
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search..."
+                className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+              <Button className="  px-4 rounded-lg">
+                <Search className="w-4 h-4 text-black" />
+              </Button>
+            </div>
+          </form>
         </div>
       </div>
 
@@ -360,17 +376,21 @@ export function SiteHeader() {
 
         {/* Search Bar (Desktop) */}
         <div className="flex items-center space-x-4">
-          <div className="flex items-center bg-white rounded-lg p-1 shadow-lg justify-between border">
-            <Input
-              label=""
-              type="search"
-              placeholder="Search..."
-              className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
-            />
-            <Button className=" bg-white rounded-lg border border-black hover:border-orange-300 hover:bg-black/10">
-              <Search className="w-4 h-4 text-black " />
-            </Button>
-          </div>
+          <form onSubmit={handleSearch}>
+            <div className="flex items-center bg-white rounded-lg p-1 shadow-lg justify-between border">
+              <Input
+                label=""
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search..."
+                className="w-full border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              />
+              <Button className=" bg-white rounded-lg border border-black hover:border-orange-300 hover:bg-black/10">
+                <Search className="w-4 h-4 text-black " />
+              </Button>
+            </div>
+          </form>
 
           {/* Account & Cart (Desktop) */}
          <div className="flex items-center space-x-4">

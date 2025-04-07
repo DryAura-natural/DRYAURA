@@ -181,26 +181,26 @@ const getProducts = async (query: Query): Promise<Product[]> => {
         : true;
 
       // Strategy 3: Keyword Matching
-      const keywordMatch = categoryFilters.categoryKeywords
+      const keywordMatch = categoryFilters.categoryKeywords && categoryFilters.categoryKeywords.length > 0
         ? categoryFilters.categoryKeywords.some(keyword => 
-            keyword ? 
-            product.name.toLowerCase().includes(keyword.toLowerCase()) 
-            : false
+            keyword && typeof keyword === 'string' 
+              ? product.name.toLowerCase().includes(keyword.toLowerCase().trim())
+              : false
           )
         : true;
 
-      // Detailed logging of matching process
-      console.log(`🔍 Product Matching Details for "${product.name}":`, {
+      // Safer logging with optional chaining and default values
+      console.log(`🔍 Product Matching Details for "${product.name || 'Unknown Product'}":`, {
         exactIdMatch,
         categoryNameMatch,
         keywordMatch,
         categoryFilters: {
-          categoryId: categoryFilters.categoryId,
-          categoryName: categoryFilters.categoryName,
-          categoryKeywords: categoryFilters.categoryKeywords
+          categoryId: categoryFilters.categoryId || null,
+          categoryName: categoryFilters.categoryName || null,
+          categoryKeywords: categoryFilters.categoryKeywords || []
         },
         productCategories: product.categories.map(cat => ({
-          categoryId: cat.category?.id,
+          categoryId: cat.category?.id || null,
           categoryName: cat.category?.name || 'Unnamed Category'
         }))
       });
