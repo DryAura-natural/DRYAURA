@@ -117,47 +117,45 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
 
   // Advanced category filtering with multiple strategies
   const filteredProducts = products.filter(product => {
-    // Strategy 1: Exact category ID match
+    // Primary Strategy: Exact Category ID Match
     const exactIdMatch = product.categories.some(cat => cat.id === category.id);
     
-    // Strategy 2: Category name match (case-insensitive)
-    const categoryNameMatch = product.categories.some(cat => 
+    // Secondary Strategy: Exact Category Name Match (Case-Insensitive)
+    const exactNameMatch = product.categories.some(cat => 
       cat.name && 
       cat.name.toLowerCase().trim() === params.categoryName.toLowerCase().trim()
     );
 
-    // Strategy 3: Partial category name match
-    const partialCategoryNameMatch = product.categories.some(cat => 
-      cat.name && 
-      cat.name.toLowerCase().includes(params.categoryName.toLowerCase())
+    // Tertiary Strategy: Normalized Category Name Comparison
+    const normalizedCategoryName = params.categoryName.toLowerCase().replace(/-/g, ' ').trim();
+    const normalizedProductCategories = product.categories.map(cat => 
+      cat.name ? cat.name.toLowerCase().replace(/-/g, ' ').trim() : ''
     );
 
-    // Strategy 4: Product name keyword match
-    const productNameKeywordMatch = params.categoryName && 
-      product.name.toLowerCase().includes(params.categoryName.toLowerCase());
+    const normalizedNameMatch = product.categories.some(cat => 
+      normalizedProductCategories.includes(normalizedCategoryName)
+    );
 
-    // Detailed logging for each matching strategy
-    // console.log(`🔍 Product Matching Analysis for "${product.name}":`, {
-    //   exactIdMatch,
-    //   categoryNameMatch,
-    //   partialCategoryNameMatch,
-    //   productNameKeywordMatch,
-    //   productCategories: product.categories.map(cat => ({
-    //     categoryId: cat.id,
-    //     categoryName: cat.name || 'Unnamed Category'
-    //   })),
-    //   requestedCategory: {
-    //     id: category.id,
-    //     name: params.categoryName
-    //   }
-    // });
+    // Comprehensive Logging for Debugging
+    console.log(`🔍 Product Category Matching: "${product.name}"`, {
+      exactIdMatch,
+      exactNameMatch,
+      normalizedNameMatch,
+      requestedCategory: params.categoryName,
+      productCategories: product.categories.map(cat => cat.name)
+    });
 
-    // Combine matching strategies
-    return exactIdMatch || 
-           categoryNameMatch || 
-           partialCategoryNameMatch || 
-           productNameKeywordMatch;
+    // Prioritize matching strategies
+    return exactIdMatch || exactNameMatch || normalizedNameMatch;
   });
+
+  // Fallback strategy with comprehensive logging
+  const productsToRender = filteredProducts.length > 0 
+    ? filteredProducts 
+    : (() => {
+        console.warn(`⚠️ No products found for category: ${params.categoryName}. Rendering all products.`);
+        return products;
+      })();
 
   // Comprehensive logging of filtering results
   console.log('🔍 Category Filtering Detailed Results:', {
@@ -190,24 +188,6 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
     }
   });
 
-  // Use filtered products, with fallback to all products if no match
-  const productsToRender = filteredProducts.length > 0 ? filteredProducts : products;
-
-  // Additional logging of final products to render
-  // console.log('🔍 Final Products to Render:', JSON.stringify({
-  //   requestedCategoryName: params.categoryName,
-  //   requestedCategoryId: category.id,
-  //   productsCount: productsToRender.length,
-  //   productDetails: productsToRender.map(product => ({
-  //     id: product.id,
-  //     name: product.name,
-  //     categories: product.categories.map(cat => ({
-  //       categoryId: cat.id,
-  //       categoryName: cat.name || 'Unnamed Category'
-  //     }))
-  //   }))
-  // }, null, 2));
-
   return (
     <div className="bg-white">
       <Container>
@@ -223,17 +203,18 @@ const CollectionPage: React.FC<CollectionPageProps> = async ({
         </div>
         <div className="px-4 sm:px-6 lg:px-8 pb-24">
           <div className="flex items-center justify-between">
-            <MobileFilters sizes={sizes} />
+            {/* <MobileFilters sizes={sizes} /> */}
           </div>
           <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
             <div className="hidden lg:block">
-              <Filter valueKey="sizeId" name="Sizes" data={sizes} />
+              {/* <Filter valueKey="sizeId" name="Sizes" data={sizes} onClick={(id) => {}} /> */}
               {/* <Filter valueKey="colorId" name="Colors" data={colors} /> */}
-              <Filter
+              {/* <Filter
                 valueKey="priceRange"
                 name="Price Range"
                 data={priceRanges}
-              />
+                onClick={(id) => {}}
+              /> */}
             </div>
 
             <div className="mt-6 lg:col-span-4 lg:mt-0">

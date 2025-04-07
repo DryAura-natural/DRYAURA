@@ -3,7 +3,7 @@ import { Product } from "@/types";
 import NoResult from "@/components/ui/no-result";
 import ProductCard from "@/components/ui/product-card";
 import { Inter } from "next/font/google";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -11,32 +11,116 @@ const inter = Inter({ subsets: ["latin"], weight: ["400", "600", "700"] });
 
 interface ProductListProps {
   title: string;
-  items: Product[] | { products?: Product[] };
-  isLoading?: boolean;
-  error?: Error | null;
+  items: Product[];
+  enableCategoryFilter?: boolean;
+  categories?: string[];
 }
 
 const ProductList: React.FC<ProductListProps> = ({
   title,
-  items = [],
-  isLoading,
-  error,
+  items,
+  enableCategoryFilter = false,
+  categories = [],
 }) => {
-  // Normalize items to always be an array
-  const normalizedItems = Array.isArray(items) 
-    ? items 
-    : (items.products || []);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  if (!Array.isArray(normalizedItems)) {
-    console.error('Invalid items prop:', items);
-    items = [];
-  } else {
-    console.log('Product items:', normalizedItems.map((item) => item.name));
-  }
+  const availableCategories = useMemo(() => {
+    // If categories are passed, use only those
+    if (categories.length > 0) {
+      return categories;
+    }
+    
+    // Otherwise, extract from items
+    return Array.from(new Set(
+      items.flatMap((item) =>
+        item.categories.map((cat) => cat.name)
+      )
+    ));
+  }, [items, categories]);
 
-  if (error) {
-    console.error('Error loading products:', error);
-  }
+  const toggleCategoryFilter = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((cat) => cat !== category)
+        : [...prev, category]
+    );
+  };
+
+  const filteredItems = useMemo(() => {
+    // If categories are explicitly passed, filter strictly to those categories
+    if (categories.length > 0) {
+      return items.filter(item => 
+        item.categories.some(cat => 
+          cat.name && categories.some(passedCat => 
+            passedCat && 
+            cat.name.toLowerCase().trim() === passedCat.toLowerCase().trim()
+          )
+        )
+      );
+    }
+
+    // If no categories passed and filtering is enabled, use selected categories
+    if (enableCategoryFilter && selectedCategories.length > 0) {
+      return items.filter(item => 
+        item.categories.some(cat => 
+          cat.name && selectedCategories.includes(cat.name)
+        )
+      );
+    }
+
+    // If no filtering conditions, show all items
+    return items;
+  }, [items, categories, selectedCategories, enableCategoryFilter]);
+
+  const renderCategoryFilter = () => {
+    // Only show filter if enableCategoryFilter is true and there are categories
+    if (!enableCategoryFilter || availableCategories.length === 0)
+      return null;
+
+    return (
+      <div className="mb-6 space-y-4">
+        <h4 className="text-lg font-semibold text-center text-gray-700">
+          {categories.length > 0 
+            ? `${categories.join(', ')} Products` 
+            : 'Filter Products by Category'}
+        </h4>
+        <div className="flex flex-wrap justify-center gap-2">
+          {availableCategories.map((category) => (
+            <button
+              key={category}
+              onClick={() => toggleCategoryFilter(category)}
+              className={`px-3 py-1 rounded-full text-sm transition-all ${
+                selectedCategories.includes(category)
+                  ? "bg-primary text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Clear Filters Button */}
+        {selectedCategories.length > 0 && (
+          <div className="text-center mt-4">
+            <button
+              onClick={() => setSelectedCategories([])}
+              className="px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+            >
+              Clear All Filters
+            </button>
+          </div>
+        )}
+
+        {/* Filter Summary */}
+        {selectedCategories.length > 0 && (
+          <div className="text-center text-sm text-gray-600 mt-2">
+            Showing {filteredItems.length} of {items.length} products
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [showControls, setShowControls] = useState(false);
@@ -54,7 +138,7 @@ const ProductList: React.FC<ProductListProps> = ({
   };
 
   useEffect(() => {
-    const shouldShowCarousel = normalizedItems.length > 4;
+    const shouldShowCarousel = filteredItems.length > 4;
     setShowControls(shouldShowCarousel);
 
     if (shouldShowCarousel && containerRef.current) {
@@ -78,29 +162,7 @@ const ProductList: React.FC<ProductListProps> = ({
         window.removeEventListener("resize", checkScrollPosition);
       };
     }
-  }, [normalizedItems.length]);
-
-
-  if (error) {
-    return (
-      <div className="text-red-500 font-sans text-base">
-        Error loading products: {error.message}
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-64 bg-gray-200 rounded"></div>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  }, [filteredItems.length]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -115,7 +177,6 @@ const ProductList: React.FC<ProductListProps> = ({
       transition: { delay: index * 0.1, duration: 0.5 },
     }),
   };
-  console.log("this is items of product list", normalizedItems.map((item) => item.name));
 
   return (
     <section
@@ -129,7 +190,9 @@ const ProductList: React.FC<ProductListProps> = ({
         {title}
       </h3>
 
-      {normalizedItems.length === 0 && <NoResult />}
+      {renderCategoryFilter()}
+
+      {filteredItems.length === 0 && <NoResult />}
 
       <div className="relative ">
         <motion.div
@@ -151,7 +214,7 @@ const ProductList: React.FC<ProductListProps> = ({
             whileInView="visible"
             viewport={{ once: true }}
           >
-            {normalizedItems.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <motion.article
                 key={item.id}
                 role="listitem"
