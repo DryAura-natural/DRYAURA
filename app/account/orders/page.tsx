@@ -145,7 +145,7 @@ export default function OrdersPage() {
           Your Orders
         </h1>
 
-        <OrderList initialOrders={orders} userId={userId} />
+        <OrderList initialOrders={orders} userId={userId ?? ''} />
       </div>
     </>
   );
